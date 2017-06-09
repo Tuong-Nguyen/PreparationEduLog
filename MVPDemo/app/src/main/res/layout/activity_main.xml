@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="user" type="com.example.lnthao.mvpdemo.presentation.viewmodel.User" />
+        <variable
+            name="presenter"
+            type="com.example.lnthao.mvpdemo.presentation.presenter.LoginPresenter"/>
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <EditText android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@={user.username}"/>
+        <EditText android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:text="@={user.password}"/>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Button"
+            android:onClick="@{()->presenter.validateCredentials(user.username, user.password)}"/>
+    </LinearLayout>
+
+</layout>
