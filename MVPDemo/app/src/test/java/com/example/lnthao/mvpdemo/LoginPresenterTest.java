@@ -3,10 +3,14 @@ package com.example.lnthao.mvpdemo;
 import com.example.lnthao.mvpdemo.presentation.presenter.LoginPresenter;
 import com.example.lnthao.mvpdemo.presentation.presenter.LoginPresenterImpl;
 
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -14,14 +18,14 @@ import static org.mockito.Mockito.verify;
  */
 
 public class LoginPresenterTest {
-    private LoginPresenter presenter;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Mock
     private LoginPresenter.View mockView;
 
-    @Before
-    public void setup(){
-        mockView = mock(LoginPresenter.View.class);
-        presenter = new LoginPresenterImpl(mockView);
-    }
+    @InjectMocks
+    private LoginPresenterImpl presenter;
 
     @Test
     public void validateCredential_validUsernamePassword_showSuccessWasCalled(){
@@ -29,5 +33,13 @@ public class LoginPresenterTest {
         String password = "Test";
         presenter.validateCredentials(userName, password);
         verify(mockView).showSucess();
+    }
+
+    @Test
+    public void validateCredential_invalidUsernamePassword_showSuccessWasNotCalled(){
+        String userName = "Test1";
+        String password = "Test";
+        presenter.validateCredentials(userName, password);
+        verify(mockView, never()).showSucess();
     }
 }
