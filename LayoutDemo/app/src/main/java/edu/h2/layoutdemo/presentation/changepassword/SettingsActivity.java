@@ -86,11 +86,15 @@ public class SettingsActivity extends BaseActivity implements NavigationView.OnN
 
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
     }
 
     private void setTitle(String title) {
-        getSupportActionBar().setTitle(title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 }
