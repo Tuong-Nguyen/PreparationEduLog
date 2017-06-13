@@ -6,7 +6,7 @@ package edu.h2.layoutdemo.login.presenter;
 
 public interface LoginPresenter {
     interface LoginPresenterOptions{
-        void showValidate(String busID, String driverId, String password);
+        void alertLogin(String busID, String driverId, String password);
     }
     interface RequireViewOptions{
         void showLoginSuccess();
@@ -14,7 +14,7 @@ public interface LoginPresenter {
         void showInvalidateCredentials();
     }
     interface RequireLoginPresenterOptions{
-        void onValidateLogin();
-        void onInvalidateLogin();
+        void onLoginSuccess();
+        void onLoginFail();
     }
 }

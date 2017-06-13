@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
                 busId = etBusId.getText().toString();
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
-                mPresenter.showValidate(busId, driverId, password);
+                mPresenter.alertLogin(busId, driverId, password);
             }
         });
 

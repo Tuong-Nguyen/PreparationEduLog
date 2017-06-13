@@ -20,7 +20,7 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     }
 
     @Override
-    public void showValidate(String busID, String driverId, String password) {
+    public void alertLogin(String busID, String driverId, String password) {
         if (busID.isEmpty()){
             mView.get().showEmptyCredentials(busID);
         }else if(driverId.isEmpty()){
@@ -33,12 +33,12 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     }
 
     @Override
-    public void onValidateLogin() {
+    public void onLoginSuccess() {
         mView.get().showLoginSuccess();
     }
 
     @Override
-    public void onInvalidateLogin() {
+    public void onLoginFail() {
         mView.get().showInvalidateCredentials();
     }
 }
