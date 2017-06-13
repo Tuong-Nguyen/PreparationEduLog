@@ -2,6 +2,8 @@ package edu.h2.layoutdemo.login.usecase;
 
 import edu.h2.layoutdemo.login.Driver;
 import edu.h2.layoutdemo.login.repositories.DriverRepository;
+import io.reactivex.Observable;
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * Created by ntmhanh on 6/12/2017.
@@ -10,20 +12,32 @@ import edu.h2.layoutdemo.login.repositories.DriverRepository;
 public class DriverAuthenticateUseCase {
 
     public DriverRepository mDriverRepository;
-    private Driver driver;
 
     public DriverAuthenticateUseCase(DriverRepository driverRepository) {
         this.mDriverRepository = driverRepository;
     }
 
 
-    public boolean validateCredentials(String busId, String driverId, String password) {
-        driver = mDriverRepository.getDriverById(driverId);
-        if ( driver != null){
-          if (driver.getBusId().equals(busId) && driver.getPassword().equals(password)){
-              return true;
-          }
-        }
-        return false;
+    public Observable<Driver> validateCredentials(Params params) {
+        String driverId = params.driverId;
+        return mDriverRepository.getDriverById(driverId);
     }
+
+    public void execute(DisposableObserver<Driver> observer, Params params) {
+        final Observable<Driver> observable = this.validateCredentials(params);
+        observable.subscribeWith(observer).dispose();
+    }
+
+    public static class Params {
+        public String busId;
+        public String driverId;
+        public String password;
+
+        public Params(String busId, String driverId, String password) {
+            this.busId = busId;
+            this.driverId = driverId;
+            this.password = password;
+        }
+    }
+
 }
