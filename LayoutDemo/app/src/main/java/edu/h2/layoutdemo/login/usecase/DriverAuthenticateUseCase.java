@@ -1,7 +1,6 @@
 package edu.h2.layoutdemo.login.usecase;
 
 import edu.h2.layoutdemo.login.Driver;
-import edu.h2.layoutdemo.login.presenter.LoginPresenter;
 import edu.h2.layoutdemo.login.repositories.DriverRepository;
 
 /**
@@ -12,10 +11,8 @@ public class DriverAuthenticateUseCase {
 
     public DriverRepository mDriverRepository;
     private Driver driver;
-    private LoginPresenter.RequireLoginPresenterOptions mLoginPresenter;
 
-    public DriverAuthenticateUseCase(LoginPresenter.RequireLoginPresenterOptions mLoginPresenter, DriverRepository driverRepository) {
-        this.mLoginPresenter = mLoginPresenter;
+    public DriverAuthenticateUseCase(DriverRepository driverRepository) {
         this.mDriverRepository = driverRepository;
     }
 
@@ -24,11 +21,7 @@ public class DriverAuthenticateUseCase {
         driver = mDriverRepository.getDriverById(driverId);
         if ( driver != null){
           if (driver.getBusId().equals(busId) && driver.getPassword().equals(password)){
-              mLoginPresenter.onLoginSuccess();
               return true;
-          }else{
-              mLoginPresenter.onLoginFail();
-              return false;
           }
         }
         return false;

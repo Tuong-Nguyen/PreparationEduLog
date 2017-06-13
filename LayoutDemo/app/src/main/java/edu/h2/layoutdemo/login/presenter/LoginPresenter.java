@@ -13,8 +13,4 @@ public interface LoginPresenter {
         void showEmptyCredentials(String field);
         void showLoginFail();
     }
-    interface RequireLoginPresenterOptions{
-        void onLoginSuccess();
-        void onLoginFail();
-    }
 }

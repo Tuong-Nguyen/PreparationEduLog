@@ -9,7 +9,7 @@ import edu.h2.layoutdemo.login.usecase.DriverAuthenticateUseCase;
  * Created by ntmhanh on 6/12/2017.
  */
 
-public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOptions, LoginPresenter.RequireLoginPresenterOptions{
+public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOptions {
 
     // Layer View reference
     private WeakReference<LoginPresenter.RequireViewOptions> mView;
@@ -17,29 +17,25 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
 
     public LoginPresenterImplement(LoginPresenter.RequireViewOptions view, DriverRepository driverRepository) {
         this.mView = new WeakReference<>(view);
-        this.mloginAuthenticateUseCase = new DriverAuthenticateUseCase(this, driverRepository);
+        this.mloginAuthenticateUseCase = new DriverAuthenticateUseCase(driverRepository);
     }
 
     @Override
     public void alertLogin(String busID, String driverId, String password) {
-        if (busID.isEmpty()){
+        if (busID.isEmpty()) {
             mView.get().showEmptyCredentials(busID);
-        }else if(driverId.isEmpty()){
+        } else if (driverId.isEmpty()) {
             mView.get().showEmptyCredentials(driverId);
-        }else if(password.isEmpty()) {
+        } else if (password.isEmpty()) {
             mView.get().showEmptyCredentials(password);
-        }else{
-            mloginAuthenticateUseCase.validateCredentials(busID, driverId, password);
+        } else {
+            boolean isLogIn = mloginAuthenticateUseCase.validateCredentials(busID, driverId, password);
+            if (isLogIn) {
+                mView.get().showLoginSuccess();
+            } else {
+                mView.get().showLoginFail();
+            }
         }
     }
 
-    @Override
-    public void onLoginSuccess() {
-        mView.get().showLoginSuccess();
-    }
-
-    @Override
-    public void onLoginFail() {
-        mView.get().showLoginFail();
-    }
 }
