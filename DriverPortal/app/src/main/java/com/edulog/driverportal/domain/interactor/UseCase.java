@@ -8,6 +8,10 @@ import io.reactivex.observers.DisposableObserver;
 public abstract class UseCase<T, Params> {
     private CompositeDisposable disposables;
 
+    public UseCase() {
+        disposables = new CompositeDisposable();
+    }
+
     public abstract Observable<T> buildUseCaseObservable(Params params);
 
     public void execute(DisposableObserver<T> observer, Params params) {
