@@ -11,7 +11,7 @@ public interface LoginPresenter {
     interface RequireViewOptions{
         void showLoginSuccess();
         void showEmptyCredentials(String field);
-        void showInvalidateCredentials();
+        void showLoginFail();
     }
     interface RequireLoginPresenterOptions{
         void onLoginSuccess();

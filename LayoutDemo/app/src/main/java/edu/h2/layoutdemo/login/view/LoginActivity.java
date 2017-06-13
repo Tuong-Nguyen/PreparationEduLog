@@ -10,13 +10,15 @@ import android.widget.Toast;
 import edu.h2.layoutdemo.R;
 import edu.h2.layoutdemo.login.presenter.LoginPresenter;
 import edu.h2.layoutdemo.login.presenter.LoginPresenterImplement;
+import edu.h2.layoutdemo.login.repositories.DriverRepository;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.RequireViewOptions{
     private EditText etBusId;
     private EditText etDriverId;
     private EditText etPassword;
     private Button btnLogin;
-    private LoginPresenter.LoginPresenterOptions mPresenter;
+    private LoginPresenter.LoginPresenterOptions presenter;
+    private DriverRepository driverRepository;
     private String busId;
     private String driverId;
     private String password;
@@ -33,7 +35,9 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
         btnLogin = (Button)findViewById(R.id.login);
 
-        mPresenter = new LoginPresenterImplement(this);
+        driverRepository = new DriverRepository();
+
+        presenter = new LoginPresenterImplement(this, driverRepository);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
                 busId = etBusId.getText().toString();
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
-                mPresenter.alertLogin(busId, driverId, password);
+                presenter.alertLogin(busId, driverId, password);
             }
         });
 
@@ -59,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
 
     @Override
-    public void showInvalidateCredentials() {
+    public void showLoginFail() {
         Toast.makeText(this, "Login is not successful", Toast.LENGTH_SHORT).show();
     }
 

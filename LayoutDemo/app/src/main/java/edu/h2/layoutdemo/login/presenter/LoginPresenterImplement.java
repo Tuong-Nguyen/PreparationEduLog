@@ -2,6 +2,7 @@ package edu.h2.layoutdemo.login.presenter;
 
 import java.lang.ref.WeakReference;
 
+import edu.h2.layoutdemo.login.repositories.DriverRepository;
 import edu.h2.layoutdemo.login.usecase.DriverAuthenticateUseCase;
 
 /**
@@ -14,9 +15,9 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     private WeakReference<LoginPresenter.RequireViewOptions> mView;
     private DriverAuthenticateUseCase mloginAuthenticateUseCase;
 
-    public LoginPresenterImplement(LoginPresenter.RequireViewOptions view) {
+    public LoginPresenterImplement(LoginPresenter.RequireViewOptions view, DriverRepository driverRepository) {
         this.mView = new WeakReference<>(view);
-        this.mloginAuthenticateUseCase = new DriverAuthenticateUseCase(this);
+        this.mloginAuthenticateUseCase = new DriverAuthenticateUseCase(this, driverRepository);
     }
 
     @Override
@@ -39,6 +40,6 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
 
     @Override
     public void onLoginFail() {
-        mView.get().showInvalidateCredentials();
+        mView.get().showLoginFail();
     }
 }
