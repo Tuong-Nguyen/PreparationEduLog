@@ -73,7 +73,10 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         Observable<CharSequence> oldPasswordObservable = RxTextView.textChanges(oldPasswordEditText).skip(1);
         Observable<CharSequence> newPasswordObservable = RxTextView.textChanges(newPasswordEditText).skip(1);
         Observable<CharSequence> confirmNewPasswordObservable = RxTextView.textChanges(confirmNewPasswordEditText).skip(1);
-        changePasswordPresenter.validateUserInput(driverIdObservable, oldPasswordObservable, newPasswordObservable, confirmNewPasswordObservable);
+        changePasswordPresenter.validateUserInput(driverIdObservable,
+                oldPasswordObservable,
+                newPasswordObservable,
+                confirmNewPasswordObservable);
 
         Button changePasswordButton = (Button) root.findViewById(R.id.btnChangePassword);
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
@@ -82,8 +85,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
                 String driverId = driverIdEditText.getText().toString();
                 String oldPassword = oldPasswordEditText.getText().toString();
                 String newPassword = newPasswordEditText.getText().toString();
-                String confirmNewPassword = confirmNewPasswordEditText.getText().toString();
-                changePasswordPresenter.changePassword(driverId, oldPassword, newPassword, confirmNewPassword);
+                changePasswordPresenter.changePassword(driverId, oldPassword, newPassword);
             }
         });
 
@@ -163,5 +165,4 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         changePasswordButton.setClickable(false);
         changePasswordButton.setAlpha(0.5f);
     }
-
 }

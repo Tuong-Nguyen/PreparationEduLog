@@ -16,16 +16,10 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     }
 
     @Override
-    public void changePassword(String driverId, String oldPassword, String newPassword, String confirmNewPassword) {
-        if (driverId.length() == 0 || oldPassword.length() == 0 || newPassword.length() == 0 || confirmNewPassword.length() == 0) {
-            changePasswordView.showError("Invalid information");
-        } else if (!newPassword.equals(confirmNewPassword)) {
-            changePasswordView.showError("Your new password does not match");
-        } else {
-            DisposableObserver<ResponseBody> observer = createChangePasswordObserver();
-            ChangePasswordUseCase.Params params = ChangePasswordUseCase.buildParams(driverId, oldPassword, newPassword);
-            changePasswordUseCase.execute(observer, params);
-        }
+    public void changePassword(String driverId, String oldPassword, String newPassword) {
+        DisposableObserver<ResponseBody> observer = createChangePasswordObserver();
+        ChangePasswordUseCase.Params params = ChangePasswordUseCase.buildParams(driverId, oldPassword, newPassword);
+        changePasswordUseCase.execute(observer, params);
     }
 
     @Override
