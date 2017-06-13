@@ -3,6 +3,7 @@ package com.edulog.driverportal.presentation.settings.changepassword;
 import com.edulog.driverportal.domain.interactor.ChangePasswordUseCase;
 
 import io.reactivex.observers.DisposableObserver;
+import okhttp3.ResponseBody;
 
 public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     private ChangePasswordView changePasswordView;
@@ -19,7 +20,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         } else if (!newPassword.equals(confirmNewPassword)) {
             changePasswordView.showError("Your new password does not match");
         } else {
-            DisposableObserver<Boolean> observer = createChangePasswordObserver();
+            DisposableObserver<ResponseBody> observer = createChangePasswordObserver();
             ChangePasswordUseCase.Params params = ChangePasswordUseCase.buildParams(driverId, oldPassword, newPassword);
             changePasswordUseCase.execute(observer, params);
         }
@@ -38,27 +39,24 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
 
     @Override
     public void onError(String message) {
-
+        // on error
     }
 
-    private DisposableObserver<Boolean> createChangePasswordObserver() {
-        return new DisposableObserver<Boolean>() {
+    private DisposableObserver<ResponseBody> createChangePasswordObserver() {
+        return new DisposableObserver<ResponseBody>() {
             @Override
-            public void onNext(Boolean isSuccess) {
-                if (isSuccess) {
-                    changePasswordView.showChangePasswordSuccess("Change password successfully!");
-                } else {
-                    changePasswordView.showError("Please try again!");
-                }
+            public void onNext(ResponseBody response) {
+                changePasswordView.showChangePasswordSuccess("Change password successfully!");
             }
 
             @Override
             public void onError(Throwable e) {
+                changePasswordView.showError(e.getMessage());
             }
 
             @Override
             public void onComplete() {
-
+                // on complete
             }
         };
     }

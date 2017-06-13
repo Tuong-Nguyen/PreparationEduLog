@@ -6,8 +6,10 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
-public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCase.Params> {
+public class ChangePasswordUseCase extends UseCase<ResponseBody, ChangePasswordUseCase.Params> {
     private ChangePasswordService changePasswordService;
 
     public ChangePasswordUseCase(ChangePasswordService changePasswordService) {
@@ -15,7 +17,7 @@ public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCas
     }
 
     @Override
-    public Observable<Boolean> buildUseCaseObservable(Params params) {
+    public Observable<ResponseBody> buildUseCaseObservable(Params params) {
         String driverId = params.driverId;
         String oldPassword = params.oldPassword;
         String newPassword = params.newPassword;
