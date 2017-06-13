@@ -20,7 +20,6 @@ public abstract class UseCase<T, Params> {
         Observable<T> observable = buildUseCaseObservable(params);
 
         Disposable disposable = observable
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer);
 

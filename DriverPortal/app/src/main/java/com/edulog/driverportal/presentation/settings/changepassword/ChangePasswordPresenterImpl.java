@@ -20,6 +20,8 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         DisposableObserver<ResponseBody> observer = createChangePasswordObserver();
         ChangePasswordUseCase.Params params = ChangePasswordUseCase.buildParams(driverId, oldPassword, newPassword);
         changePasswordUseCase.execute(observer, params);
+
+        changePasswordView.showProgress();
     }
 
     @Override
@@ -68,11 +70,12 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
             @Override
             public void onError(Throwable e) {
                 changePasswordView.showError(e.getMessage());
+                changePasswordView.hideProgress();
             }
 
             @Override
             public void onComplete() {
-                // on complete
+                changePasswordView.hideProgress();
             }
         };
     }

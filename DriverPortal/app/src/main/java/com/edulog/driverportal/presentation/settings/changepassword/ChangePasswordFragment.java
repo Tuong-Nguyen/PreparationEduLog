@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
@@ -17,8 +18,6 @@ import com.edulog.driverportal.presentation.BaseFragment;
 import com.edulog.driverportal.presentation.BasePresenter;
 import com.edulog.driverportal.presentation.BaseView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-
-import org.w3c.dom.Text;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
@@ -31,6 +30,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     private TextInputLayout newPasswordWrapper;
     private TextInputLayout confirmNewPasswordWrapper;
     private Button changePasswordButton;
+    private ProgressBar progressBar;
 
     private ChangePasswordPresenter changePasswordPresenter;
 
@@ -56,13 +56,15 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_change_password, container, false);
 
-        driverIdWrapper = (TextInputLayout)root.findViewById(R.id.driverIdWrapper);
-        oldPasswordWrapper = (TextInputLayout)root.findViewById(R.id.oldPasswordWrapper);
-        newPasswordWrapper = (TextInputLayout)root.findViewById(R.id.newPasswordWrapper);
-        confirmNewPasswordWrapper = (TextInputLayout)root.findViewById(R.id.confirmNewPasswordWrapper);
+        driverIdWrapper = (TextInputLayout) root.findViewById(R.id.driverIdWrapper);
+        oldPasswordWrapper = (TextInputLayout) root.findViewById(R.id.oldPasswordWrapper);
+        newPasswordWrapper = (TextInputLayout) root.findViewById(R.id.newPasswordWrapper);
+        confirmNewPasswordWrapper = (TextInputLayout) root.findViewById(R.id.confirmNewPasswordWrapper);
 
-        changePasswordButton = (Button)root.findViewById(R.id.btnChangePassword);
+        changePasswordButton = (Button) root.findViewById(R.id.btnChangePassword);
         disableRequestChangePassword();
+
+        progressBar = (ProgressBar)root.findViewById(R.id.progressBar);
 
         final EditText driverIdEditText = (EditText) root.findViewById(R.id.etDriverId);
         final EditText oldPasswordEditText = (EditText) root.findViewById(R.id.etOldPassword);
@@ -79,17 +81,24 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
                 confirmNewPasswordObservable);
 
         Button changePasswordButton = (Button) root.findViewById(R.id.btnChangePassword);
-        changePasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String driverId = driverIdEditText.getText().toString();
-                String oldPassword = oldPasswordEditText.getText().toString();
-                String newPassword = newPasswordEditText.getText().toString();
-                changePasswordPresenter.changePassword(driverId, oldPassword, newPassword);
-            }
+        changePasswordButton.setOnClickListener(v -> {
+            String driverId = driverIdEditText.getText().toString();
+            String oldPassword = oldPasswordEditText.getText().toString();
+            String newPassword = newPasswordEditText.getText().toString();
+            changePasswordPresenter.changePassword(driverId, oldPassword, newPassword);
         });
 
         return root;
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override

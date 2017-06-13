@@ -36,7 +36,7 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void setTitle(String title) {
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(title);
         }
