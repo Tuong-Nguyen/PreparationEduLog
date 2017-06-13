@@ -1,5 +1,6 @@
 package com.edulog.driverportal.domain.interactor;
 
+import com.edulog.driverportal.domain.executor.PostExecutionThread;
 import com.edulog.driverportal.domain.service.ChangePasswordService;
 
 import io.reactivex.Observable;
@@ -9,7 +10,8 @@ import okhttp3.ResponseBody;
 public class ChangePasswordUseCase extends UseCase<ResponseBody, ChangePasswordUseCase.Params> {
     private ChangePasswordService changePasswordService;
 
-    public ChangePasswordUseCase(ChangePasswordService changePasswordService) {
+    public ChangePasswordUseCase(PostExecutionThread postExecutionThread, ChangePasswordService changePasswordService) {
+        super(postExecutionThread);
         this.changePasswordService = changePasswordService;
     }
 

@@ -1,5 +1,7 @@
 package com.edulog.driverportal.domain.interactor;
 
+import com.edulog.driverportal.domain.executor.PostExecutionThread;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -9,8 +11,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public abstract class UseCase<T, Params> {
     private CompositeDisposable disposables;
+    private PostExecutionThread postExecutionThread;
 
-    public UseCase() {
+    public UseCase(PostExecutionThread postExecutionThread) {
+        this.postExecutionThread = postExecutionThread;
         disposables = new CompositeDisposable();
     }
 
@@ -20,7 +24,7 @@ public abstract class UseCase<T, Params> {
         Observable<T> observable = buildUseCaseObservable(params);
 
         Disposable disposable = observable
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(postExecutionThread.getScheduler())
                 .subscribeWith(observer);
 
         disposables.add(disposable);

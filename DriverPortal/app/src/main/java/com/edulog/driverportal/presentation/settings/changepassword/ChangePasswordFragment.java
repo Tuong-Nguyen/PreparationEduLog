@@ -12,11 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
+import com.edulog.driverportal.domain.executor.PostExecutionThread;
 import com.edulog.driverportal.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.domain.service.ChangePasswordService;
 import com.edulog.driverportal.presentation.BaseFragment;
 import com.edulog.driverportal.presentation.BasePresenter;
 import com.edulog.driverportal.presentation.BaseView;
+import com.edulog.driverportal.presentation.UIThread;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.Observable;
@@ -48,7 +50,8 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         ChangePasswordService changePasswordService = retrofit.create(ChangePasswordService.class);
-        changePasswordPresenter = new ChangePasswordPresenterImpl(new ChangePasswordUseCase(changePasswordService));
+        PostExecutionThread uiThread = new UIThread();
+        changePasswordPresenter = new ChangePasswordPresenterImpl(new ChangePasswordUseCase(uiThread, changePasswordService));
     }
 
     @Nullable
