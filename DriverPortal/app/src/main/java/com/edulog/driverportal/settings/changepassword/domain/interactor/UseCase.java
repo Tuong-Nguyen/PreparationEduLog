@@ -1,18 +1,17 @@
 package com.edulog.driverportal.settings.changepassword.domain.interactor;
 
-import com.edulog.driverportal.settings.changepassword.domain.executor.PostExecutionThread;
-
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 public abstract class UseCase<T, Params> {
     private CompositeDisposable disposables;
-    private PostExecutionThread postExecutionThread;
+    private Scheduler postExecutionScheduler;
 
-    public UseCase(PostExecutionThread postExecutionThread) {
-        this.postExecutionThread = postExecutionThread;
+    public UseCase(Scheduler postExecutionScheduler) {
+        this.postExecutionScheduler = postExecutionScheduler;
         disposables = new CompositeDisposable();
     }
 
@@ -22,7 +21,7 @@ public abstract class UseCase<T, Params> {
         Observable<T> observable = buildUseCaseObservable(params);
 
         Disposable disposable = observable
-                .observeOn(postExecutionThread.getScheduler())
+                .observeOn(postExecutionScheduler)
                 .subscribeWith(observer);
 
         disposables.add(disposable);

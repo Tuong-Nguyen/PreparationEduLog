@@ -12,17 +12,16 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.settings.BaseFragment;
-import com.edulog.driverportal.settings.BasePresenter;
-import com.edulog.driverportal.settings.BaseView;
-import com.edulog.driverportal.settings.UIThread;
+import com.edulog.driverportal.settings.base.BaseFragment;
+import com.edulog.driverportal.settings.base.BasePresenter;
+import com.edulog.driverportal.settings.base.BaseView;
 import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceImpl;
-import com.edulog.driverportal.settings.changepassword.domain.executor.PostExecutionThread;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ChangePasswordFragment extends BaseFragment implements ChangePasswordView {
     private TextInputLayout driverIdWrapper;
@@ -43,8 +42,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         super.onCreate(savedInstanceState);
 
         AuthService authService = new AuthServiceImpl();
-        PostExecutionThread uiThread = new UIThread();
-        changePasswordPresenter = new ChangePasswordPresenterImpl(new ChangePasswordUseCase(uiThread, authService));
+        changePasswordPresenter = new ChangePasswordPresenterImpl(new ChangePasswordUseCase(AndroidSchedulers.mainThread(), authService));
     }
 
     @Nullable
@@ -60,7 +58,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         changePasswordButton = (Button) root.findViewById(R.id.btnChangePassword);
         disableRequestChangePassword();
 
-        progressBar = (ProgressBar)root.findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
 
         final EditText driverIdEditText = (EditText) root.findViewById(R.id.etDriverId);
         final EditText oldPasswordEditText = (EditText) root.findViewById(R.id.etOldPassword);

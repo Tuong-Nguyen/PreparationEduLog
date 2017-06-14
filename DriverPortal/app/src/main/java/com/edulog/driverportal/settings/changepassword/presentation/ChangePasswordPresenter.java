@@ -1,6 +1,6 @@
 package com.edulog.driverportal.settings.changepassword.presentation;
 
-import com.edulog.driverportal.settings.BasePresenter;
+import com.edulog.driverportal.settings.base.BasePresenter;
 
 import io.reactivex.Observable;
 
