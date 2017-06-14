@@ -1,15 +1,19 @@
 package com.edulog.driverportal.settings.changepassword.presentation;
 
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
+import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
+import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
 
 import io.reactivex.observers.DisposableObserver;
 
 public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     private ChangePasswordView changePasswordView;
     private ChangePasswordUseCase changePasswordUseCase;
+    private ValidationUseCase validationUseCase;
 
-    public ChangePasswordPresenterImpl(ChangePasswordUseCase changePasswordUseCase) {
+    public ChangePasswordPresenterImpl(ChangePasswordUseCase changePasswordUseCase, ValidationUseCase validationUseCase) {
         this.changePasswordUseCase = changePasswordUseCase;
+        this.validationUseCase = validationUseCase;
     }
 
     @Override
@@ -23,22 +27,10 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     }
 
     @Override
-    public boolean validateUserInput(String driverId, String oldPassword, String newPassword, String confirmNewPassword) {
-        boolean driverIdValid = checkDriverIdValid(driverId);
-        boolean oldPasswordValid = checkOldPasswordValid(oldPassword);
-        boolean newPasswordValid = checkNewPasswordValid(newPassword);
-        boolean confirmNewPasswordValid = checkConfirmNewPasswordValid(newPassword, confirmNewPassword);
-
-        return driverIdValid && oldPasswordValid && newPasswordValid && confirmNewPasswordValid;
-    }
-
-    @Override
-    public void validateUserInput(boolean isValid) {
-        if (isValid) {
-            changePasswordView.enableRequestChangePassword();
-        } else {
-            changePasswordView.disableRequestChangePassword();
-        }
+    public void validateUserInputs(String driverId, String oldPassword, String newPassword, String confirmNewPassword) {
+        DisposableObserver<ValidationResult> observer = createValidationObserver();
+        ValidationUseCase.Params params = ValidationUseCase.buildParams(driverId, oldPassword, newPassword, confirmNewPassword);
+        validationUseCase.execute(observer, params);
     }
 
     @Override
@@ -61,11 +53,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         return new DisposableObserver<Boolean>() {
             @Override
             public void onNext(Boolean isValid) {
-                if (isValid) {
-                    changePasswordView.showChangePasswordSuccess("Change password successfully!");
-                } else {
-                    changePasswordView.showError("Change password failed.");
-                }
+                changePasswordView.showChangePasswordSuccess("Change password successfully!");
             }
 
             @Override
@@ -81,49 +69,69 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         };
     }
 
-    private boolean checkDriverIdValid(String driverId) {
-        boolean driverIdValid = driverId.length() >= 2;
-        if (!driverIdValid) {
-            changePasswordView.showInvalidDriverId("Driver id must be at least 2 characters.");
-        } else {
-            changePasswordView.hideInvalidDriverId();
-        }
-        return driverIdValid;
-    }
-
-    private boolean checkOldPasswordValid(String oldPassword) {
-        boolean oldPasswordValid = oldPassword.length() >= 4;
-        if (!oldPasswordValid) {
-            changePasswordView.showInvalidOldPassword("Password must be at least 4 characters");
-        } else {
-            changePasswordView.hideInvalidOldPassword();
-        }
-        return oldPasswordValid;
-    }
-
-    private boolean checkNewPasswordValid(String newPassword) {
-        boolean newPasswordValid = newPassword.length() >= 4;
-        if (!newPasswordValid) {
-            changePasswordView.showInvalidNewPassword("Password must be at least 4 characters");
-        } else {
-            changePasswordView.hideInvalidNewPassword();
-        }
-        return newPasswordValid;
-    }
-
-    private boolean checkConfirmNewPasswordValid(String newPassword, String confirmNewPassword) {
-        boolean confirmNewPasswordValid = newPassword.equals(confirmNewPassword);
-        if (!confirmNewPasswordValid) {
-            changePasswordView.showPasswordDoesNotMatch();
-        } else {
-            changePasswordView.hidePasswordDoesNotMatch();
-        }
-        return confirmNewPasswordValid;
-    }
-
     private void onChangePasswordError(String message) {
         changePasswordView.showError(message);
         changePasswordView.hideProgress();
         changePasswordView.enableRequestChangePassword();
+    }
+
+    private DisposableObserver<ValidationResult> createValidationObserver() {
+        return new DisposableObserver<ValidationResult>() {
+            @Override
+            public void onNext(ValidationResult validationResult) {
+                if (validationResult.isValid()) {
+                    onValidationResultValid(validationResult);
+                } else {
+                    onValidationResultInvalid(validationResult);
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private void onValidationResultValid(ValidationResult validationResult) {
+        changePasswordView.enableRequestChangePassword();
+        switch (validationResult.getField()) {
+            case DRIVER_ID:
+                changePasswordView.hideInvalidDriverId();
+                break;
+            case OLD_PASSWORD:
+                changePasswordView.hideInvalidOldPassword();
+                break;
+            case NEW_PASSWORD:
+                changePasswordView.hideInvalidNewPassword();
+                break;
+            case ALL:
+                changePasswordView.hidePasswordDoesNotMatch();
+                break;
+        }
+    }
+
+    private void onValidationResultInvalid(ValidationResult validationResult) {
+        changePasswordView.disableRequestChangePassword();
+        switch (validationResult.getField()) {
+            case DRIVER_ID:
+                changePasswordView.showInvalidDriverId(validationResult.getErrorMessage());
+                break;
+            case OLD_PASSWORD:
+                changePasswordView.showInvalidOldPassword(validationResult.getErrorMessage());
+                break;
+            case NEW_PASSWORD:
+                changePasswordView.showInvalidNewPassword(validationResult.getErrorMessage());
+                break;
+            case ALL:
+                changePasswordView.showPasswordDoesNotMatch();
+                break;
+        }
     }
 }

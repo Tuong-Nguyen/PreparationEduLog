@@ -17,13 +17,12 @@ import com.edulog.driverportal.settings.base.BasePresenter;
 import com.edulog.driverportal.settings.base.BaseView;
 import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceImpl;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
+import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
 
 public class ChangePasswordFragment extends BaseFragment implements ChangePasswordView {
     private TextInputLayout driverIdWrapper;
@@ -48,7 +47,9 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         super.onCreate(savedInstanceState);
 
         AuthService authService = new AuthServiceImpl();
-        changePasswordPresenter = new ChangePasswordPresenterImpl(new ChangePasswordUseCase(AndroidSchedulers.mainThread(), authService));
+        ChangePasswordUseCase changePasswordUseCase = new ChangePasswordUseCase(AndroidSchedulers.mainThread(), authService);
+        ValidationUseCase validationUseCase = new ValidationUseCase(AndroidSchedulers.mainThread());
+        changePasswordPresenter = new ChangePasswordPresenterImpl(changePasswordUseCase, validationUseCase);
     }
 
     @Nullable
@@ -178,36 +179,19 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         Observable<CharSequence> oldPasswordObservable = RxTextView.textChanges(oldPasswordEditText).skip(1);
         Observable<CharSequence> newPasswordObservable = RxTextView.textChanges(newPasswordEditText).skip(1);
         Observable<CharSequence> confirmNewPasswordObservable = RxTextView.textChanges(confirmNewPasswordEditText).skip(1);
-        Observable<Boolean> observable = Observable.combineLatest(driverIdObservable,
-                oldPasswordObservable,
-                newPasswordObservable,
-                confirmNewPasswordObservable,
-                (driverIdOrigin, oldPasswordOrigin, newPasswordOrigin, confirmNewPasswordOrigin) -> {
-                    String driverId = driverIdOrigin.toString();
-                    String oldPassword = oldPasswordOrigin.toString();
-                    String newPassword = newPasswordOrigin.toString();
-                    String confirmNewPassword = confirmNewPasswordOrigin.toString();
-                    return changePasswordPresenter.validateUserInput(driverId, oldPassword, newPassword, confirmNewPassword);
-                });
-        observable.subscribe(createUserInputValidationObserver());
-    }
-
-    private Observer<Boolean> createUserInputValidationObserver() {
-        return new DisposableObserver<Boolean>() {
-            @Override
-            public void onNext(Boolean isValid) {
-                changePasswordPresenter.validateUserInput(isValid);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
+        Observable<Boolean> observable = Observable
+                .combineLatest(driverIdObservable,
+                        oldPasswordObservable,
+                        newPasswordObservable,
+                        confirmNewPasswordObservable,
+                        (driverIdOrigin, oldPasswordOrigin, newPasswordOrigin, confirmNewPasswordOrigin) -> {
+                            String driverId = driverIdOrigin.toString();
+                            String oldPassword = oldPasswordOrigin.toString();
+                            String newPassword = newPasswordOrigin.toString();
+                            String confirmNewPassword = confirmNewPasswordOrigin.toString();
+                            changePasswordPresenter.validateUserInputs(driverId, oldPassword, newPassword, confirmNewPassword);
+                            return true;
+                        });
+        observable.subscribe();
     }
 }

@@ -27,7 +27,10 @@ public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCas
         String oldPassword = params.oldPassword;
         String newPassword = params.newPassword;
         return authService.changePassword(driverId, oldPassword, newPassword)
-                .map(response -> response.code() == 200);
+                .map(response -> response.code() == 200)
+                .doOnNext(isSuccess -> {
+                    if (!isSuccess) throw new RuntimeException("Change password error.");
+                });
     }
 
     public static class Params {
