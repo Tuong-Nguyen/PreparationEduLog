@@ -16,14 +16,5 @@ public class ChangePasswordPresenterTest {
         String oldPassword = "old_pass";
         String newPassword = "new_pass";
         String confirmNewPassword = "new_pass";
-
-        ChangePasswordUseCase useCaseMock = mock(ChangePasswordUseCase.class);
-        ChangePasswordView viewMock = mock(ChangePasswordView.class);
-        ChangePasswordPresenter presenter = new ChangePasswordPresenterImpl(useCaseMock);
-        presenter.attach(viewMock);
-
-        presenter.changePassword(driverId, oldPassword, newPassword, confirmNewPassword);
-
-        verify(useCaseMock).execute(mock(DisposableObserver.class), ChangePasswordUseCase.buildParams(driverId, oldPassword, newPassword));
     }
 }

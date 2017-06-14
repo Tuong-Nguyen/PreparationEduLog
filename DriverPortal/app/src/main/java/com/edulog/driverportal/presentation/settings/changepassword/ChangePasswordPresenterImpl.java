@@ -2,10 +2,13 @@ package com.edulog.driverportal.presentation.settings.changepassword;
 
 import com.edulog.driverportal.domain.interactor.ChangePasswordUseCase;
 
+import java.io.IOException;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.observers.DisposableObserver;
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     private ChangePasswordView changePasswordView;
@@ -17,7 +20,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
 
     @Override
     public void changePassword(String driverId, String oldPassword, String newPassword) {
-        DisposableObserver<ResponseBody> observer = createChangePasswordObserver();
+        DisposableObserver<Response<ResponseBody>> observer = createChangePasswordObserver();
         ChangePasswordUseCase.Params params = ChangePasswordUseCase.buildParams(driverId, oldPassword, newPassword);
         changePasswordUseCase.execute(observer, params);
 
@@ -61,18 +64,24 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         // on error
     }
 
-    private DisposableObserver<ResponseBody> createChangePasswordObserver() {
-        return new DisposableObserver<ResponseBody>() {
+    private DisposableObserver<Response<ResponseBody>> createChangePasswordObserver() {
+        return new DisposableObserver<Response<ResponseBody>>() {
             @Override
-            public void onNext(ResponseBody response) {
-                changePasswordView.showChangePasswordSuccess("Change password successfully!");
+            public void onNext(Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    changePasswordView.showChangePasswordSuccess("Change password successfully!");
+                } else {
+                    try {
+                        changePasswordView.showError(response.errorBody().string());
+                    } catch (IOException ex) {
+                        onChangePasswordError(ex.getMessage());
+                    }
+                }
             }
 
             @Override
             public void onError(Throwable e) {
-                changePasswordView.showError(e.getMessage());
-                changePasswordView.hideProgress();
-                changePasswordView.enableRequestChangePassword();
+                onChangePasswordError(e.getMessage());
             }
 
             @Override
@@ -149,5 +158,11 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
             changePasswordView.hidePasswordDoesNotMatch();
         }
         return confirmNewPasswordValid;
+    }
+
+    private void onChangePasswordError(String message) {
+        changePasswordView.showError(message);
+        changePasswordView.hideProgress();
+        changePasswordView.enableRequestChangePassword();
     }
 }

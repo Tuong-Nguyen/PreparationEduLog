@@ -18,12 +18,5 @@ public class ChangePasswordUseCaseTest {
         String oldPassword = "old_pass";
         String newPassword = "new_pass";
 
-        ChangePasswordService serviceMock = mock(ChangePasswordService.class);
-        when(serviceMock.changePassword(driverId, oldPassword, newPassword)).thenReturn(mock(Observable.class));
-        ChangePasswordUseCase useCase = new ChangePasswordUseCase(serviceMock);
-
-        useCase.execute(mock(DisposableObserver.class), ChangePasswordUseCase.buildParams(driverId, oldPassword, newPassword));
-
-        verify(serviceMock).changePassword(driverId, oldPassword, newPassword);
     }
 }
