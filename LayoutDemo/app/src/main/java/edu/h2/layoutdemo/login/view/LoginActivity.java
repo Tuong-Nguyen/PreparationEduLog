@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
     private Boolean saveLogin;
+    private int countLoginFail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,10 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
             etPassword.setText(loginPreferences.getString("password", ""));
             saveLoginCheckBox.setChecked(true);
             onLogged();
+        } else {
+            onNotLogged();
         }
+        countLoginFail = 0;
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +92,9 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
                 eventServiceImplement.sentEvent(Event.LOG_IN);
 
                 presenter.validateCredentials(busId, driverId, password);
+                if (countLoginFail > 3){
+                    lockedAccount();
+                }
             }
         });
 
@@ -107,9 +114,17 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     @Override
     public void showLoginFail() {
         Toast.makeText(this, "Login is not successful", Toast.LENGTH_SHORT).show();
+        countLoginFail++;
     }
+
     public void onLogged(){
-        Toast.makeText(this, "You were logged", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You logged", Toast.LENGTH_SHORT).show();
+    }
+    public void onNotLogged(){
+        Toast.makeText(this, "You have not yet logged", Toast.LENGTH_SHORT).show();
+    }
+    public void lockedAccount(){
+        Toast.makeText(this, "Your account was locked", Toast.LENGTH_SHORT).show();
     }
 
 }
