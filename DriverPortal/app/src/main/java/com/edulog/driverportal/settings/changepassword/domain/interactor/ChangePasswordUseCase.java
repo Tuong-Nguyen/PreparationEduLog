@@ -4,10 +4,6 @@ import com.edulog.driverportal.settings.changepassword.domain.service.AuthServic
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCase.Params> {
     private AuthService authService;

@@ -2,13 +2,7 @@ package com.edulog.driverportal.settings.changepassword.presentation;
 
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
 
-import java.io.IOException;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.observers.DisposableObserver;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     private ChangePasswordView changePasswordView;
@@ -29,23 +23,22 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     }
 
     @Override
-    public void validateUserInput(Observable<CharSequence> driverIdObservable,
-                                  Observable<CharSequence> oldPasswordObservable,
-                                  Observable<CharSequence> newPasswordObservable,
-                                  Observable<CharSequence> confirmNewPasswordObservable) {
-        Observable<Boolean> observable = Observable.combineLatest(driverIdObservable,
-                oldPasswordObservable,
-                newPasswordObservable,
-                confirmNewPasswordObservable,
-                (driverIdOrigin, oldPasswordOrigin, newPasswordOrigin, confirmNewPasswordOrigin) -> {
-                    boolean driverIdValid = checkDriverIdValid(driverIdOrigin);
-                    boolean oldPasswordValid = checkOldPasswordValid(oldPasswordOrigin);
-                    boolean newPasswordValid = checkNewPasswordValid(newPasswordOrigin);
-                    boolean confirmNewPasswordValid = checkConfirmNewPasswordValid(newPasswordOrigin, confirmNewPasswordOrigin);
+    public boolean validateUserInput(String driverId, String oldPassword, String newPassword, String confirmNewPassword) {
+        boolean driverIdValid = checkDriverIdValid(driverId);
+        boolean oldPasswordValid = checkOldPasswordValid(oldPassword);
+        boolean newPasswordValid = checkNewPasswordValid(newPassword);
+        boolean confirmNewPasswordValid = checkConfirmNewPasswordValid(newPassword, confirmNewPassword);
 
-                    return driverIdValid && oldPasswordValid && newPasswordValid && confirmNewPasswordValid;
-                });
-        observable.subscribe(getUserInputValidationObserver());
+        return driverIdValid && oldPasswordValid && newPasswordValid && confirmNewPasswordValid;
+    }
+
+    @Override
+    public void validateUserInput(boolean isValid) {
+        if (isValid) {
+            changePasswordView.enableRequestChangePassword();
+        } else {
+            changePasswordView.disableRequestChangePassword();
+        }
     }
 
     @Override
@@ -88,31 +81,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         };
     }
 
-    private Observer<Boolean> getUserInputValidationObserver() {
-        return new DisposableObserver<Boolean>() {
-            @Override
-            public void onNext(Boolean isValid) {
-                if (isValid) {
-                    changePasswordView.enableRequestChangePassword();
-                } else {
-                    changePasswordView.disableRequestChangePassword();
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-    }
-
-    private boolean checkDriverIdValid(CharSequence driverIdOrigin) {
-        String driverId = driverIdOrigin.toString();
+    private boolean checkDriverIdValid(String driverId) {
         boolean driverIdValid = driverId.length() >= 2;
         if (!driverIdValid) {
             changePasswordView.showInvalidDriverId("Driver id must be at least 2 characters.");
@@ -122,8 +91,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         return driverIdValid;
     }
 
-    private boolean checkOldPasswordValid(CharSequence oldPasswordOrigin) {
-        String oldPassword = oldPasswordOrigin.toString();
+    private boolean checkOldPasswordValid(String oldPassword) {
         boolean oldPasswordValid = oldPassword.length() >= 4;
         if (!oldPasswordValid) {
             changePasswordView.showInvalidOldPassword("Password must be at least 4 characters");
@@ -133,8 +101,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         return oldPasswordValid;
     }
 
-    private boolean checkNewPasswordValid(CharSequence newPasswordOrigin) {
-        String newPassword = newPasswordOrigin.toString();
+    private boolean checkNewPasswordValid(String newPassword) {
         boolean newPasswordValid = newPassword.length() >= 4;
         if (!newPasswordValid) {
             changePasswordView.showInvalidNewPassword("Password must be at least 4 characters");
@@ -144,9 +111,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         return newPasswordValid;
     }
 
-    private boolean checkConfirmNewPasswordValid(CharSequence newPasswordOrigin, CharSequence confirmNewPasswordOrigin) {
-        String newPassword = newPasswordOrigin.toString();
-        String confirmNewPassword = confirmNewPasswordOrigin.toString();
+    private boolean checkConfirmNewPasswordValid(String newPassword, String confirmNewPassword) {
         boolean confirmNewPasswordValid = newPassword.equals(confirmNewPassword);
         if (!confirmNewPasswordValid) {
             changePasswordView.showPasswordDoesNotMatch();

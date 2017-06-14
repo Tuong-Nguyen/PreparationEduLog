@@ -21,13 +21,19 @@ import com.edulog.driverportal.settings.changepassword.domain.service.AuthServic
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
 
 public class ChangePasswordFragment extends BaseFragment implements ChangePasswordView {
     private TextInputLayout driverIdWrapper;
     private TextInputLayout oldPasswordWrapper;
     private TextInputLayout newPasswordWrapper;
     private TextInputLayout confirmNewPasswordWrapper;
+    private EditText driverIdEditText;
+    private EditText oldPasswordEditText;
+    private EditText newPasswordEditText;
+    private EditText confirmNewPasswordEditText;
     private Button changePasswordButton;
     private ProgressBar progressBar;
 
@@ -55,34 +61,25 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         newPasswordWrapper = (TextInputLayout) root.findViewById(R.id.newPasswordWrapper);
         confirmNewPasswordWrapper = (TextInputLayout) root.findViewById(R.id.confirmNewPasswordWrapper);
 
+        driverIdEditText = (EditText) root.findViewById(R.id.etDriverId);
+        oldPasswordEditText = (EditText) root.findViewById(R.id.etOldPassword);
+        newPasswordEditText = (EditText) root.findViewById(R.id.etNewPassword);
+        confirmNewPasswordEditText = (EditText) root.findViewById(R.id.etConfirmNewPassword);
+
         changePasswordButton = (Button) root.findViewById(R.id.btnChangePassword);
-        disableRequestChangePassword();
+        changePasswordButton.setOnClickListener(v -> requestChangePassword());
 
         progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
 
-        final EditText driverIdEditText = (EditText) root.findViewById(R.id.etDriverId);
-        final EditText oldPasswordEditText = (EditText) root.findViewById(R.id.etOldPassword);
-        final EditText newPasswordEditText = (EditText) root.findViewById(R.id.etNewPassword);
-        final EditText confirmNewPasswordEditText = (EditText) root.findViewById(R.id.etConfirmNewPassword);
-
-        Observable<CharSequence> driverIdObservable = RxTextView.textChanges(driverIdEditText).skip(1);
-        Observable<CharSequence> oldPasswordObservable = RxTextView.textChanges(oldPasswordEditText).skip(1);
-        Observable<CharSequence> newPasswordObservable = RxTextView.textChanges(newPasswordEditText).skip(1);
-        Observable<CharSequence> confirmNewPasswordObservable = RxTextView.textChanges(confirmNewPasswordEditText).skip(1);
-        changePasswordPresenter.validateUserInput(driverIdObservable,
-                oldPasswordObservable,
-                newPasswordObservable,
-                confirmNewPasswordObservable);
-
-        Button changePasswordButton = (Button) root.findViewById(R.id.btnChangePassword);
-        changePasswordButton.setOnClickListener(v -> {
-            String driverId = driverIdEditText.getText().toString();
-            String oldPassword = oldPasswordEditText.getText().toString();
-            String newPassword = newPasswordEditText.getText().toString();
-            changePasswordPresenter.changePassword(driverId, oldPassword, newPassword);
-        });
-
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        monitorUserInput();
+        disableRequestChangePassword();
     }
 
     @Override
@@ -167,5 +164,50 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         changePasswordButton.setEnabled(false);
         changePasswordButton.setClickable(false);
         changePasswordButton.setAlpha(0.5f);
+    }
+
+    private void requestChangePassword() {
+        String driverId = driverIdEditText.getText().toString();
+        String oldPassword = oldPasswordEditText.getText().toString();
+        String newPassword = newPasswordEditText.getText().toString();
+        changePasswordPresenter.changePassword(driverId, oldPassword, newPassword);
+    }
+
+    private void monitorUserInput() {
+        Observable<CharSequence> driverIdObservable = RxTextView.textChanges(driverIdEditText).skip(1);
+        Observable<CharSequence> oldPasswordObservable = RxTextView.textChanges(oldPasswordEditText).skip(1);
+        Observable<CharSequence> newPasswordObservable = RxTextView.textChanges(newPasswordEditText).skip(1);
+        Observable<CharSequence> confirmNewPasswordObservable = RxTextView.textChanges(confirmNewPasswordEditText).skip(1);
+        Observable<Boolean> observable = Observable.combineLatest(driverIdObservable,
+                oldPasswordObservable,
+                newPasswordObservable,
+                confirmNewPasswordObservable,
+                (driverIdOrigin, oldPasswordOrigin, newPasswordOrigin, confirmNewPasswordOrigin) -> {
+                    String driverId = driverIdOrigin.toString();
+                    String oldPassword = oldPasswordOrigin.toString();
+                    String newPassword = newPasswordOrigin.toString();
+                    String confirmNewPassword = confirmNewPasswordOrigin.toString();
+                    return changePasswordPresenter.validateUserInput(driverId, oldPassword, newPassword, confirmNewPassword);
+                });
+        observable.subscribe(createUserInputValidationObserver());
+    }
+
+    private Observer<Boolean> createUserInputValidationObserver() {
+        return new DisposableObserver<Boolean>() {
+            @Override
+            public void onNext(Boolean isValid) {
+                changePasswordPresenter.validateUserInput(isValid);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 }
