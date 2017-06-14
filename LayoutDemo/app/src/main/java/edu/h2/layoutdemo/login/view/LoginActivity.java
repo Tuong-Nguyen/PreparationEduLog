@@ -11,6 +11,7 @@ import edu.h2.layoutdemo.R;
 import edu.h2.layoutdemo.login.presenter.LoginPresenter;
 import edu.h2.layoutdemo.login.presenter.LoginPresenterImplement;
 import edu.h2.layoutdemo.login.repositories.DriverRepository;
+import edu.h2.layoutdemo.login.usecase.DriverAuthenticateUseCase;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.RequireViewOptions{
     private EditText etBusId;
@@ -18,7 +19,6 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     private EditText etPassword;
     private Button btnLogin;
     private LoginPresenter.LoginPresenterOptions presenter;
-    private DriverRepository driverRepository;
     private String busId;
     private String driverId;
     private String password;
@@ -35,9 +35,9 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
         btnLogin = (Button)findViewById(R.id.login);
 
-        driverRepository = new DriverRepository();
+        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(new DriverRepository());
 
-        presenter = new LoginPresenterImplement(this, driverRepository);
+        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
                 busId = etBusId.getText().toString();
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
-                presenter.alertLogin(busId, driverId, password);
+                presenter.validateCredentials(busId, driverId, password);
             }
         });
 

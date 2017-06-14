@@ -7,7 +7,7 @@ package edu.h2.layoutdemo.login.presenter;
 public interface LoginPresenter {
     // View(LoginActivity) access to LoginPresenter
     interface LoginPresenterOptions{
-        void alertLogin(String busID, String driverId, String password);
+        void validateCredentials(String busID, String driverId, String password);
     }
     // LoginPresenter access to View(LoginActivity)
     interface RequireViewOptions{

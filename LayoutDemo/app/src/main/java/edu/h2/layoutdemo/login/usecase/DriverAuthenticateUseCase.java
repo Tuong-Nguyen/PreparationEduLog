@@ -18,13 +18,13 @@ public class DriverAuthenticateUseCase {
     }
 
 
-    public Observable<Driver> validateCredentials(Params params) {
+    public Observable<Driver> buildUseCaseObservable(Params params) {
         String driverId = params.driverId;
         return mDriverRepository.getDriverById(driverId);
     }
 
     public void execute(DisposableObserver<Driver> observer, Params params) {
-        final Observable<Driver> observable = this.validateCredentials(params);
+        final Observable<Driver> observable = this.buildUseCaseObservable(params);
         observable.subscribeWith(observer).dispose();
     }
 
