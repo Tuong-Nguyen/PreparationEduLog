@@ -20,7 +20,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
 
     @Override
     public void changePassword(String driverId, String oldPassword, String newPassword) {
-        DisposableObserver<Response<ResponseBody>> observer = createChangePasswordObserver();
+        DisposableObserver<Boolean> observer = createChangePasswordObserver();
         ChangePasswordUseCase.Params params = ChangePasswordUseCase.buildParams(driverId, oldPassword, newPassword);
         changePasswordUseCase.execute(observer, params);
 
@@ -64,18 +64,14 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         // on error
     }
 
-    private DisposableObserver<Response<ResponseBody>> createChangePasswordObserver() {
-        return new DisposableObserver<Response<ResponseBody>>() {
+    private DisposableObserver<Boolean> createChangePasswordObserver() {
+        return new DisposableObserver<Boolean>() {
             @Override
-            public void onNext(Response<ResponseBody> response) {
-                if (response.code() == 200) {
+            public void onNext(Boolean isValid) {
+                if (isValid) {
                     changePasswordView.showChangePasswordSuccess("Change password successfully!");
                 } else {
-                    try {
-                        changePasswordView.showError(response.errorBody().string());
-                    } catch (IOException ex) {
-                        onChangePasswordError(ex.getMessage());
-                    }
+                    changePasswordView.showError("Change password failed.");
                 }
             }
 

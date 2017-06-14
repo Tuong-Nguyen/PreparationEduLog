@@ -4,11 +4,12 @@ import com.edulog.driverportal.settings.changepassword.domain.service.AuthServic
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
-public class ChangePasswordUseCase extends UseCase<Response<ResponseBody>, ChangePasswordUseCase.Params> {
+public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCase.Params> {
     private AuthService authService;
 
     public ChangePasswordUseCase(Scheduler postExecutionScheduler, AuthService authService) {
@@ -25,12 +26,12 @@ public class ChangePasswordUseCase extends UseCase<Response<ResponseBody>, Chang
     }
 
     @Override
-    public Observable<Response<ResponseBody>> buildUseCaseObservable(Params params) {
+    public Observable<Boolean> buildUseCaseObservable(Params params) {
         String driverId = params.driverId;
         String oldPassword = params.oldPassword;
         String newPassword = params.newPassword;
         return authService.changePassword(driverId, oldPassword, newPassword)
-                .subscribeOn(Schedulers.io());
+                .map(response -> response.code() == 200);
     }
 
     public static class Params {
