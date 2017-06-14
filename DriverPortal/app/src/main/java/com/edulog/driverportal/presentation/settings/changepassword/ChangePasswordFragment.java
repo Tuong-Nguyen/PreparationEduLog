@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
+import com.edulog.driverportal.data.net.RetrofitServiceGenerator;
 import com.edulog.driverportal.domain.executor.PostExecutionThread;
 import com.edulog.driverportal.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.domain.service.ChangePasswordService;
@@ -22,9 +23,6 @@ import com.edulog.driverportal.presentation.UIThread;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.Observable;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChangePasswordFragment extends BaseFragment implements ChangePasswordView {
     private TextInputLayout driverIdWrapper;
@@ -44,12 +42,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://obscure-mesa-13550.herokuapp.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-        ChangePasswordService changePasswordService = retrofit.create(ChangePasswordService.class);
+        ChangePasswordService changePasswordService = RetrofitServiceGenerator.generate(ChangePasswordService.class);
         PostExecutionThread uiThread = new UIThread();
         changePasswordPresenter = new ChangePasswordPresenterImpl(new ChangePasswordUseCase(uiThread, changePasswordService));
     }

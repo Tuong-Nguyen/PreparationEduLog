@@ -22,6 +22,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         changePasswordUseCase.execute(observer, params);
 
         changePasswordView.showProgress();
+        changePasswordView.disableRequestChangePassword();
     }
 
     @Override
@@ -71,11 +72,13 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
             public void onError(Throwable e) {
                 changePasswordView.showError(e.getMessage());
                 changePasswordView.hideProgress();
+                changePasswordView.enableRequestChangePassword();
             }
 
             @Override
             public void onComplete() {
                 changePasswordView.hideProgress();
+                changePasswordView.enableRequestChangePassword();
             }
         };
     }
