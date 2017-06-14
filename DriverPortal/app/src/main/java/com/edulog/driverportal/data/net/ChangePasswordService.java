@@ -1,4 +1,4 @@
-package com.edulog.driverportal.domain.service;
+package com.edulog.driverportal.data.net;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

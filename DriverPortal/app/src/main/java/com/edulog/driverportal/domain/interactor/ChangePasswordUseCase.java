@@ -1,7 +1,7 @@
 package com.edulog.driverportal.domain.interactor;
 
 import com.edulog.driverportal.domain.executor.PostExecutionThread;
-import com.edulog.driverportal.domain.service.ChangePasswordService;
+import com.edulog.driverportal.domain.service.AuthService;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -9,11 +9,11 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 public class ChangePasswordUseCase extends UseCase<Response<ResponseBody>, ChangePasswordUseCase.Params> {
-    private ChangePasswordService changePasswordService;
+    private AuthService authService;
 
-    public ChangePasswordUseCase(PostExecutionThread postExecutionThread, ChangePasswordService changePasswordService) {
+    public ChangePasswordUseCase(PostExecutionThread postExecutionThread, AuthService authService) {
         super(postExecutionThread);
-        this.changePasswordService = changePasswordService;
+        this.authService = authService;
     }
 
     public static Params buildParams(String driverId, String oldPassword, String newPassword) {
@@ -29,7 +29,7 @@ public class ChangePasswordUseCase extends UseCase<Response<ResponseBody>, Chang
         String driverId = params.driverId;
         String oldPassword = params.oldPassword;
         String newPassword = params.newPassword;
-        return changePasswordService.changePassword(driverId, oldPassword, newPassword)
+        return authService.changePassword(driverId, oldPassword, newPassword)
                 .subscribeOn(Schedulers.io());
     }
 
