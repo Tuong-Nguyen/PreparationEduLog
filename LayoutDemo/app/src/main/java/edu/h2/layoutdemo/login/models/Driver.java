@@ -1,4 +1,4 @@
-package edu.h2.layoutdemo.login;
+package edu.h2.layoutdemo.login.models;
 
 /**
  * Created by ntmhanh on 6/12/2017.

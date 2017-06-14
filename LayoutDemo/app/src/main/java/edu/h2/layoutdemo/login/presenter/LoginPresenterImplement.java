@@ -2,7 +2,7 @@ package edu.h2.layoutdemo.login.presenter;
 
 import java.lang.ref.WeakReference;
 
-import edu.h2.layoutdemo.login.Driver;
+import edu.h2.layoutdemo.login.models.Driver;
 import edu.h2.layoutdemo.login.usecase.DriverAuthenticateUseCase;
 import io.reactivex.observers.DisposableObserver;
 
@@ -39,7 +39,7 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     private final class AuthenticateObserver extends DisposableObserver<Driver> {
         @Override
         public void onNext(Driver driver) {
-            onLogin(driver);
+            onLogin(driver, params);
         }
 
         @Override
@@ -56,7 +56,7 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
      * verify information between driver get from server by driverId and from screen
      * @param driver
      */
-    private void onLogin(Driver driver) {
+    public void onLogin(Driver driver, DriverAuthenticateUseCase.Params params) {
         if (driver.getBusId().equals(params.busId) && driver.getPassword().equals(params.password)){
             mView.get().showLoginSuccess();
         }else {

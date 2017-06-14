@@ -1,7 +1,7 @@
 package edu.h2.layoutdemo.login.repositories;
 
 
-import edu.h2.layoutdemo.login.Driver;
+import edu.h2.layoutdemo.login.models.Driver;
 import io.reactivex.Observable;
 
 /**

@@ -1,6 +1,6 @@
 package edu.h2.layoutdemo.login.usecase;
 
-import edu.h2.layoutdemo.login.Driver;
+import edu.h2.layoutdemo.login.models.Driver;
 import edu.h2.layoutdemo.login.repositories.DriverRepository;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;

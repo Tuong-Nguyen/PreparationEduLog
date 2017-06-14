@@ -1,13 +1,17 @@
 package edu.h2.layoutdemo.login.view;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.h2.layoutdemo.R;
+import edu.h2.layoutdemo.login.domain.EventServiceImplement;
+import edu.h2.layoutdemo.login.models.Event;
 import edu.h2.layoutdemo.login.presenter.LoginPresenter;
 import edu.h2.layoutdemo.login.presenter.LoginPresenterImplement;
 import edu.h2.layoutdemo.login.repositories.DriverRepository;
@@ -22,6 +26,10 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     private String busId;
     private String driverId;
     private String password;
+    private CheckBox saveLoginCheckBox;
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
+    private Boolean saveLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +47,46 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
         presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase);
 
+        saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
+
+        //Create SharedPreferences
+        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+
+        loginPrefsEditor = loginPreferences.edit();
+
+        saveLogin = loginPreferences.getBoolean("saveLogin", false);
+
+        if (saveLogin == true) {
+           // Retrieve data from preference and set text
+            etBusId.setText(loginPreferences.getString("busId", ""));
+            etDriverId.setText(loginPreferences.getString("driverId", ""));
+            etPassword.setText(loginPreferences.getString("password", ""));
+            saveLoginCheckBox.setChecked(true);
+            onLogged();
+        }
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 busId = etBusId.getText().toString();
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
+                if (saveLoginCheckBox.isChecked()) {
+                    ///Setting values in Preference:
+                    loginPrefsEditor.putBoolean("saveLogin", true);
+                    loginPrefsEditor.putString("busId", busId);
+                    loginPrefsEditor.putString("driverId", driverId);
+                    loginPrefsEditor.putString("password", password);
+                    // Save the changes in SharedPreferences
+                    loginPrefsEditor.commit();  // commit changes
+                } else {
+                    loginPrefsEditor.clear();
+                    loginPrefsEditor.commit(); // commit changes
+                }
+
+                // Sent event login
+                EventServiceImplement eventServiceImplement = new EventServiceImplement();
+                eventServiceImplement.sentEvent(Event.LOG_IN);
+
                 presenter.validateCredentials(busId, driverId, password);
             }
         });
@@ -65,6 +107,9 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     @Override
     public void showLoginFail() {
         Toast.makeText(this, "Login is not successful", Toast.LENGTH_SHORT).show();
+    }
+    public void onLogged(){
+        Toast.makeText(this, "You were logged", Toast.LENGTH_SHORT).show();
     }
 
 }
