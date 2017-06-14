@@ -27,6 +27,9 @@ public class DriverAuthenticateUseCase {
         final Observable<Driver> observable = this.buildUseCaseObservable(params);
         observable.subscribeWith(observer).dispose();
     }
+    public void lockedAccount(){
+
+    }
 
     public static class Params {
         public String busId;
