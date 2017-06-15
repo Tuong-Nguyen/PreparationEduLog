@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".settings.presentation.SettingsActivity">
+
+        </activity>
+        <activity android:name=".routeselection.presentation.RouteSelectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
