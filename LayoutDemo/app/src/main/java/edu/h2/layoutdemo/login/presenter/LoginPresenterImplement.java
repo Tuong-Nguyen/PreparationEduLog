@@ -90,9 +90,9 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
         if (isLogin){
             mView.get().showLoginSuccess();
             rememberDriverId(params.driverId);
-            loginCount = 0;
+            this.loginCount = 0;
         }else {
-            loginCount++;
+            this.loginCount++;
             mView.get().showLoginFail();
             if (loginCount > 3) {
                 mView.get().showWarningOverThreeTimesLogin();
