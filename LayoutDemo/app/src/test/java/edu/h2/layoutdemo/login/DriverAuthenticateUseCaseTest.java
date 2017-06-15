@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import edu.h2.layoutdemo.login.repositories.DriverRepository;
+import edu.h2.layoutdemo.login.domain.AuthenticateServiceImplement;
 import edu.h2.layoutdemo.login.usecase.DriverAuthenticateUseCase;
 
 import static org.mockito.Mockito.verify;
@@ -18,12 +18,12 @@ public class DriverAuthenticateUseCaseTest {
     String busId = "1";
     String driverId = "2";
     String password = "123";
-    DriverRepository driverRepository;
+    AuthenticateServiceImplement authenticateServiceImplement;
 
     @Before
     public void init(){
-        driverRepository = Mockito.mock(DriverRepository.class);
-        driverAuthenticateUseCase = new DriverAuthenticateUseCase(driverRepository);
+        authenticateServiceImplement = Mockito.mock(AuthenticateServiceImplement.class);
+        driverAuthenticateUseCase = new DriverAuthenticateUseCase(authenticateServiceImplement);
     }
     @Test
     public void buildUseCaseObservable_inputLoginInformation_returnGetDriverByDriverIdWasCalled(){
@@ -32,7 +32,7 @@ public class DriverAuthenticateUseCaseTest {
         // Action
          driverAuthenticateUseCase.buildUseCaseObservable(params);
         // Assert
-         verify(driverRepository).getDriverById(params.driverId);
+         verify(authenticateServiceImplement).authenticate(params.driverId, params.password);
     }
 
     /*@Test
