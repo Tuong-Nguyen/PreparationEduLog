@@ -10,4 +10,6 @@
     <string name="confirm_new_password">Confirm new password</string>
 
     <string name="select_route">Choose a route from server</string>
+    <string name="select_route_title">Select route</string>
+    <string name="search_hint">Search routes</string>
 </resources>

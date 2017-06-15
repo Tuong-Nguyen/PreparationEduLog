@@ -1,4 +1,4 @@
-package com.edulog.driverportal.common.net;
+package com.edulog.driverportal.common.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

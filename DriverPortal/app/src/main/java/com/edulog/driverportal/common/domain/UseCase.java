@@ -1,4 +1,4 @@
-package com.edulog.driverportal.common.base;
+package com.edulog.driverportal.common.domain;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;

@@ -1,6 +1,6 @@
 package com.edulog.driverportal.settings.changepassword.domain.interactor;
 
-import com.edulog.driverportal.common.base.UseCase;
+import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
 import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
 

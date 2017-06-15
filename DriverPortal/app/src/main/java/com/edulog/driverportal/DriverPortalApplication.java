@@ -2,7 +2,7 @@ package com.edulog.driverportal;
 
 import android.app.Application;
 
-import com.edulog.driverportal.common.net.RetrofitServiceGenerator;
+import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
 
 public class DriverPortalApplication extends Application {
     @Override

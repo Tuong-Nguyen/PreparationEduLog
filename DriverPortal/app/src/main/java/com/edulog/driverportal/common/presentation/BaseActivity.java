@@ -1,4 +1,4 @@
-package com.edulog.driverportal.common.base;
+package com.edulog.driverportal.common.presentation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

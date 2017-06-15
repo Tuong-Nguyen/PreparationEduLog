@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.base.BaseActivity;
+import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.settings.changepassword.presentation.ChangePasswordFragment;
 
 public class SettingsActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {

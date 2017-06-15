@@ -1,4 +1,4 @@
-package com.edulog.driverportal.routeselection.presentation;
+package com.edulog.driverportal.routeselection.presentation.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.base.BaseFragment;
+import com.edulog.driverportal.common.presentation.BaseFragment;
+import com.edulog.driverportal.common.presentation.navigator.Navigator;
+import com.edulog.driverportal.routeselection.presentation.view.activity.RouteSelectionActivity;
 
 public class RouteSelectionFragment extends BaseFragment {
-    private RouteSelectionPresenter routeSelectionPresenter;
+    private Navigator navigator;
 
     public static BaseFragment newInstance() {
         return new RouteSelectionFragment();
@@ -21,7 +23,7 @@ public class RouteSelectionFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        routeSelectionPresenter = ((RouteSelectionActivity) getActivity()).getRouteSelectionPresenter();
+        navigator = ((RouteSelectionActivity) getActivity()).getNavigator();
     }
 
     @Nullable
@@ -30,7 +32,7 @@ public class RouteSelectionFragment extends BaseFragment {
         View root = inflater.inflate(R.layout.fragment_route_selection, container, false);
 
         Button selectRouteButton = (Button) root.findViewById(R.id.btnSelectRoute);
-        selectRouteButton.setOnClickListener(v -> routeSelectionPresenter.chooseRouteFromServer());
+        selectRouteButton.setOnClickListener(v -> navigator.moveToFragment(SearchRoutesFragment.newInstance()));
 
         return root;
     }
