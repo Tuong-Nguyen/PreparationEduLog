@@ -30,7 +30,7 @@ public class DriverAuthenticateUseCaseTest {
         // Arrange
          DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         // Action
-         driverAuthenticateUseCase.buildUseCaseObservable(params);
+         driverAuthenticateUseCase.buildDriverUseCaseObservable(params);
         // Assert
          verify(authenticateServiceImplement).authenticate(params.driverId, params.password);
     }

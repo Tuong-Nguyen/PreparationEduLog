@@ -17,14 +17,14 @@ public class DriverAuthenticateUseCase {
     }
 
 
-    public Observable<Boolean> buildUseCaseObservable(Params params) {
+    public Observable<Boolean> buildDriverUseCaseObservable(Params params) {
         String driverId = params.driverId;
         String password = params.password;
         return mAuthenticateServiceImplement.authenticate(driverId, password);
     }
 
     public void execute(DisposableObserver<Boolean> observer, Params params) {
-        final Observable<Boolean> observable = this.buildUseCaseObservable(params);
+        final Observable<Boolean> observable = this.buildDriverUseCaseObservable(params);
         observable.subscribeWith(observer).dispose();
     }
 

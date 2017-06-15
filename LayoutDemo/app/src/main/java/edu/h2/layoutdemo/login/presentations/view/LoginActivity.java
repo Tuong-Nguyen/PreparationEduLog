@@ -9,13 +9,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.h2.layoutdemo.R;
-import edu.h2.layoutdemo.login.presentations.presenter.DriverPreferences;
 import edu.h2.layoutdemo.login.domain.interactors.DriverAuthenticateUseCase;
 import edu.h2.layoutdemo.login.domain.services.AuthenticateServiceImplement;
 import edu.h2.layoutdemo.login.domain.services.EventServiceImplement;
 import edu.h2.layoutdemo.login.models.Event;
+import edu.h2.layoutdemo.login.presentations.presenter.DriverPreferences;
 import edu.h2.layoutdemo.login.presentations.presenter.LoginPresenter;
 import edu.h2.layoutdemo.login.presentations.presenter.LoginPresenterImplement;
+import edu.h2.layoutdemo.login.tracking.EventTracking;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.RequireViewOptions{
     private EditText etBusId;
@@ -45,9 +46,10 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
         DriverPreferences driverPreferences = new DriverPreferences(this);
 
-        EventServiceImplement eventServiceImplement = new EventServiceImplement();
 
-        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase, driverPreferences, eventServiceImplement);
+        EventTracking eventTracking = new EventTracking(new EventServiceImplement());
+
+        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase, driverPreferences, eventTracking);
 
         saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
 
@@ -101,6 +103,12 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     @Override
     public void showWarningOverThreeTimesLogin() {
         Toast.makeText(this, "Login over three times, Your account was locked", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showSentEventSuccess() {
+        Toast.makeText(this, "Sending event logIn success", Toast.LENGTH_SHORT).show();
+
     }
 
 }

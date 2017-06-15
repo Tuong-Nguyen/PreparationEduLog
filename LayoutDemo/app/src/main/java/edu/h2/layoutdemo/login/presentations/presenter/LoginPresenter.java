@@ -3,7 +3,7 @@ package edu.h2.layoutdemo.login.presentations.presenter;
 import edu.h2.layoutdemo.login.models.Event;
 
 /**
- * Created by ntmhanh on 6/12/2017.
+ * LoginPresenter interface, which define interface to communicate between LoginActivity and LoginPresenter
  */
 
 public interface LoginPresenter {
@@ -26,5 +26,6 @@ public interface LoginPresenter {
         void rememberDriverIdCheckbox(boolean isChecked);
         boolean isRememberChecked();
         void showWarningOverThreeTimesLogin();
+        void showSentEventSuccess();
     }
 }

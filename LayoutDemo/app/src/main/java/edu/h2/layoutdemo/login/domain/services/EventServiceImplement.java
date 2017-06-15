@@ -1,6 +1,8 @@
 package edu.h2.layoutdemo.login.domain.services;
 
+
 import edu.h2.layoutdemo.login.models.Event;
+import io.reactivex.Observable;
 
 /**
  * Created by ntmhanh on 6/14/2017.
@@ -8,7 +10,7 @@ import edu.h2.layoutdemo.login.models.Event;
 
 public class EventServiceImplement implements EventService {
     @Override
-    public boolean sentEvent(Event event) {
-        return true;
+    public Observable<Boolean> sendEvent(Event event) {
+        return Observable.just(true);
     }
 }

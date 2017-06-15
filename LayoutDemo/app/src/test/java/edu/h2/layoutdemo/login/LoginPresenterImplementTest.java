@@ -5,10 +5,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import edu.h2.layoutdemo.login.domain.interactors.DriverAuthenticateUseCase;
-import edu.h2.layoutdemo.login.domain.services.EventServiceImplement;
 import edu.h2.layoutdemo.login.presentations.presenter.DriverPreferences;
 import edu.h2.layoutdemo.login.presentations.presenter.LoginPresenter;
 import edu.h2.layoutdemo.login.presentations.presenter.LoginPresenterImplement;
+import edu.h2.layoutdemo.login.tracking.EventTracking;
 import io.reactivex.observers.DisposableObserver;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -21,11 +21,11 @@ import static org.mockito.Mockito.verify;
  */
 
 public class LoginPresenterImplementTest {
-    private  DriverAuthenticateUseCase mloginAuthenticateUseCase;
+    private  DriverAuthenticateUseCase mLoginAuthenticateUseCase;
     private LoginPresenter.RequireViewOptions requireViewOptions;
     private DriverPreferences driverPreferences;
     private LoginPresenterImplement loginPresenterImplement;
-    private EventServiceImplement eventServiceImplement;
+    private EventTracking eventTracking;
 
     String busId = "1";
     String driverId = "2";
@@ -33,20 +33,18 @@ public class LoginPresenterImplementTest {
     @Before
     public void init(){
         //Arrange
-        mloginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
+        mLoginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
         requireViewOptions = Mockito.mock(LoginPresenter.RequireViewOptions.class);
         driverPreferences = Mockito.mock(DriverPreferences.class);
-        eventServiceImplement = Mockito.mock(EventServiceImplement.class);
-
+        eventTracking = Mockito.mock(EventTracking.class);
         //Action
-        loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, mloginAuthenticateUseCase, driverPreferences, eventServiceImplement);
+        loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, mLoginAuthenticateUseCase, driverPreferences, eventTracking);
         loginPresenterImplement.validateCredentials(busId, driverId, password);
     }
     @Test
     public void validateCredentials_getInformationFromLoginPage_returnExecuteWasCalled() {
-
         //Assert
-        verify(mloginAuthenticateUseCase).execute(any(DisposableObserver.class), any(DriverAuthenticateUseCase.Params.class));
+        verify(mLoginAuthenticateUseCase).execute(any(DisposableObserver.class), any(DriverAuthenticateUseCase.Params.class));
     }
     @Test
     public void onLogin_loginSuccess_returnSetRememberDriverIdWasCalled() {
@@ -58,6 +56,7 @@ public class LoginPresenterImplementTest {
 
     @Test
     public void onLogin_LoginFailedOverThreeTimes_returnShowWarningOverThreeTimesLoginWasCalled(){
+        //Action
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(false, params);
         loginPresenterImplement.onLogin(false, params);

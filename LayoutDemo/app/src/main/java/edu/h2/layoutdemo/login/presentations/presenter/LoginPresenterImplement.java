@@ -3,8 +3,8 @@ package edu.h2.layoutdemo.login.presentations.presenter;
 import java.lang.ref.WeakReference;
 
 import edu.h2.layoutdemo.login.domain.interactors.DriverAuthenticateUseCase;
-import edu.h2.layoutdemo.login.domain.services.EventServiceImplement;
 import edu.h2.layoutdemo.login.models.Event;
+import edu.h2.layoutdemo.login.tracking.EventTracking;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -18,20 +18,20 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     private DriverAuthenticateUseCase mloginAuthenticateUseCase;
     public DriverAuthenticateUseCase.Params params;
     private DriverPreferences mDriverPreferences;
-    private EventServiceImplement mEventServiceImplement;
+    private EventTracking mEventTracking;
     private int loginCount = 0;
 
-    public LoginPresenterImplement(LoginPresenter.RequireViewOptions view, DriverAuthenticateUseCase loginAuthenticateUseCase, DriverPreferences driverPreferences, EventServiceImplement eventServiceImplement) {
+    public LoginPresenterImplement(LoginPresenter.RequireViewOptions view, DriverAuthenticateUseCase loginAuthenticateUseCase, DriverPreferences driverPreferences, EventTracking eventTracking) {
         this.mView = new WeakReference<>(view);
         this.mloginAuthenticateUseCase = loginAuthenticateUseCase;
         this.mDriverPreferences = driverPreferences;
-        this.mEventServiceImplement = eventServiceImplement;
+        this.mEventTracking = eventTracking;
     }
 
 
     @Override
     public void sendEventLogin(Event event) {
-        mEventServiceImplement.sentEvent(event);
+        mEventTracking.execute(new EventObserver(), event);
     }
 
     @Override
@@ -72,6 +72,21 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
         @Override
         public void onNext(Boolean isLogin) {
             onLogin(isLogin, params);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+        }
+
+        @Override
+        public void onComplete() {
+
+        }
+    }
+    public final class EventObserver extends DisposableObserver<Boolean> {
+        @Override
+        public void onNext(Boolean isSentSuccess) {
+
         }
 
         @Override
