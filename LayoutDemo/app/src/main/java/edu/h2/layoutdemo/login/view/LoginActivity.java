@@ -97,4 +97,9 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
         return saveLoginCheckBox.isChecked();
     }
 
+    @Override
+    public void showWarningOverThreeTimesLogin() {
+        Toast.makeText(this, "Login over three times, Your account was locked", Toast.LENGTH_SHORT).show();
+    }
+
 }

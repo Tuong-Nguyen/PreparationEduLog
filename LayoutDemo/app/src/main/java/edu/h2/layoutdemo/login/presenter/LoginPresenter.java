@@ -22,5 +22,6 @@ public interface LoginPresenter {
         void showLoginFail();
         void saveLoginCheckBox(boolean isChecked);
         boolean isRememberChecked();
+        void showWarningOverThreeTimesLogin();
     }
 }

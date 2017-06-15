@@ -17,6 +17,7 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     private DriverAuthenticateUseCase mloginAuthenticateUseCase;
     public DriverAuthenticateUseCase.Params params;
     private DriverPreferences mDriverPreferences;
+    private int loginCount = 0;
 
     public LoginPresenterImplement(LoginPresenter.RequireViewOptions view, DriverAuthenticateUseCase loginAuthenticateUseCase, DriverPreferences driverPreferences) {
         this.mView = new WeakReference<>(view);
@@ -67,12 +68,11 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     public final class AuthenticateObserver extends DisposableObserver<Boolean> {
         @Override
         public void onNext(Boolean isLogin) {
-            onLogin(isLogin, params);
+            onLogin(isLogin, params, loginCount);
         }
 
         @Override
         public void onError(Throwable e) {
-            onLoginFailed(e.getMessage());
         }
 
         @Override
@@ -86,12 +86,18 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
      * @param isLogin
      * @param params
      */
-    public void onLogin(Boolean isLogin, DriverAuthenticateUseCase.Params params) {
+    public void onLogin(Boolean isLogin, DriverAuthenticateUseCase.Params params, int loginCount) {
         if (isLogin){
             mView.get().showLoginSuccess();
             rememberDriverId(params.driverId);
+            loginCount = 0;
         }else {
+            loginCount++;
             mView.get().showLoginFail();
+            if (loginCount > 3) {
+                mView.get().showWarningOverThreeTimesLogin();
+                return;
+            }
         }
     }
 
