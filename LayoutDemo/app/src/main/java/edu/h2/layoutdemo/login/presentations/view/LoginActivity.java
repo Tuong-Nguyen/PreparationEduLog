@@ -1,4 +1,4 @@
-package edu.h2.layoutdemo.login.view;
+package edu.h2.layoutdemo.login.presentations.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,13 +9,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.h2.layoutdemo.R;
-import edu.h2.layoutdemo.login.DriverPreferences;
-import edu.h2.layoutdemo.login.domain.AuthenticateServiceImplement;
-import edu.h2.layoutdemo.login.domain.EventServiceImplement;
+import edu.h2.layoutdemo.login.presentations.presenter.DriverPreferences;
+import edu.h2.layoutdemo.login.domain.interactors.DriverAuthenticateUseCase;
+import edu.h2.layoutdemo.login.domain.services.AuthenticateServiceImplement;
+import edu.h2.layoutdemo.login.domain.services.EventServiceImplement;
 import edu.h2.layoutdemo.login.models.Event;
-import edu.h2.layoutdemo.login.presenter.LoginPresenter;
-import edu.h2.layoutdemo.login.presenter.LoginPresenterImplement;
-import edu.h2.layoutdemo.login.usecase.DriverAuthenticateUseCase;
+import edu.h2.layoutdemo.login.presentations.presenter.LoginPresenter;
+import edu.h2.layoutdemo.login.presentations.presenter.LoginPresenterImplement;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.RequireViewOptions{
     private EditText etBusId;
@@ -45,11 +45,13 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
         DriverPreferences driverPreferences = new DriverPreferences(this);
 
-        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase, driverPreferences);
+        EventServiceImplement eventServiceImplement = new EventServiceImplement();
+
+        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase, driverPreferences, eventServiceImplement);
 
         saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
 
-        presenter.initBeforeCheckRemember();
+        presenter.doRememberDriverId();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,8 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
                 // Sent event login
-                EventServiceImplement eventServiceImplement = new EventServiceImplement();
-                eventServiceImplement.sentEvent(Event.LOG_IN);
+                presenter.sendEventLogin(Event.LOG_IN);
                 presenter.validateCredentials(busId, driverId, password);
             }
         });
@@ -88,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     }
 
     @Override
-    public void saveLoginCheckBox(boolean isChecked) {
+    public void rememberDriverIdCheckbox(boolean isChecked) {
         saveLoginCheckBox.setChecked(isChecked);
     }
 

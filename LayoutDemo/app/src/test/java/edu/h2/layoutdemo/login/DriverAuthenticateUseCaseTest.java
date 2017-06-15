@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import edu.h2.layoutdemo.login.domain.AuthenticateServiceImplement;
-import edu.h2.layoutdemo.login.usecase.DriverAuthenticateUseCase;
+import edu.h2.layoutdemo.login.domain.services.AuthenticateServiceImplement;
+import edu.h2.layoutdemo.login.domain.interactors.DriverAuthenticateUseCase;
 
 import static org.mockito.Mockito.verify;
 
@@ -35,33 +35,4 @@ public class DriverAuthenticateUseCaseTest {
          verify(authenticateServiceImplement).authenticate(params.driverId, params.password);
     }
 
-    /*@Test
-    public void validateCredentials_InputDriverExistWithRightBusIdAndPassword_alertOnLoginSuccess(){
-        // Arrange
-        when(driverAuthenticateUseCase.mDriverRepository.getDriverById(Mockito.anyString())).thenReturn(driver);
-        // Action
-        //boolean isLogin = driverAuthenticateUseCase.buildUseCaseObservable(busId, driverId, password);
-        //Assert
-       // Assert.assertEquals(true, isLogin);
-    }
-    /*
-    @Test
-    public void validateCredentials_InputDriverExistWithWrongBusIdOrPassword_alertOnLoginFail(){
-        // Arrange
-        when(driverAuthenticateUseCase.mDriverRepository.getDriverById(Mockito.anyString())).thenReturn(driver);
-        // Action
-        boolean isLogin = driverAuthenticateUseCase.buildUseCaseObservable("2", driverId, password);
-        //Assert
-        Assert.assertEquals(false, isLogin);
-    }
-    @Test
-    public void validateCredentials_InputDriverNotExist_returnFalse(){
-        // Arrange
-        when(driverAuthenticateUseCase.mDriverRepository.getDriverById(Mockito.anyString())).thenReturn(null);
-        // Action
-        boolean isLogin = driverAuthenticateUseCase.buildUseCaseObservable(busId, driverId, password);
-        // Assert
-        Assert.assertEquals(false, isLogin);
-    }
-*/
 }

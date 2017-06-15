@@ -1,4 +1,4 @@
-package edu.h2.layoutdemo.login.domain;
+package edu.h2.layoutdemo.login.domain.services;
 
 import edu.h2.layoutdemo.login.models.Event;
 

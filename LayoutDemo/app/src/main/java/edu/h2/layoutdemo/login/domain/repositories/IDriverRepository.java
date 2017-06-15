@@ -1,4 +1,4 @@
-package edu.h2.layoutdemo.login.repositories;
+package edu.h2.layoutdemo.login.domain.repositories;
 
 
 import edu.h2.layoutdemo.login.models.Driver;

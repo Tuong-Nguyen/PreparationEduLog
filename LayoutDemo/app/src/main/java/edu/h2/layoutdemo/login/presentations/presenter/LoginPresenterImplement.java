@@ -1,9 +1,10 @@
-package edu.h2.layoutdemo.login.presenter;
+package edu.h2.layoutdemo.login.presentations.presenter;
 
 import java.lang.ref.WeakReference;
 
-import edu.h2.layoutdemo.login.DriverPreferences;
-import edu.h2.layoutdemo.login.usecase.DriverAuthenticateUseCase;
+import edu.h2.layoutdemo.login.domain.interactors.DriverAuthenticateUseCase;
+import edu.h2.layoutdemo.login.domain.services.EventServiceImplement;
+import edu.h2.layoutdemo.login.models.Event;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -17,14 +18,21 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     private DriverAuthenticateUseCase mloginAuthenticateUseCase;
     public DriverAuthenticateUseCase.Params params;
     private DriverPreferences mDriverPreferences;
+    private EventServiceImplement mEventServiceImplement;
     private int loginCount = 0;
 
-    public LoginPresenterImplement(LoginPresenter.RequireViewOptions view, DriverAuthenticateUseCase loginAuthenticateUseCase, DriverPreferences driverPreferences) {
+    public LoginPresenterImplement(LoginPresenter.RequireViewOptions view, DriverAuthenticateUseCase loginAuthenticateUseCase, DriverPreferences driverPreferences, EventServiceImplement eventServiceImplement) {
         this.mView = new WeakReference<>(view);
         this.mloginAuthenticateUseCase = loginAuthenticateUseCase;
         this.mDriverPreferences = driverPreferences;
+        this.mEventServiceImplement = eventServiceImplement;
     }
 
+
+    @Override
+    public void sendEventLogin(Event event) {
+        mEventServiceImplement.sentEvent(event);
+    }
 
     @Override
     public void validateCredentials(String busID, String driverId, String password) {
@@ -41,11 +49,10 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     }
 
     @Override
-    public void initBeforeCheckRemember() {
-        mDriverPreferences.saveDriverId();
-        if (mDriverPreferences.isSaveDriverId){
+    public void doRememberDriverId() {
+        if (!mDriverPreferences.getDriverId().isEmpty()){
             mView.get().setTextRememberDriverId(mDriverPreferences.getDriverId());
-            mView.get().saveLoginCheckBox(true);
+            mView.get().rememberDriverIdCheckbox(true);
         }
     }
 
@@ -61,14 +68,10 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
         }
     }
 
-    private void onLoginFailed(String error) {
-
-    }
-
     public final class AuthenticateObserver extends DisposableObserver<Boolean> {
         @Override
         public void onNext(Boolean isLogin) {
-            onLogin(isLogin, params, loginCount);
+            onLogin(isLogin, params);
         }
 
         @Override
@@ -86,7 +89,7 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
      * @param isLogin
      * @param params
      */
-    public void onLogin(Boolean isLogin, DriverAuthenticateUseCase.Params params, int loginCount) {
+    public void onLogin(Boolean isLogin, DriverAuthenticateUseCase.Params params) {
         if (isLogin){
             mView.get().showLoginSuccess();
             rememberDriverId(params.driverId);
@@ -94,7 +97,7 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
         }else {
             this.loginCount++;
             mView.get().showLoginFail();
-            if (loginCount > 3) {
+            if (this.loginCount > 3) {
                 mView.get().showWarningOverThreeTimesLogin();
                 return;
             }

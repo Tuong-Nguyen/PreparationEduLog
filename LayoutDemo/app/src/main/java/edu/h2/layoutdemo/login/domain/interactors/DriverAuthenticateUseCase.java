@@ -1,6 +1,6 @@
-package edu.h2.layoutdemo.login.usecase;
+package edu.h2.layoutdemo.login.domain.interactors;
 
-import edu.h2.layoutdemo.login.domain.AuthenticateServiceImplement;
+import edu.h2.layoutdemo.login.domain.services.AuthenticateServiceImplement;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 

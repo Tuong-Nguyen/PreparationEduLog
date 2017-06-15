@@ -1,4 +1,4 @@
-package edu.h2.layoutdemo.login;
+package edu.h2.layoutdemo.login.presentations.presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,7 +13,6 @@ public class DriverPreferences {
     private Context context;
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
-    public Boolean isSaveDriverId;
 
     public DriverPreferences(Context context) {
         this.context = context;
@@ -22,15 +21,11 @@ public class DriverPreferences {
         loginPrefsEditor = loginPreferences.edit();
     }
 
-    public void saveDriverId(){
-        isSaveDriverId = loginPreferences.getBoolean("saveDriverId", false);
-    }
     public String getDriverId(){
         return loginPreferences.getString("driverId", "");
     }
 
     public void settingValue(String driverId){
-        loginPrefsEditor.putBoolean("saveDriverId", true);
         loginPrefsEditor.putString("driverId", driverId);
         loginPrefsEditor.commit();  // commit changes
     }
