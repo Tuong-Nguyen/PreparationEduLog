@@ -9,11 +9,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.h2.layoutdemo.R;
+import edu.h2.layoutdemo.login.DriverPreferences;
+import edu.h2.layoutdemo.login.domain.AuthenticateServiceImplement;
 import edu.h2.layoutdemo.login.domain.EventServiceImplement;
 import edu.h2.layoutdemo.login.models.Event;
 import edu.h2.layoutdemo.login.presenter.LoginPresenter;
 import edu.h2.layoutdemo.login.presenter.LoginPresenterImplement;
-import edu.h2.layoutdemo.login.repositories.DriverRepository;
 import edu.h2.layoutdemo.login.usecase.DriverAuthenticateUseCase;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.RequireViewOptions{
@@ -40,9 +41,11 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
         btnLogin = (Button)findViewById(R.id.login);
 
-        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(new DriverRepository());
+        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(new AuthenticateServiceImplement());
 
-        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase, this);
+        DriverPreferences driverPreferences = new DriverPreferences(this);
+
+        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase, driverPreferences);
 
         saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
 

@@ -11,6 +11,7 @@ public interface LoginPresenter {
         void validateCredentials(String busID, String driverId, String password);
         void initBeforeCheckRemember();
         void moveToRouteScreen(String driverID);
+        void rememberDriverId(String driverId);
     }
 
     // LoginPresenter access to View(LoginActivity)
