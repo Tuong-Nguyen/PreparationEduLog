@@ -29,7 +29,7 @@ public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCas
     }
 
     @Override
-    public Observable<Boolean> buildUseCaseObservable(Params params) {
+    protected Observable<Boolean> buildUseCaseObservable(Params params) {
         String driverId = params.driverId;
         String oldPassword = params.oldPassword;
         String newPassword = params.newPassword;
@@ -47,17 +47,16 @@ public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCas
                 .mergeWith(createRequestChangePasswordObservable(driverId, oldPassword, newPassword));
     }
 
+    private Observable<Boolean> createRequestChangePasswordObservable(String driverId, String oldPassword, String newPassword) {
+        return authService.changePassword(driverId, oldPassword, newPassword)
+                .doOnNext(isSuccess -> {
+                    if (!isSuccess) throw new RuntimeException("Change password error.");
+                });
+    }
+
     public static class Params {
         public String driverId;
         public String oldPassword;
         public String newPassword;
-    }
-
-    private Observable<Boolean> createRequestChangePasswordObservable(String driverId, String oldPassword, String newPassword) {
-        return authService.changePassword(driverId, oldPassword, newPassword)
-                .map(response -> response.code() == 200)
-                .doOnNext(isSuccess -> {
-                    if (!isSuccess) throw new RuntimeException("Change password error.");
-                });
     }
 }

@@ -15,7 +15,7 @@ public abstract class UseCase<T, Params> {
         disposables = new CompositeDisposable();
     }
 
-    public abstract Observable<T> buildUseCaseObservable(Params params);
+    protected abstract Observable<T> buildUseCaseObservable(Params params);
 
     public void execute(DisposableObserver<T> observer, Params params) {
         Observable<T> observable = buildUseCaseObservable(params);

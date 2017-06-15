@@ -8,9 +8,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitServiceGenerator {
-    private static Retrofit.Builder builder = new Retrofit.Builder();
-
     public static String baseUrl;
+    private static Retrofit.Builder builder = new Retrofit.Builder();
 
     public static <S> S generate(Class<S> serviceClass) {
         Gson gson = createGson();

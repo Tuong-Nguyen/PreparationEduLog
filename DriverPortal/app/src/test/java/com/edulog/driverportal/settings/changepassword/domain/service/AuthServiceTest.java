@@ -1,5 +1,6 @@
 package com.edulog.driverportal.settings.changepassword.domain.service;
 
+import com.edulog.driverportal.common.net.RetrofitServiceGenerator;
 import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceImpl;
 
 import org.junit.Assert;
@@ -7,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 public class AuthServiceTest {
     private AuthService service;
@@ -16,6 +15,7 @@ public class AuthServiceTest {
     @Before
     public void setup() {
         service = new AuthServiceImpl();
+        RetrofitServiceGenerator.baseUrl = "https://obscure-mesa-13550.herokuapp.com/";
     }
 
     @Test
@@ -23,11 +23,11 @@ public class AuthServiceTest {
         String driverId = "driver01";
         String oldPassword = "driver01";
         String newPassword = "1234";
-        Observable<Response<ResponseBody>> observable = service.changePassword(driverId, oldPassword, newPassword);
+        Observable<Boolean> observable = service.changePassword(driverId, oldPassword, newPassword);
 
-        Response<ResponseBody> response = observable.blockingFirst();
+        boolean result = observable.blockingFirst();
 
-        Assert.assertEquals(200, response.code());
+        Assert.assertTrue(result);
     }
 
     @Test
@@ -35,10 +35,10 @@ public class AuthServiceTest {
         String driverId = "invalid_id";
         String oldPassword = "driver01";
         String newPassword = "1234";
-        Observable<Response<ResponseBody>> observable = service.changePassword(driverId, oldPassword, newPassword);
+        Observable<Boolean> observable = service.changePassword(driverId, oldPassword, newPassword);
 
-        Response<ResponseBody> response = observable.blockingFirst();
+        boolean result = observable.blockingFirst();
 
-        Assert.assertEquals(403, response.code());
+        Assert.assertFalse(result);
     }
 }
