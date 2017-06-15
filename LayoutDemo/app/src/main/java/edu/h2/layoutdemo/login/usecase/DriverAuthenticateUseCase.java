@@ -1,7 +1,6 @@
 package edu.h2.layoutdemo.login.usecase;
 
-import edu.h2.layoutdemo.login.models.Driver;
-import edu.h2.layoutdemo.login.repositories.DriverRepository;
+import edu.h2.layoutdemo.login.domain.AuthenticateServiceImplement;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
@@ -11,25 +10,24 @@ import io.reactivex.observers.DisposableObserver;
 
 public class DriverAuthenticateUseCase {
 
-    public DriverRepository mDriverRepository;
+    public AuthenticateServiceImplement mAuthenticateServiceImplement;
 
-    public DriverAuthenticateUseCase(DriverRepository driverRepository) {
-        this.mDriverRepository = driverRepository;
+    public DriverAuthenticateUseCase(AuthenticateServiceImplement authenticateServiceImplement) {
+        this.mAuthenticateServiceImplement = authenticateServiceImplement;
     }
 
 
-    public Observable<Driver> buildUseCaseObservable(Params params) {
+    public Observable<Boolean> buildUseCaseObservable(Params params) {
         String driverId = params.driverId;
-        return mDriverRepository.getDriverById(driverId);
+        String password = params.password;
+        return mAuthenticateServiceImplement.authenticate(driverId, password);
     }
 
-    public void execute(DisposableObserver<Driver> observer, Params params) {
-        final Observable<Driver> observable = this.buildUseCaseObservable(params);
+    public void execute(DisposableObserver<Boolean> observer, Params params) {
+        final Observable<Boolean> observable = this.buildUseCaseObservable(params);
         observable.subscribeWith(observer).dispose();
     }
-    public void lockedAccount(){
 
-    }
 
     public static class Params {
         public String busId;

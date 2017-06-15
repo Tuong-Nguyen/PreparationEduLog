@@ -17,4 +17,9 @@ public class DriverRepository implements IDriverRepository {
         return Observable.just(driver);
     }
 
+    @Override
+    public Observable<Boolean> authenticate(String driverId, String password) {
+        return Observable.just(true);
+    }
+
 }

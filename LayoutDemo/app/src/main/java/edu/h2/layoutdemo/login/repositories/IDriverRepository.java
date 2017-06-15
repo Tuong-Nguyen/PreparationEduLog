@@ -10,4 +10,6 @@ import io.reactivex.Observable;
 
 public interface IDriverRepository {
      Observable<Driver> getDriverById(String Id);
+     Observable<Boolean> authenticate(String driverId, String password);
+
 }
