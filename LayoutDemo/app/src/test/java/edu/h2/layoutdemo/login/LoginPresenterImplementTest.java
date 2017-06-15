@@ -1,5 +1,6 @@
 package edu.h2.layoutdemo.login;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -18,29 +19,32 @@ import static org.mockito.Mockito.verify;
  */
 
 public class LoginPresenterImplementTest {
+    private  DriverAuthenticateUseCase mloginAuthenticateUseCase;
+    private LoginPresenter.RequireViewOptions requireViewOptions;
+    private DriverPreferences driverPreferences;
+    private LoginPresenterImplement loginPresenterImplement;
+
     String busId = "1";
     String driverId = "2";
     String password = "123";
+    @Before
+    public void init(){
+        //Arrange
+        mloginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
+        requireViewOptions = Mockito.mock(LoginPresenter.RequireViewOptions.class);
+        driverPreferences = Mockito.mock(DriverPreferences.class);
+        //Action
+        loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, mloginAuthenticateUseCase, driverPreferences);
+        loginPresenterImplement.validateCredentials(busId, driverId, password);
+    }
     @Test
     public void validateCredentials_getInformationFromLoginPage_returnExecuteWasCalled() {
-        //Arrange
-        DriverAuthenticateUseCase mloginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
-        LoginPresenter.RequireViewOptions requireViewOptions = Mockito.mock(LoginPresenter.RequireViewOptions.class);
-        DriverPreferences driverPreferences = Mockito.mock(DriverPreferences.class);
-        //Action
-        LoginPresenterImplement loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, mloginAuthenticateUseCase, driverPreferences);
-        loginPresenterImplement.validateCredentials(busId, driverId, password);
+
         //Assert
         verify(mloginAuthenticateUseCase).execute(any(DisposableObserver.class), any(DriverAuthenticateUseCase.Params.class));
     }
     @Test
     public void onLogin_loginSuccess_returnSetRememberDriverIdWasCalled() {
-        //Arrange
-        DriverAuthenticateUseCase mloginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
-        LoginPresenter.RequireViewOptions requireViewOptions = Mockito.mock(LoginPresenter.RequireViewOptions.class);
-        DriverPreferences driverPreferences = Mockito.mock(DriverPreferences.class);
-        //Action
-        LoginPresenterImplement loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, mloginAuthenticateUseCase, driverPreferences);
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(true, params,0);
         //Assert
@@ -49,12 +53,6 @@ public class LoginPresenterImplementTest {
 
     @Test
     public void onLogin_LoginFailedOverThreeTimes_returnShowWarningOverThreeTimesLoginWasCalled(){
-        //Arrange
-        DriverAuthenticateUseCase mloginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
-        LoginPresenter.RequireViewOptions requireViewOptions = Mockito.mock(LoginPresenter.RequireViewOptions.class);
-        DriverPreferences driverPreferences = Mockito.mock(DriverPreferences.class);
-        //Action
-        LoginPresenterImplement loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, mloginAuthenticateUseCase, driverPreferences);
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(false, params,4);
         //Assert
@@ -62,12 +60,7 @@ public class LoginPresenterImplementTest {
     }
     @Test
     public void onLogin_isLoginTrue_returnShowLoginSuccessWasCalled(){
-        //Arrange
-        DriverAuthenticateUseCase mloginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
-        LoginPresenter.RequireViewOptions requireViewOptions = Mockito.mock(LoginPresenter.RequireViewOptions.class);
-        DriverPreferences driverPreferences = Mockito.mock(DriverPreferences.class);
-        //Action
-        LoginPresenterImplement loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, mloginAuthenticateUseCase, driverPreferences);
+             //Action
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(true, params,0);
         //Assert
@@ -75,12 +68,7 @@ public class LoginPresenterImplementTest {
     }
     @Test
     public void onLogin_isLoginFalse_returnShowLoginFailWasCalled(){
-        //Arrange
-        DriverAuthenticateUseCase mloginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
-        LoginPresenter.RequireViewOptions requireViewOptions = Mockito.mock(LoginPresenter.RequireViewOptions.class);
-        DriverPreferences driverPreferences = Mockito.mock(DriverPreferences.class);
         //Action
-        LoginPresenterImplement loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, mloginAuthenticateUseCase, driverPreferences);
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(false, params,0);
         //Assert
