@@ -1,4 +1,4 @@
-package com.edulog.driverportal.settings.changepassword.domain.interactor;
+package com.edulog.driverportal.base;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;

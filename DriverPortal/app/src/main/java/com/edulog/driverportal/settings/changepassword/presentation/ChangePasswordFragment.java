@@ -12,9 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.settings.base.BaseFragment;
-import com.edulog.driverportal.settings.base.BasePresenter;
-import com.edulog.driverportal.settings.base.BaseView;
+import com.edulog.driverportal.base.BaseFragment;
+import com.edulog.driverportal.base.BasePresenter;
+import com.edulog.driverportal.base.BaseView;
 import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceImpl;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;

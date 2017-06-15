@@ -1,6 +1,6 @@
 package com.edulog.driverportal.settings.changepassword.presentation;
 
-import com.edulog.driverportal.settings.base.BaseView;
+import com.edulog.driverportal.base.BaseView;
 
 public interface ChangePasswordView extends BaseView {
     void showChangePasswordSuccess(String message);
