@@ -1,4 +1,4 @@
-package com.edulog.driverportal.settings.changepassword.data.net;
+package com.edulog.driverportal.common.net;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,15 +8,15 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitServiceGenerator {
-    private static final String BASE_URL = "https://obscure-mesa-13550.herokuapp.com/";
-
     private static Retrofit.Builder builder = new Retrofit.Builder();
+
+    public static String baseUrl;
 
     public static <S> S generate(Class<S> serviceClass) {
         Gson gson = createGson();
 
         Retrofit retrofit = builder
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();

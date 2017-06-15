@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.base.BaseActivity;
+import com.edulog.driverportal.common.base.BaseActivity;
 
 public class RouteSelectionActivity extends BaseActivity {
     @Override

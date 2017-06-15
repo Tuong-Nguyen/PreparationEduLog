@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.base.BaseFragment;
+import com.edulog.driverportal.common.base.BaseFragment;
 
 public class RouteSelectionFragment extends BaseFragment {
     public static BaseFragment newInstance() {

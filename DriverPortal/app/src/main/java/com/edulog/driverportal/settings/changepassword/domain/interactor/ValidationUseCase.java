@@ -1,9 +1,7 @@
 package com.edulog.driverportal.settings.changepassword.domain.interactor;
 
-import com.edulog.driverportal.base.UseCase;
-import com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator;
+import com.edulog.driverportal.common.base.UseCase;
 import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
-import com.edulog.driverportal.settings.changepassword.model.enums.InputField;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;

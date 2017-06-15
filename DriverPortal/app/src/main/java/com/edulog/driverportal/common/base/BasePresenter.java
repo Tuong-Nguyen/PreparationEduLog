@@ -1,4 +1,4 @@
-package com.edulog.driverportal.base;
+package com.edulog.driverportal.common.base;
 
 public interface BasePresenter<V extends BaseView> {
     void attach(V view);
