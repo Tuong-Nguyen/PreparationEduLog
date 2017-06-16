@@ -8,7 +8,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
- * Created by ntmhanh on 6/15/2017.
+ * Implement Event tracking after sending request
  */
 
 public class EventTracking {
@@ -19,10 +19,21 @@ public class EventTracking {
         this.eventService = eventService;
         disposables = new CompositeDisposable();
     }
+
+    /**
+     * Build event Observable
+     * @param event
+     * @return
+     */
     public Observable<Boolean> buildEventObservable(Event event) {
         return eventService.sendEvent(event);
     }
 
+    /**
+     * Executing the use case.
+     * @param observer
+     * @param event
+     */
     public void execute(DisposableObserver<Boolean> observer, Event event) {
         final Observable<Boolean> observable = this.buildEventObservable(event);
         observable.subscribeWith(observer);
@@ -30,6 +41,10 @@ public class EventTracking {
         addDisposable(observer);
     }
 
+    /**
+     * Dispose from current CompositeDisposable
+     * @param disposable
+     */
     private void addDisposable(Disposable disposable) {
         disposables.add(disposable);
     }
