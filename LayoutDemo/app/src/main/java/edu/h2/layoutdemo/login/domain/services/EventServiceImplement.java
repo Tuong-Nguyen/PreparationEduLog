@@ -5,7 +5,7 @@ import edu.h2.layoutdemo.login.models.Events;
 import io.reactivex.Observable;
 
 /**
- * Created by ntmhanh on 6/14/2017.
+ * Implement EventService
  */
 
 public class EventServiceImplement implements EventService {
