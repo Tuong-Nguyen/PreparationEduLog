@@ -8,7 +8,7 @@ import edu.h2.layoutdemo.login.tracking.EventTracking;
 import io.reactivex.observers.DisposableObserver;
 
 /**
- * Created by ntmhanh on 6/12/2017.
+ * Handle methods, which communicate between LoginActivity <-> LoginPresenter and LoginPresenter -> Models
  */
 
 public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOptions {
@@ -34,6 +34,13 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
         mEventTracking.execute(new EventObserver(), event);
     }
 
+    /**
+     * Implement validateCredentials, which get values from view and return for UseCase
+     * @param busID
+     * @param driverId
+     * @param password
+     */
+
     @Override
     public void validateCredentials(String busID, String driverId, String password) {
         if (busID.isEmpty()) {
@@ -48,6 +55,9 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
         }
     }
 
+    /**
+     * Setting remember driver id
+     */
     @Override
     public void doRememberDriverId() {
         if (!mDriverPreferences.getDriverId().isEmpty()){
@@ -60,6 +70,11 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     public void moveToRouteScreen(String driverId) {
 
     }
+
+    /**
+     * Setting value for driver preference
+     * @param driverId
+     */
     @Override
     public void rememberDriverId(String driverId){
         if (mView != null) {
@@ -71,6 +86,9 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
         }
     }
 
+    /**
+     * Implement authenticateObserve after receiving value
+     */
     public final class AuthenticateObserver extends DisposableObserver<Boolean> {
         @Override
         public void onNext(Boolean isLogin) {
@@ -86,6 +104,10 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
 
         }
     }
+
+    /**
+     * Implement EventObserver after receiving value
+     */
     public final class EventObserver extends DisposableObserver<Boolean> {
         @Override
         public void onNext(Boolean isSentSuccess) {
@@ -103,7 +125,7 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     }
 
     /**
-     *
+     * Handle login after return result from authenticate observable
      * @param isLogin
      * @param params
      */
