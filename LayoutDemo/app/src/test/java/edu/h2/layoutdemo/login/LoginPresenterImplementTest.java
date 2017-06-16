@@ -12,9 +12,9 @@ import edu.h2.layoutdemo.login.tracking.EventTracking;
 import io.reactivex.observers.DisposableObserver;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by ntmhanh on 6/14/2017.
@@ -47,11 +47,20 @@ public class LoginPresenterImplementTest {
         verify(mLoginAuthenticateUseCase).execute(any(DisposableObserver.class), any(DriverAuthenticateUseCase.Params.class));
     }
     @Test
-    public void onLogin_loginSuccess_returnSetRememberDriverIdWasCalled() {
+    public void onLogin_loginSuccessAndRememberIdWasChecked_returnSettingValueWasCalled() {
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
+        when(requireViewOptions.isRememberChecked()).thenReturn(true);
         loginPresenterImplement.onLogin(true, params);
         //Assert
-        verify(driverPreferences).setRememberDriverId(anyBoolean(),anyString());
+        verify(driverPreferences).settingValue(anyString());
+    }
+    @Test
+    public void onLogin_loginSuccessAndRememberIdWasNotChecked_returnRemoveValueItemWasCalled() {
+        DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
+        when(requireViewOptions.isRememberChecked()).thenReturn(false);
+        loginPresenterImplement.onLogin(true, params);
+        //Assert
+        verify(driverPreferences).removeValueItem();
     }
 
     @Test
@@ -63,7 +72,7 @@ public class LoginPresenterImplementTest {
         loginPresenterImplement.onLogin(false, params);
         loginPresenterImplement.onLogin(false, params);
         //Assert
-        verify(requireViewOptions).showWarningOverThreeTimesLogin();
+        verify(requireViewOptions).showFailedOverThreeTimesLogin();
     }
     @Test
     public void onLogin_isLoginTrue_returnShowLoginSuccessWasCalled(){
@@ -71,7 +80,7 @@ public class LoginPresenterImplementTest {
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(true, params);
         //Assert
-        verify(requireViewOptions).showLoginSuccess();
+        verify(requireViewOptions).onLogged();
     }
     @Test
     public void onLogin_isLoginFalse_returnShowLoginFailWasCalled(){
@@ -79,6 +88,6 @@ public class LoginPresenterImplementTest {
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(false, params);
         //Assert
-        verify(requireViewOptions).showLoginFail();
+        verify(requireViewOptions).onNotLogged();
     }
 }
