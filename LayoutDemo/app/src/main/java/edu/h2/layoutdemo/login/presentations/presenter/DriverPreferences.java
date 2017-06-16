@@ -33,12 +33,4 @@ public class DriverPreferences {
         loginPrefsEditor.remove("driverId");
         loginPrefsEditor.commit(); // commit changes
     }
-
-    public void setRememberDriverId(boolean isRemember, String driverId) {
-        if (isRemember) {
-            settingValue(driverId);
-        } else {
-            removeValueItem();
-        }
-    }
 }

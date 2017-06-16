@@ -20,12 +20,12 @@ public interface LoginPresenter {
     // LoginPresenter access to View(LoginActivity)
     interface RequireViewOptions{
         void setTextRememberDriverId(String driverId);
-        void showLoginSuccess();
+        void onLogged();
         void showEmptyCredentials(String field);
-        void showLoginFail();
+        void onNotLogged();
         void rememberDriverIdCheckbox(boolean isChecked);
         boolean isRememberChecked();
-        void showWarningOverThreeTimesLogin();
+        void showFailedOverThreeTimesLogin();
         void showSentEventSuccess();
     }
 }

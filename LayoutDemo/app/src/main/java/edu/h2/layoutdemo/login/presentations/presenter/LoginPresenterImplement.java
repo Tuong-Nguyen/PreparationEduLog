@@ -62,9 +62,12 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     }
     @Override
     public void rememberDriverId(String driverId){
-         if (mView != null) {
-            boolean isRemember = mView.get().isRememberChecked();
-            mDriverPreferences.setRememberDriverId(isRemember, driverId);
+        if (mView != null) {
+            if (mView.get().isRememberChecked()) {
+                mDriverPreferences.settingValue(driverId);
+            } else {
+                mDriverPreferences.removeValueItem();
+            }
         }
     }
 
@@ -106,14 +109,14 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
      */
     public void onLogin(Boolean isLogin, DriverAuthenticateUseCase.Params params) {
         if (isLogin){
-            mView.get().showLoginSuccess();
+            mView.get().onLogged();
             rememberDriverId(params.driverId);
             this.loginCount = 0;
         }else {
             this.loginCount++;
-            mView.get().showLoginFail();
+            mView.get().onNotLogged();
             if (this.loginCount > 3) {
-                mView.get().showWarningOverThreeTimesLogin();
+                mView.get().showFailedOverThreeTimesLogin();
                 return;
             }
         }

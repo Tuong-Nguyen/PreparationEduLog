@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     }
 
     @Override
-    public void showLoginSuccess() {
+    public void onLogged() {
         Toast.makeText(this, "Login is successful", Toast.LENGTH_SHORT).show();
     }
 
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
 
     @Override
-    public void showLoginFail() {
+    public void onNotLogged() {
         Toast.makeText(this, "Login is not successful", Toast.LENGTH_SHORT).show();
     }
 
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     }
 
     @Override
-    public void showWarningOverThreeTimesLogin() {
+    public void showFailedOverThreeTimesLogin() {
         Toast.makeText(this, "Login over three times, Your account was locked", Toast.LENGTH_SHORT).show();
     }
 
