@@ -1,9 +1,9 @@
 package edu.h2.layoutdemo.login.models;
 
 /**
- * Created by ntmhanh on 6/14/2017.
+ * Define enum events to send request
  */
 
-public enum Event {
+public enum Events {
     LOG_IN
 }

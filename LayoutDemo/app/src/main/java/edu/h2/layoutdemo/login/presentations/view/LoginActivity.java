@@ -12,7 +12,7 @@ import edu.h2.layoutdemo.R;
 import edu.h2.layoutdemo.login.domain.interactors.DriverAuthenticateUseCase;
 import edu.h2.layoutdemo.login.domain.services.AuthenticateServiceImplement;
 import edu.h2.layoutdemo.login.domain.services.EventServiceImplement;
-import edu.h2.layoutdemo.login.models.Event;
+import edu.h2.layoutdemo.login.models.Events;
 import edu.h2.layoutdemo.login.presentations.presenter.DriverPreferences;
 import edu.h2.layoutdemo.login.presentations.presenter.LoginPresenter;
 import edu.h2.layoutdemo.login.presentations.presenter.LoginPresenterImplement;
@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
                 // Sent event login
-                presenter.sendEventLogin(Event.LOG_IN);
+                presenter.sendEventLogin(Events.LOG_IN);
                 presenter.validateCredentials(busId, driverId, password);
             }
         });

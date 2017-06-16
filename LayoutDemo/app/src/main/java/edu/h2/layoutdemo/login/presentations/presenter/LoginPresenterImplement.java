@@ -3,7 +3,7 @@ package edu.h2.layoutdemo.login.presentations.presenter;
 import java.lang.ref.WeakReference;
 
 import edu.h2.layoutdemo.login.domain.interactors.DriverAuthenticateUseCase;
-import edu.h2.layoutdemo.login.models.Event;
+import edu.h2.layoutdemo.login.models.Events;
 import edu.h2.layoutdemo.login.tracking.EventTracking;
 import io.reactivex.observers.DisposableObserver;
 
@@ -30,8 +30,8 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
 
 
     @Override
-    public void sendEventLogin(Event event) {
-        mEventTracking.execute(new EventObserver(), event);
+    public void sendEventLogin(Events events) {
+        mEventTracking.execute(new EventObserver(), events);
     }
 
     /**

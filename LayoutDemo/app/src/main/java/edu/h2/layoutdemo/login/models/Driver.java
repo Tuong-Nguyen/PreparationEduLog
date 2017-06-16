@@ -1,7 +1,7 @@
 package edu.h2.layoutdemo.login.models;
 
 /**
- * Created by ntmhanh on 6/12/2017.
+ * Driver model consists of attributes of driver
  */
 
 public class Driver {

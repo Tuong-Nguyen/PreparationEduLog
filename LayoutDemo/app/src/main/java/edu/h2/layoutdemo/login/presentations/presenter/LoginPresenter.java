@@ -1,6 +1,6 @@
 package edu.h2.layoutdemo.login.presentations.presenter;
 
-import edu.h2.layoutdemo.login.models.Event;
+import edu.h2.layoutdemo.login.models.Events;
 
 /**
  * LoginPresenter interface, which define interface to communicate between LoginActivity and LoginPresenter
@@ -10,7 +10,7 @@ public interface LoginPresenter {
 
     // View(LoginActivity) access to LoginPresenter
     interface LoginPresenterOptions{
-        void sendEventLogin(Event event);
+        void sendEventLogin(Events events);
         void validateCredentials(String busID, String driverId, String password);
         void doRememberDriverId();
         void moveToRouteScreen(String driverID);

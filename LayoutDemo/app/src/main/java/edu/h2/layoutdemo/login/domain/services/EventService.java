@@ -1,6 +1,6 @@
 package edu.h2.layoutdemo.login.domain.services;
 
-import edu.h2.layoutdemo.login.models.Event;
+import edu.h2.layoutdemo.login.models.Events;
 import io.reactivex.Observable;
 
 /**
@@ -8,5 +8,5 @@ import io.reactivex.Observable;
  */
 
 public interface EventService {
-    Observable<Boolean> sendEvent(Event event);
+    Observable<Boolean> sendEvent(Events events);
 }

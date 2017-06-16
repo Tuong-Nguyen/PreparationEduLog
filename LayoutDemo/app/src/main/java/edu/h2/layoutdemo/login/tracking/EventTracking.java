@@ -1,14 +1,14 @@
 package edu.h2.layoutdemo.login.tracking;
 
 import edu.h2.layoutdemo.login.domain.services.EventService;
-import edu.h2.layoutdemo.login.models.Event;
+import edu.h2.layoutdemo.login.models.Events;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
- * Implement Event tracking after sending request
+ * Implement Events tracking after sending request
  */
 
 public class EventTracking {
@@ -21,21 +21,21 @@ public class EventTracking {
     }
 
     /**
-     * Build event Observable
-     * @param event
+     * Build events Observable
+     * @param events
      * @return
      */
-    public Observable<Boolean> buildEventObservable(Event event) {
-        return eventService.sendEvent(event);
+    public Observable<Boolean> buildEventObservable(Events events) {
+        return eventService.sendEvent(events);
     }
 
     /**
      * Executing the use case.
      * @param observer
-     * @param event
+     * @param events
      */
-    public void execute(DisposableObserver<Boolean> observer, Event event) {
-        final Observable<Boolean> observable = this.buildEventObservable(event);
+    public void execute(DisposableObserver<Boolean> observer, Events events) {
+        final Observable<Boolean> observable = this.buildEventObservable(events);
         observable.subscribeWith(observer);
 
         addDisposable(observer);
