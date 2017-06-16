@@ -5,7 +5,7 @@ import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
- * Created by ntmhanh on 6/12/2017.
+ * Implement DriverAuthenticateUseCase after sending request
  */
 
 public class DriverAuthenticateUseCase {
@@ -16,6 +16,11 @@ public class DriverAuthenticateUseCase {
         this.mAuthenticateServiceImplement = authenticateServiceImplement;
     }
 
+    /**
+     * Build driver usecase observable
+     * @param params
+     * @return
+     */
 
     public Observable<Boolean> buildDriverUseCaseObservable(Params params) {
         String driverId = params.driverId;
@@ -23,12 +28,19 @@ public class DriverAuthenticateUseCase {
         return mAuthenticateServiceImplement.authenticate(driverId, password);
     }
 
+    /**
+     * Executing the use case
+     * @param observer
+     * @param params
+     */
     public void execute(DisposableObserver<Boolean> observer, Params params) {
         final Observable<Boolean> observable = this.buildDriverUseCaseObservable(params);
         observable.subscribeWith(observer).dispose();
     }
 
-
+    /**
+     * Define Params to inject for use case
+     */
     public static class Params {
         public String busId;
         public String driverId;
