@@ -4,7 +4,7 @@ import edu.h2.layoutdemo.login.models.Events;
 import io.reactivex.Observable;
 
 /**
- * Define interface for EnventService
+ * Service for events, which define methods for events request
  */
 
 public interface EventService {

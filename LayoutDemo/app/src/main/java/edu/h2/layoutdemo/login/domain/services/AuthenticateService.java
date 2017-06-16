@@ -3,7 +3,7 @@ package edu.h2.layoutdemo.login.domain.services;
 import io.reactivex.Observable;
 
 /**
- * Define interface for AuthenticateService
+ * Service for authenticate driver, which define methods for authenticate
  */
 
 public interface AuthenticateService {

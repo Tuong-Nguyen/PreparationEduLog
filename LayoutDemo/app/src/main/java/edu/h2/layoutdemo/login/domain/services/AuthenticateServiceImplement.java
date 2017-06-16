@@ -3,7 +3,7 @@ package edu.h2.layoutdemo.login.domain.services;
 import io.reactivex.Observable;
 
 /**
- * Implement AuthenticateService
+ *Handle AuthenticateService, which observe authenticate result
  */
 
 public class AuthenticateServiceImplement implements AuthenticateService {

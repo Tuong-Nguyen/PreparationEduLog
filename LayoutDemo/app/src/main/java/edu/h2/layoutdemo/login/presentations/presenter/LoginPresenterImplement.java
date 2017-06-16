@@ -87,7 +87,7 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     }
 
     /**
-     * Implement authenticateObserve after receiving value
+     * Implement authenticateObserve after receiving authenticate driver result
      */
     public final class AuthenticateObserver extends DisposableObserver<Boolean> {
         @Override
@@ -106,7 +106,7 @@ public class LoginPresenterImplement implements LoginPresenter.LoginPresenterOpt
     }
 
     /**
-     * Implement EventObserver after receiving value
+     * Implement EventObserver after receiving send event result
      */
     public final class EventObserver extends DisposableObserver<Boolean> {
         @Override

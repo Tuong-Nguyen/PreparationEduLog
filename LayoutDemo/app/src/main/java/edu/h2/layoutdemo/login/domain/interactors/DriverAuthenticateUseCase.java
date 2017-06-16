@@ -5,7 +5,7 @@ import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
- * Implement DriverAuthenticateUseCase after sending request
+ * DriverAuthenticateUseCase, which receive observable from authenticate result
  */
 
 public class DriverAuthenticateUseCase {
