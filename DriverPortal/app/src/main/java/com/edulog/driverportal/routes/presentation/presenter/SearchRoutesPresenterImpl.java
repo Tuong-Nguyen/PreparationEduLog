@@ -36,6 +36,11 @@ public class SearchRoutesPresenterImpl implements SearchRoutesPresenter {
         searchRoutesUseCase.execute(createSearchRoutesObserver(), query);
     }
 
+    @Override
+    public void getPreviewRoute(RouteModel routeModel) {
+        searchRoutesView.showRoutePreview(routeModel);
+    }
+
     private DisposableObserver<List<RouteModel>> createSearchRoutesObserver() {
         return new DisposableObserver<List<RouteModel>>() {
             @Override

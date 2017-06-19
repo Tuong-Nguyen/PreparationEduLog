@@ -51,7 +51,6 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         query = getArguments().getString(KEY_QUERY);
 
         routeModels = new ArrayList<>();
-        searchResultAdapter = new SearchResultAdapter(routeModels, getActivity());
 
         RoutesService routesService = new RoutesServiceImpl();
         SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), routesService);
@@ -64,6 +63,8 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         super.onCreateView(inflater, container, savedInstanceState);
 
         View root = inflater.inflate(R.layout.fragment_search_routes, container, false);
+        searchResultAdapter = new SearchResultAdapter(routeModels, getActivity());
+        searchResultAdapter.getItemClickObservable().subscribe(searchRoutesPresenter::getPreviewRoute);
 
         RecyclerView recyclerView = (RecyclerView)root.findViewById(R.id.rvSearchResults);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -104,5 +105,11 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         }
 
         searchResultAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showRoutePreview(RouteModel routeModel) {
+        RoutePreviewDialogFragment dialogFragment = RoutePreviewDialogFragment.newInstance(routeModel);
+        dialogFragment.show(getActivity().getSupportFragmentManager(), null);
     }
 }

@@ -13,4 +13,7 @@
     <string name="select_route">Choose a route from server</string>
     <string name="search_hint">Search routes</string>
     <string name="suggestions">Suggestions</string>
+    <string name="set_active_route">Set active route</string>
+
+    <string name="cancel">Cancel</string>
 </resources>
