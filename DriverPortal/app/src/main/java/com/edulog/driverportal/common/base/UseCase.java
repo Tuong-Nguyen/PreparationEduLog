@@ -1,6 +1,7 @@
 package com.edulog.driverportal.common.base;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -17,14 +18,12 @@ public abstract class UseCase<T, Params> {
 
     protected abstract Observable<T> buildUseCaseObservable(Params params);
 
-    public void execute(DisposableObserver<T> observer, Params params) {
+    public void execute(Observer<T> observer, Params params) {
         Observable<T> observable = buildUseCaseObservable(params);
 
-        Disposable disposable = observable
+        observable
                 .observeOn(postExecutionScheduler)
                 .subscribeWith(observer);
-
-        disposables.add(disposable);
     }
 
     public void dispose() {
