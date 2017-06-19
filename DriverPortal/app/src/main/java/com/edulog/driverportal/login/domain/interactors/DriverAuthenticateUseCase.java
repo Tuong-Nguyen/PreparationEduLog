@@ -1,19 +1,22 @@
 package com.edulog.driverportal.login.domain.interactors;
 
-import com.edulog.driverportal.login.domain.services.AuthenticateServiceImplement;
+import com.edulog.driverportal.common.base.UseCase;
+import com.edulog.driverportal.login.domain.services.AuthenticateService;
 import io.reactivex.Observable;
-import io.reactivex.observers.DisposableObserver;
+import io.reactivex.Scheduler;
+
 
 /**
  * DriverAuthenticateUseCase, which receive observable from authenticate result
  */
 
-public class DriverAuthenticateUseCase {
+public class DriverAuthenticateUseCase extends UseCase<Boolean, DriverAuthenticateUseCase.Params> {
 
-    public AuthenticateServiceImplement mAuthenticateServiceImplement;
+    private AuthenticateService authenticateService;
 
-    public DriverAuthenticateUseCase(AuthenticateServiceImplement authenticateServiceImplement) {
-        this.mAuthenticateServiceImplement = authenticateServiceImplement;
+    public DriverAuthenticateUseCase(Scheduler postExecutionScheduler, AuthenticateService authenticateService) {
+        super(postExecutionScheduler);
+        this.authenticateService = authenticateService;
     }
 
     /**
@@ -21,21 +24,10 @@ public class DriverAuthenticateUseCase {
      * @param params
      * @return
      */
-
-    public Observable<Boolean> buildDriverUseCaseObservable(Params params) {
+    public Observable<Boolean> buildUseCaseObservable(Params params) {
         String driverId = params.driverId;
         String password = params.password;
-        return mAuthenticateServiceImplement.authenticate(driverId, password);
-    }
-
-    /**
-     * Executing the use case
-     * @param observer
-     * @param params
-     */
-    public void execute(DisposableObserver<Boolean> observer, Params params) {
-        final Observable<Boolean> observable = this.buildDriverUseCaseObservable(params);
-        observable.subscribeWith(observer).dispose();
+        return authenticateService.authenticate(driverId, password);
     }
 
     /**
@@ -52,5 +44,4 @@ public class DriverAuthenticateUseCase {
             this.password = password;
         }
     }
-
 }

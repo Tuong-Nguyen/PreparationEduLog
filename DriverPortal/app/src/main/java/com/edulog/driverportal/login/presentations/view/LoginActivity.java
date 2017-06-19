@@ -18,6 +18,8 @@ import com.edulog.driverportal.login.presentations.presenter.LoginPresenter;
 import com.edulog.driverportal.login.presentations.presenter.LoginPresenterImplement;
 import com.edulog.driverportal.login.tracking.EventTracking;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.RequireViewOptions{
     private EditText etBusId;
     private EditText etDriverId;
@@ -42,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
         btnLogin = (Button)findViewById(R.id.login);
 
-        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(new AuthenticateServiceImplement());
+        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(AndroidSchedulers.mainThread(), new AuthenticateServiceImplement());
 
         DriverPreferences driverPreferences = new DriverPreferences(this);
 
