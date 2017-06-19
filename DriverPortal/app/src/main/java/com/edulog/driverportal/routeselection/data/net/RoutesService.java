@@ -9,6 +9,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface RoutesService {
-    @GET("/api/routes")
+    @GET("/api/search/routes")
     Observable<List<RouteEntity>> findRoutesById(@Query("route_id") String routeId);
 }

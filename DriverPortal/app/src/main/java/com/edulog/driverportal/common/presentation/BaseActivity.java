@@ -2,7 +2,10 @@ package com.edulog.driverportal.common.presentation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+
+import com.edulog.driverportal.R;
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
     @Override
@@ -42,6 +45,19 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     public void showError(String message) {
 
+    }
+
+    public void moveToFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.contentFrame, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void openAsRoot(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.contentFrame, fragment)
+                .commit();
     }
 
     protected BasePresenter getPresenter() {
