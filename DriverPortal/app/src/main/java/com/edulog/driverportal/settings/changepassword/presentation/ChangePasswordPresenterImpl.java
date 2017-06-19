@@ -79,12 +79,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         return new DisposableObserver<ValidationResult>() {
             @Override
             public void onNext(ValidationResult validationResult) {
-                if (validationResult.isValid()) {
-                    onValidationResultValid(validationResult);
-                } else {
-                    onValidationResultInvalid(validationResult);
-                }
-
+                changePasswordView.showValidationResult(validationResult);
             }
 
             @Override
@@ -97,41 +92,5 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
 
             }
         };
-    }
-
-    private void onValidationResultValid(ValidationResult validationResult) {
-        changePasswordView.enableRequestChangePassword();
-        switch (validationResult.getField()) {
-            case DRIVER_ID:
-                changePasswordView.hideInvalidDriverId();
-                break;
-            case OLD_PASSWORD:
-                changePasswordView.hideInvalidOldPassword();
-                break;
-            case NEW_PASSWORD:
-                changePasswordView.hideInvalidNewPassword();
-                break;
-            case ALL:
-                changePasswordView.hidePasswordDoesNotMatch();
-                break;
-        }
-    }
-
-    private void onValidationResultInvalid(ValidationResult validationResult) {
-        changePasswordView.disableRequestChangePassword();
-        switch (validationResult.getField()) {
-            case DRIVER_ID:
-                changePasswordView.showInvalidDriverId(validationResult.getErrorMessage());
-                break;
-            case OLD_PASSWORD:
-                changePasswordView.showInvalidOldPassword(validationResult.getErrorMessage());
-                break;
-            case NEW_PASSWORD:
-                changePasswordView.showInvalidNewPassword(validationResult.getErrorMessage());
-                break;
-            case ALL:
-                changePasswordView.showPasswordDoesNotMatch();
-                break;
-        }
     }
 }

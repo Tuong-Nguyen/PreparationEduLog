@@ -19,6 +19,7 @@ import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceI
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
+import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.Observable;
@@ -114,43 +115,12 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     }
 
     @Override
-    public void showInvalidDriverId(String message) {
-        driverIdWrapper.setError(message);
-    }
-
-    @Override
-    public void hideInvalidDriverId() {
-        driverIdWrapper.setErrorEnabled(false);
-    }
-
-    @Override
-    public void showInvalidOldPassword(String message) {
-        oldPasswordWrapper.setError(message);
-    }
-
-    @Override
-    public void hideInvalidOldPassword() {
-        oldPasswordWrapper.setErrorEnabled(false);
-    }
-
-    @Override
-    public void showInvalidNewPassword(String message) {
-        newPasswordWrapper.setError(message);
-    }
-
-    @Override
-    public void hideInvalidNewPassword() {
-        newPasswordWrapper.setErrorEnabled(false);
-    }
-
-    @Override
-    public void showPasswordDoesNotMatch() {
-        confirmNewPasswordWrapper.setError("Your password does not match.");
-    }
-
-    @Override
-    public void hidePasswordDoesNotMatch() {
-        confirmNewPasswordWrapper.setErrorEnabled(false);
+    public void showValidationResult(ValidationResult validationResult) {
+        if (validationResult.isValid()) {
+            onValidationResultValid(validationResult);
+        } else {
+            onValidationResultInvalid(validationResult);
+        }
     }
 
     @Override
@@ -193,5 +163,73 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
                             return true;
                         });
         observable.subscribe();
+    }
+
+    private void onValidationResultValid(ValidationResult validationResult) {
+        enableRequestChangePassword();
+        switch (validationResult.getField()) {
+            case DRIVER_ID:
+                hideInvalidDriverId();
+                break;
+            case OLD_PASSWORD:
+                hideInvalidOldPassword();
+                break;
+            case NEW_PASSWORD:
+                hideInvalidNewPassword();
+                break;
+            case ALL:
+                hidePasswordDoesNotMatch();
+                break;
+        }
+    }
+
+    private void onValidationResultInvalid(ValidationResult validationResult) {
+        disableRequestChangePassword();
+        switch (validationResult.getField()) {
+            case DRIVER_ID:
+                showInvalidDriverId(validationResult.getErrorMessage());
+                break;
+            case OLD_PASSWORD:
+                showInvalidOldPassword(validationResult.getErrorMessage());
+                break;
+            case NEW_PASSWORD:
+                showInvalidNewPassword(validationResult.getErrorMessage());
+                break;
+            case ALL:
+                showPasswordDoesNotMatch();
+                break;
+        }
+    }
+
+    public void showInvalidDriverId(String message) {
+        driverIdWrapper.setError(message);
+    }
+
+    public void hideInvalidDriverId() {
+        driverIdWrapper.setErrorEnabled(false);
+    }
+
+    public void showInvalidOldPassword(String message) {
+        oldPasswordWrapper.setError(message);
+    }
+
+    public void hideInvalidOldPassword() {
+        oldPasswordWrapper.setErrorEnabled(false);
+    }
+
+    public void showInvalidNewPassword(String message) {
+        newPasswordWrapper.setError(message);
+    }
+
+    public void hideInvalidNewPassword() {
+        newPasswordWrapper.setErrorEnabled(false);
+    }
+
+    public void showPasswordDoesNotMatch() {
+        confirmNewPasswordWrapper.setError("Your password does not match.");
+    }
+
+    public void hidePasswordDoesNotMatch() {
+        confirmNewPasswordWrapper.setErrorEnabled(false);
     }
 }
