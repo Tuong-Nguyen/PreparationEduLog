@@ -8,12 +8,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 public abstract class UseCase<T, Params> {
-    private CompositeDisposable disposables;
     private Scheduler postExecutionScheduler;
 
     public UseCase(Scheduler postExecutionScheduler) {
         this.postExecutionScheduler = postExecutionScheduler;
-        disposables = new CompositeDisposable();
     }
 
     protected abstract Observable<T> buildUseCaseObservable(Params params);
@@ -24,11 +22,5 @@ public abstract class UseCase<T, Params> {
         observable
                 .observeOn(postExecutionScheduler)
                 .subscribeWith(observer);
-    }
-
-    public void dispose() {
-        if (!disposables.isDisposed()) {
-            disposables.dispose();
-        }
     }
 }
