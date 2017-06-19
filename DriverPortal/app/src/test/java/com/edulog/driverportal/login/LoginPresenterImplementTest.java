@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
  */
 
 public class LoginPresenterImplementTest {
-    private DriverAuthenticateUseCase mLoginAuthenticateUseCase;
+    private DriverAuthenticateUseCase loginAuthenticateUseCase;
     private LoginPresenter.RequireViewOptions requireViewOptions;
     private DriverPreferences driverPreferences;
     private LoginPresenterImplement loginPresenterImplement;
@@ -34,18 +34,18 @@ public class LoginPresenterImplementTest {
     @Before
     public void init(){
         //Arrange
-        mLoginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
+        loginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
         requireViewOptions = Mockito.mock(LoginPresenter.RequireViewOptions.class);
         driverPreferences = Mockito.mock(DriverPreferences.class);
         eventTracking = Mockito.mock(EventTracking.class);
         //Action
-        loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, mLoginAuthenticateUseCase, driverPreferences, eventTracking);
+        loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, loginAuthenticateUseCase, driverPreferences, eventTracking);
         loginPresenterImplement.validateCredentials(busId, driverId, password);
     }
     @Test
     public void validateCredentials_getInformationFromLoginPage_returnExecuteWasCalled() {
         //Assert
-        verify(mLoginAuthenticateUseCase).execute(any(DisposableObserver.class), any(DriverAuthenticateUseCase.Params.class));
+        verify(loginAuthenticateUseCase).execute(any(DisposableObserver.class), any(DriverAuthenticateUseCase.Params.class));
     }
     @Test
     public void onLogin_loginSuccessAndRememberIdWasChecked_returnSettingValueWasCalled() {
