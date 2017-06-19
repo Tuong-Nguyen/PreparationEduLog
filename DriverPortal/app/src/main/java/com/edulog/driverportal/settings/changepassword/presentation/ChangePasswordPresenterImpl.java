@@ -23,7 +23,6 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         changePasswordUseCase.execute(observer, params);
 
         changePasswordView.showProgress();
-        changePasswordView.disableRequestChangePassword();
     }
 
     @Override
@@ -53,7 +52,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         return new DisposableObserver<Boolean>() {
             @Override
             public void onNext(Boolean isValid) {
-                changePasswordView.showChangePasswordSuccess("Change password successfully!");
+                changePasswordView.showSuccess("Change password successfully!");
             }
 
             @Override
@@ -64,7 +63,6 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
             @Override
             public void onComplete() {
                 changePasswordView.hideProgress();
-                changePasswordView.enableRequestChangePassword();
             }
         };
     }
@@ -72,7 +70,6 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     private void onChangePasswordError(String message) {
         changePasswordView.showError(message);
         changePasswordView.hideProgress();
-        changePasswordView.enableRequestChangePassword();
     }
 
     private DisposableObserver<ValidationResult> createValidationObserver() {

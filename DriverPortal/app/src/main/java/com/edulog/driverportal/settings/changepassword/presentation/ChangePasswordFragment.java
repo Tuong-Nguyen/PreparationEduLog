@@ -87,11 +87,13 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
+        disableRequestChangePassword();
     }
 
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
+        enableRequestChangePassword();
     }
 
     @Override
@@ -109,8 +111,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         return this;
     }
 
-    @Override
-    public void showChangePasswordSuccess(String message) {
+    public void showSuccess(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
@@ -123,14 +124,12 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         }
     }
 
-    @Override
     public void enableRequestChangePassword() {
         changePasswordButton.setEnabled(true);
         changePasswordButton.setClickable(true);
         changePasswordButton.setAlpha(1.0f);
     }
 
-    @Override
     public void disableRequestChangePassword() {
         changePasswordButton.setEnabled(false);
         changePasswordButton.setClickable(false);
