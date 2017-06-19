@@ -1,4 +1,4 @@
-package com.edulog.driverportal.presentation;
+package com.edulog.driverportal.common.base;
 
 import android.support.v4.app.Fragment;
 
