@@ -1,7 +1,9 @@
 package com.edulog.driverportal.routes.presentation.presenter;
 
+import com.edulog.driverportal.routes.domain.interactor.SaveRouteUseCase;
 import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routes.model.RouteModel;
+import com.edulog.driverportal.routes.presentation.device.Session;
 import com.edulog.driverportal.routes.presentation.view.SearchRoutesView;
 
 import java.util.List;
@@ -11,9 +13,13 @@ import io.reactivex.observers.DisposableObserver;
 public class SearchRoutesPresenterImpl implements SearchRoutesPresenter {
     private SearchRoutesView searchRoutesView;
     private SearchRoutesUseCase searchRoutesUseCase;
+    private SaveRouteUseCase saveRouteUseCase;
+    private Session session;
 
-    public SearchRoutesPresenterImpl(SearchRoutesUseCase searchRoutesUseCase) {
+    public SearchRoutesPresenterImpl(SearchRoutesUseCase searchRoutesUseCase, SaveRouteUseCase saveRouteUseCase, Session session) {
         this.searchRoutesUseCase = searchRoutesUseCase;
+        this.saveRouteUseCase = saveRouteUseCase;
+        this.session = session;
     }
 
     @Override
@@ -58,5 +64,10 @@ public class SearchRoutesPresenterImpl implements SearchRoutesPresenter {
 
             }
         };
+    }
+
+    @Override
+    public void saveRoute(RouteModel routeModel) {
+        session.putRouteId(routeModel.getId());
     }
 }

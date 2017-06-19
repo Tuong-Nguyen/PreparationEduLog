@@ -1,6 +1,7 @@
 package com.edulog.driverportal.routes.presentation.view.fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,12 @@ import com.edulog.driverportal.routes.model.RouteModel;
 
 public class RoutePreviewDialogFragment extends DialogFragment {
     private static final String KEY_ROUTE = "com.edulog.driverportal.KEY_ROUTE";
+
+    public interface RoutePreviewDialogListener {
+        void onDialogPositiveClick(RouteModel routeModel);
+    }
+
+    private RoutePreviewDialogListener routePreviewDialogListener;
 
     private RouteModel routeModel;
 
@@ -32,6 +39,8 @@ public class RoutePreviewDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         routeModel = getArguments().getParcelable(KEY_ROUTE);
+
+        routePreviewDialogListener = (RoutePreviewDialogListener)getTargetFragment();
     }
 
     @NonNull
@@ -47,13 +56,13 @@ public class RoutePreviewDialogFragment extends DialogFragment {
         builder.setPositiveButton(R.string.set_active_route, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                routePreviewDialogListener.onDialogPositiveClick(routeModel);
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                getDialog().cancel();
             }
         });
 

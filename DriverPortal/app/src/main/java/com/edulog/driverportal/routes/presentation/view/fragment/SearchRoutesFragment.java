@@ -8,14 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.edulog.driverportal.DriverPortalApplication;
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
 import com.edulog.driverportal.routes.data.service.RoutesServiceImpl;
+import com.edulog.driverportal.routes.domain.interactor.SaveRouteUseCase;
 import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routes.domain.service.RoutesService;
 import com.edulog.driverportal.routes.model.RouteModel;
+import com.edulog.driverportal.routes.presentation.device.Session;
 import com.edulog.driverportal.routes.presentation.presenter.SearchRoutesPresenter;
 import com.edulog.driverportal.routes.presentation.presenter.SearchRoutesPresenterImpl;
 import com.edulog.driverportal.routes.presentation.view.SearchRoutesView;
@@ -27,7 +30,7 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class SearchRoutesFragment extends BaseFragment implements SearchRoutesView {
+public class SearchRoutesFragment extends BaseFragment implements SearchRoutesView, RoutePreviewDialogFragment.RoutePreviewDialogListener {
     private static final String KEY_QUERY = "com.edulog.driverportal.KEY_QUERY";
 
     public static SearchRoutesFragment newInstance(String query) {
@@ -54,7 +57,9 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
 
         RoutesService routesService = new RoutesServiceImpl();
         SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), routesService);
-        searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase);
+        SaveRouteUseCase saveRouteUseCase = new SaveRouteUseCase(AndroidSchedulers.mainThread());
+        Session session = ((DriverPortalApplication)getActivity().getApplication()).getSession();
+        searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase, saveRouteUseCase, session);
     }
 
     @Nullable
@@ -110,6 +115,12 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
     @Override
     public void showRoutePreview(RouteModel routeModel) {
         RoutePreviewDialogFragment dialogFragment = RoutePreviewDialogFragment.newInstance(routeModel);
+        dialogFragment.setTargetFragment(this, 1);
         dialogFragment.show(getActivity().getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void onDialogPositiveClick(RouteModel routeModel) {
+        searchRoutesPresenter.saveRoute(routeModel);
     }
 }
