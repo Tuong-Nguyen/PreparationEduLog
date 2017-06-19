@@ -13,19 +13,18 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
-import com.edulog.driverportal.routes.data.service.RoutesServiceImpl;
+import com.edulog.driverportal.routes.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routes.domain.interactor.SaveRouteUseCase;
 import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
-import com.edulog.driverportal.routes.domain.service.RoutesService;
+import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.model.RouteModel;
-import com.edulog.driverportal.routes.presentation.device.Session;
+import com.edulog.driverportal.routes.data.session.Session;
 import com.edulog.driverportal.routes.presentation.presenter.SearchRoutesPresenter;
 import com.edulog.driverportal.routes.presentation.presenter.SearchRoutesPresenterImpl;
 import com.edulog.driverportal.routes.presentation.view.SearchRoutesView;
 import com.edulog.driverportal.routes.presentation.view.adapter.SearchResultAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -55,8 +54,8 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
 
         routeModels = new ArrayList<>();
 
-        RoutesService routesService = new RoutesServiceImpl();
-        SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), routesService);
+        RouteService routeService = new RouteServiceImpl();
+        SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), routeService);
         SaveRouteUseCase saveRouteUseCase = new SaveRouteUseCase(AndroidSchedulers.mainThread());
         Session session = ((DriverPortalApplication)getActivity().getApplication()).getSession();
         searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase, saveRouteUseCase, session);

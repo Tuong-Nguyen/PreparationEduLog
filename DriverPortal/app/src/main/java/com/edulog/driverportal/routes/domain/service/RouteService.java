@@ -6,6 +6,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public interface RoutesService {
+public interface RouteService {
     Observable<List<RouteEntity>> findRoutes(String query);
 }

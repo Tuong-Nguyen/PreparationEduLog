@@ -19,10 +19,9 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
-import com.edulog.driverportal.routes.data.service.RoutesServiceImpl;
+import com.edulog.driverportal.routes.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routes.domain.interactor.RouteIdSuggestionsUseCase;
-import com.edulog.driverportal.routes.domain.service.RoutesService;
-import com.edulog.driverportal.routes.model.RouteModel;
+import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.presentation.presenter.RouteSelectionPresenter;
 import com.edulog.driverportal.routes.presentation.presenter.RouteSelectionPresenterImpl;
 import com.edulog.driverportal.routes.presentation.view.RouteSelectionView;
@@ -69,8 +68,8 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
         openAsRoot(fragment);
 
         Scheduler postExecutionScheduler = AndroidSchedulers.mainThread();
-        RoutesService routesService = new RoutesServiceImpl();
-        RouteIdSuggestionsUseCase routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(postExecutionScheduler, routesService);
+        RouteService routeService = new RouteServiceImpl();
+        RouteIdSuggestionsUseCase routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(postExecutionScheduler, routeService);
         routeSelectionPresenter = new RouteSelectionPresenterImpl(routeIdSuggestionsUseCase);
     }
 

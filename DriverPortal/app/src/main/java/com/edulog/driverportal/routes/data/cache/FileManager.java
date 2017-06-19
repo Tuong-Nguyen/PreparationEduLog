@@ -30,7 +30,7 @@ public class FileManager {
         }
     }
 
-    public byte[] readFromFile(File file) {
+    public byte[] readFromBinaryFile(File file) {
         FileInputStream inputStream = null;
         long byteRemaining = file.length();
         byte[] data = new byte[(int)byteRemaining];
@@ -75,19 +75,22 @@ public class FileManager {
         }
     }
 
-    public String readFromFile(File file) {
+    public String readFromTextFile(File file) {
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
 
-        String content = "";
+        String content = null;
 
         try {
             fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
 
-
-
             StringBuilder contentBuilder = new StringBuilder();
+            String result;
+            while ((result = bufferedReader.readLine()) != null) {
+                contentBuilder.append(result);
+            }
+            content = contentBuilder.toString();
         } catch (IOException ex) {
             Log.d("FileManager", ex.getMessage());
         } finally {

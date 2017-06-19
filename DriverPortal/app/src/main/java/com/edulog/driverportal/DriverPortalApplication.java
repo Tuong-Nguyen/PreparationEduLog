@@ -3,8 +3,8 @@ package com.edulog.driverportal;
 import android.app.Application;
 
 import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
-import com.edulog.driverportal.routes.presentation.device.Session;
-import com.edulog.driverportal.routes.presentation.device.SessionImpl;
+import com.edulog.driverportal.routes.data.session.Session;
+import com.edulog.driverportal.routes.data.session.SessionImpl;
 
 public class DriverPortalApplication extends Application {
     private Session session;

@@ -1,4 +1,4 @@
-package com.edulog.driverportal.routes.presentation.device;
+package com.edulog.driverportal.routes.data.session;
 
 import android.content.Context;
 import android.content.SharedPreferences;

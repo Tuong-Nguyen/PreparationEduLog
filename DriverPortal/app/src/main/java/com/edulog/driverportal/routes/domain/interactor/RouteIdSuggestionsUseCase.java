@@ -2,7 +2,7 @@ package com.edulog.driverportal.routes.domain.interactor;
 
 import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.routes.data.entity.RouteEntity;
-import com.edulog.driverportal.routes.domain.service.RoutesService;
+import com.edulog.driverportal.routes.domain.service.RouteService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,17 +11,17 @@ import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 
 public class RouteIdSuggestionsUseCase extends UseCase<List<String>, String> {
-    private RoutesService routesService;
+    private RouteService routeService;
 
-    public RouteIdSuggestionsUseCase(Scheduler postExecutionScheduler, RoutesService routesService) {
+    public RouteIdSuggestionsUseCase(Scheduler postExecutionScheduler, RouteService routeService) {
         super(postExecutionScheduler);
 
-        this.routesService = routesService;
+        this.routeService = routeService;
     }
 
     @Override
     protected Observable<List<String>> buildUseCaseObservable(String query) {
-        return routesService.findRoutes(query)
+        return routeService.findRoutes(query)
                 .map(this::getSuggestionIds);
     }
 
