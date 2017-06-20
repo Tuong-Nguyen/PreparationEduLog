@@ -27,7 +27,7 @@ import com.edulog.driverportal.routeselection.presentation.presenter.NewRoutePre
 import com.edulog.driverportal.routeselection.presentation.presenter.NewRoutePresenterImpl;
 import com.edulog.driverportal.routeselection.presentation.view.NewRouteView;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.RouteIdSuggestionsFragment;
-import com.edulog.driverportal.routeselection.presentation.view.fragment.RouteSelectionFragment;
+import com.edulog.driverportal.routeselection.presentation.view.fragment.NewRouteFragment;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.SearchRoutesFragment;
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 
@@ -66,7 +66,7 @@ public class NewRouteActivity extends BaseActivity implements NewRouteView {
             removeSearchFragmentIfAtRoot();
         });
 
-        Fragment fragment = RouteSelectionFragment.newInstance();
+        Fragment fragment = NewRouteFragment.newInstance();
         openAsRoot(fragment);
 
         Scheduler postExecutionScheduler = AndroidSchedulers.mainThread();

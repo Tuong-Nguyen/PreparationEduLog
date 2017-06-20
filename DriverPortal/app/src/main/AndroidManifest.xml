@@ -13,15 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".settings.presentation.SettingsActivity">
-
         </activity>
-        <activity android:name=".routeselection.presentation.view.activity.NewRouteActivity"
-            android:launchMode="singleTop">
+        <activity android:name=".routeselection.presentation.view.activity.RouteSelectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".routeselection.presentation.view.activity.NewRouteActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

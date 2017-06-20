@@ -10,9 +10,9 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.presentation.BaseFragment;
 
-public class RouteSelectionFragment extends BaseFragment {
+public class NewRouteFragment extends BaseFragment {
     public static BaseFragment newInstance() {
-        return new RouteSelectionFragment();
+        return new NewRouteFragment();
     }
 
     @Override
@@ -23,9 +23,9 @@ public class RouteSelectionFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_route_selection, container, false);
+        View root = inflater.inflate(R.layout.fragment_new_route, container, false);
 
-        ((BaseActivity)getActivity()).setTitle("Route selection");
+        ((BaseActivity)getActivity()).setTitle("Choose a new route from server");
 
         return root;
     }
