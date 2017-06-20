@@ -1,4 +1,4 @@
-package com.edulog.driverportal.login.presentations.presenter;
+package com.edulog.driverportal.login.models;
 
 import android.content.Context;
 import android.content.SharedPreferences;

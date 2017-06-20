@@ -10,22 +10,26 @@ import android.widget.Toast;
 
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
+import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
+import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateServiceImplement;
 import com.edulog.driverportal.login.domain.services.EventServiceImplement;
+import com.edulog.driverportal.login.domain.utils.LoginValidateUtils;
+import com.edulog.driverportal.login.models.DriverPreferences;
 import com.edulog.driverportal.login.models.Events;
-import com.edulog.driverportal.login.presentations.presenter.DriverPreferences;
+import com.edulog.driverportal.login.models.LoginValidation;
 import com.edulog.driverportal.login.presentations.presenter.LoginPresenter;
 import com.edulog.driverportal.login.presentations.presenter.LoginPresenterImplement;
-import com.edulog.driverportal.login.tracking.EventTracking;
+import com.edulog.driverportal.login.presentations.presenter.LoginView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class LoginActivity extends AppCompatActivity implements LoginPresenter.RequireViewOptions{
+public class LoginActivity extends AppCompatActivity implements LoginView {
     private EditText etBusId;
     private EditText etDriverId;
     private EditText etPassword;
     private Button btnLogin;
-    private LoginPresenter.LoginPresenterOptions presenter;
+    private LoginPresenter presenter;
     private String busId;
     private String driverId;
     private String password;
@@ -37,25 +41,27 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         etBusId = (EditText)findViewById(R.id.busId);
-
         etDriverId = (EditText)findViewById(R.id.driverId);
-
         etPassword = (EditText)findViewById(R.id.password);
-
         btnLogin = (Button)findViewById(R.id.login);
 
-        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(AndroidSchedulers.mainThread(), new AuthenticateServiceImplement());
+        LoginValidateUtils loginValidateUtils = new LoginValidateUtils(new LoginValidation());
+
+        AuthenticateServiceImplement authenticateServiceImplement = new AuthenticateServiceImplement(loginValidateUtils);
+
+        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(AndroidSchedulers.mainThread(),authenticateServiceImplement, loginValidateUtils);
+
+        LoginValidateUseCase loginValidateUseCase = new LoginValidateUseCase(AndroidSchedulers.mainThread(), authenticateServiceImplement);
+
+        EventServiceImplement eventServiceImplement = new EventServiceImplement();
+
+        SendEventUseCase sendEventUseCase = new SendEventUseCase(AndroidSchedulers.mainThread(), eventServiceImplement);
 
         DriverPreferences driverPreferences = new DriverPreferences(this);
 
-
-        EventTracking eventTracking = new EventTracking(new EventServiceImplement());
-
-        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase, driverPreferences, eventTracking);
+        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase, driverPreferences, sendEventUseCase, loginValidateUseCase);
 
         saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
-
-        presenter.doRememberDriverId();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,9 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
                 busId = etBusId.getText().toString();
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
-                // Sent event login
-                presenter.sendEventLogin(Events.LOG_IN);
-                presenter.validateCredentials(busId, driverId, password);
+                presenter.doLogin(busId, driverId, password, Events.LOG_IN);
             }
         });
 
@@ -82,17 +86,6 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     }
 
     @Override
-    public void showEmptyCredentials(String field) {
-        Toast.makeText(this, field + " is empty", Toast.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    public void onNotLogged() {
-        Toast.makeText(this, "Login is not successful", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void rememberDriverIdCheckbox(boolean isChecked) {
         saveLoginCheckBox.setChecked(isChecked);
     }
@@ -103,14 +96,29 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
     }
 
     @Override
-    public void showFailedOverThreeTimesLogin() {
-        Toast.makeText(this, "Login over three times, Your account was locked", Toast.LENGTH_SHORT).show();
+    public void onLoginError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showLoginValidation(LoginValidation loginValidation) {
+        if (!loginValidation.isValid()){
+         showErrorValidate(loginValidation.getErrorMessage());
+        }
+    }
+
+    private void showErrorValidate(String errorMessage){
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showSentEventSuccess() {
-        Toast.makeText(this, "Sending event logIn success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Sending login event is success", Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void showSentEventFailed(String message) {
+        Toast.makeText(this, "Sending login event is failed", Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.edulog.driverportal.login;
 
 import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
-import com.edulog.driverportal.login.presentations.presenter.DriverPreferences;
+import com.edulog.driverportal.login.models.DriverPreferences;
 import com.edulog.driverportal.login.presentations.presenter.LoginPresenter;
 import com.edulog.driverportal.login.presentations.presenter.LoginPresenterImplement;
 import com.edulog.driverportal.login.tracking.EventTracking;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 public class LoginPresenterImplementTest {
     private DriverAuthenticateUseCase loginAuthenticateUseCase;
-    private LoginPresenter.RequireViewOptions requireViewOptions;
+    private LoginPresenter.LoginView loginView;
     private DriverPreferences driverPreferences;
     private LoginPresenterImplement loginPresenterImplement;
     private EventTracking eventTracking;
@@ -35,11 +35,11 @@ public class LoginPresenterImplementTest {
     public void init(){
         //Arrange
         loginAuthenticateUseCase = Mockito.mock(DriverAuthenticateUseCase.class);
-        requireViewOptions = Mockito.mock(LoginPresenter.RequireViewOptions.class);
+        loginView = Mockito.mock(LoginPresenter.LoginView.class);
         driverPreferences = Mockito.mock(DriverPreferences.class);
         eventTracking = Mockito.mock(EventTracking.class);
         //Action
-        loginPresenterImplement = new LoginPresenterImplement(requireViewOptions, loginAuthenticateUseCase, driverPreferences, eventTracking);
+        loginPresenterImplement = new LoginPresenterImplement(loginView, loginAuthenticateUseCase, driverPreferences, eventTracking);
         loginPresenterImplement.validateCredentials(busId, driverId, password);
     }
     @Test
@@ -50,7 +50,7 @@ public class LoginPresenterImplementTest {
     @Test
     public void onLogin_loginSuccessAndRememberIdWasChecked_returnSettingValueWasCalled() {
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
-        when(requireViewOptions.isRememberChecked()).thenReturn(true);
+        when(loginView.isRememberChecked()).thenReturn(true);
         loginPresenterImplement.onLogin(true, params);
         //Assert
         verify(driverPreferences).settingValue(anyString());
@@ -58,7 +58,7 @@ public class LoginPresenterImplementTest {
     @Test
     public void onLogin_loginSuccessAndRememberIdWasNotChecked_returnRemoveValueItemWasCalled() {
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
-        when(requireViewOptions.isRememberChecked()).thenReturn(false);
+        when(loginView.isRememberChecked()).thenReturn(false);
         loginPresenterImplement.onLogin(true, params);
         //Assert
         verify(driverPreferences).removeValueItem();
@@ -73,7 +73,7 @@ public class LoginPresenterImplementTest {
         loginPresenterImplement.onLogin(false, params);
         loginPresenterImplement.onLogin(false, params);
         //Assert
-        verify(requireViewOptions).showFailedOverThreeTimesLogin();
+        verify(loginView).showFailedOverThreeTimesLogin();
     }
     @Test
     public void onLogin_isLoginTrue_returnShowLoginSuccessWasCalled(){
@@ -81,7 +81,7 @@ public class LoginPresenterImplementTest {
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(true, params);
         //Assert
-        verify(requireViewOptions).onLogged();
+        verify(loginView).onLogged();
     }
     @Test
     public void onLogin_isLoginFalse_returnShowLoginFailWasCalled(){
@@ -89,6 +89,6 @@ public class LoginPresenterImplementTest {
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(false, params);
         //Assert
-        verify(requireViewOptions).onNotLogged();
+        verify(loginView).onNotLogged();
     }
 }
