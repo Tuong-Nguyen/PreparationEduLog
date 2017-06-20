@@ -10,15 +10,16 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import io.reactivex.observers.DisposableObserver;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RouteSelectionPresenterTest {
     private RouteSelectionPresenter routeSelectionPresenter;
-
-    @Mock
-    private SearchRoutesUseCase mockSearchRoutesUseCase;
 
     @Mock
     private RouteIdSuggestionsUseCase mockRouteIdSuggestionsUseCase;
@@ -28,12 +29,19 @@ public class RouteSelectionPresenterTest {
 
     @Before
     public void setUp() {
-        routeSelectionPresenter = new RouteSelectionPresenterImpl(mockSearchRoutesUseCase, mockRouteIdSuggestionsUseCase);
+        routeSelectionPresenter = new RouteSelectionPresenterImpl(mockRouteIdSuggestionsUseCase);
         routeSelectionPresenter.attach(mockRouteSelectionView);
     }
 
     @Test
-    public void suggestRoutesId_showProgress() {
+    public void suggestRouteIds_useCaseExecuted() {
+        routeSelectionPresenter.suggestRouteIds("0");
+
+        verify(mockRouteIdSuggestionsUseCase).execute(any(DisposableObserver.class), anyString());
+    }
+
+    @Test
+    public void suggestRouteIds_viewShowProgress() {
         routeSelectionPresenter.suggestRouteIds("0");
 
         verify(mockRouteSelectionView).showProgress();

@@ -1,5 +1,7 @@
 package com.edulog.driverportal.routes.presentation.presenter;
 
+import com.edulog.driverportal.common.presentation.CompositeDisposableObserver;
+import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routes.domain.interactor.SaveRouteUseCase;
 import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routes.model.RouteModel;
@@ -14,12 +16,13 @@ public class SearchRoutesPresenterImpl implements SearchRoutesPresenter {
     private SearchRoutesView searchRoutesView;
     private SearchRoutesUseCase searchRoutesUseCase;
     private SaveRouteUseCase saveRouteUseCase;
-    private Session session;
+    private CompositeDisposableObserver disposables;
 
-    public SearchRoutesPresenterImpl(SearchRoutesUseCase searchRoutesUseCase, SaveRouteUseCase saveRouteUseCase, Session session) {
+    public SearchRoutesPresenterImpl(SearchRoutesUseCase searchRoutesUseCase, SaveRouteUseCase saveRouteUseCase) {
         this.searchRoutesUseCase = searchRoutesUseCase;
         this.saveRouteUseCase = saveRouteUseCase;
-        this.session = session;
+
+        disposables = new CompositeDisposableObserver();
     }
 
     @Override
@@ -30,6 +33,7 @@ public class SearchRoutesPresenterImpl implements SearchRoutesPresenter {
     @Override
     public void detach() {
         this.searchRoutesView = null;
+        disposables.dispose();
     }
 
     @Override
@@ -39,7 +43,12 @@ public class SearchRoutesPresenterImpl implements SearchRoutesPresenter {
 
     @Override
     public void searchRoutes(String query) {
-        searchRoutesUseCase.execute(createSearchRoutesObserver(), query);
+        DisposableObserver<List<RouteModel>> searchRoutesObserver = createSearchRoutesObserver();
+        disposables.add(searchRoutesObserver);
+
+        searchRoutesUseCase.execute(searchRoutesObserver, query);
+
+        searchRoutesView.showProgress();
     }
 
     @Override
@@ -47,27 +56,31 @@ public class SearchRoutesPresenterImpl implements SearchRoutesPresenter {
         searchRoutesView.showRoutePreview(routeModel);
     }
 
+    @Override
+    public void saveRoute(RouteModel routeModel) {
+        DisposableObserver<Boolean> saveRouteObserver = createSaveRouteObserver();
+        disposables.add(saveRouteObserver);
+
+        saveRouteUseCase.execute(saveRouteObserver, routeModel);
+
+        searchRoutesView.showRouteDetails(routeModel);
+    }
+
     private DisposableObserver<List<RouteModel>> createSearchRoutesObserver() {
-        return new DisposableObserver<List<RouteModel>>() {
+        return new DefaultObserver<List<RouteModel>>() {
             @Override
             public void onNext(List<RouteModel> routeModels) {
                 searchRoutesView.showSearchRouteResults(routeModels);
             }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
         };
     }
 
-    @Override
-    public void saveRoute(RouteModel routeModel) {
-        session.putRouteId(routeModel.getId());
+    private DisposableObserver<Boolean> createSaveRouteObserver() {
+        return new DefaultObserver<Boolean>() {
+            @Override
+            public void onNext(Boolean aBoolean) {
+
+            }
+        };
     }
 }

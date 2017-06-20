@@ -41,7 +41,6 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     @Override
     public void detach() {
         changePasswordView = null;
-        changePasswordUseCase.dispose();
     }
 
     @Override

@@ -39,6 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class RouteSelectionActivity extends BaseActivity implements RouteSelectionView {
     private RouteSelectionPresenter routeSelectionPresenter;
     private RouteIdSuggestionsFragment routeIdSuggestionsFragment;
+    private SearchRoutesFragment searchRoutesFragment;
 
     private MenuItem searchItem;
 
@@ -51,16 +52,19 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
         setSupportActionBar(toolbar);
         setUpActionBar();
 
-        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                boolean canBack = getSupportFragmentManager().getBackStackEntryCount() > 0;
-                getSupportActionBar().setDisplayHomeAsUpEnabled(canBack);
-                if (!canBack) {
-                    searchItem.collapseActionView();
-                    SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-                    searchView.onActionViewCollapsed();
-                }
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            boolean canBack = getSupportFragmentManager().getBackStackEntryCount() > 0;
+            getSupportActionBar().setDisplayHomeAsUpEnabled(canBack);
+            if (!canBack) {
+                searchItem.collapseActionView();
+                SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+                searchView.onActionViewCollapsed();
+            }
+
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0 && searchRoutesFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .remove(searchRoutesFragment)
+                        .commit();
             }
         });
 
@@ -110,9 +114,10 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
         super.onNewIntent(intent);
         if (intent.getAction().equals(Intent.ACTION_SEARCH)) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            SearchRoutesFragment fragment = SearchRoutesFragment.newInstance(query);
+            searchRoutesFragment = SearchRoutesFragment.newInstance(query);
+
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contentFrame, fragment)
+                    .replace(R.id.contentFrame, searchRoutesFragment)
                     .commit();
         }
     }
@@ -133,7 +138,7 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
     }
 
     @Override
-    public void showRouteIdsSuggestion(List<String> routeIds) {
+    public void showRouteIdSuggestions(List<String> routeIds) {
         routeIdSuggestionsFragment.showRouteIdSuggestions(routeIds);
     }
 
@@ -142,5 +147,14 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
         if (actionBar != null) {
             actionBar.setTitle(getResources().getString(R.string.routes));
         }
+    }
+
+    public void collapseSearchView(boolean homeAsUpEnabled) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUpEnabled);
+        }
+        searchItem.collapseActionView();
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.onActionViewCollapsed();
     }
 }

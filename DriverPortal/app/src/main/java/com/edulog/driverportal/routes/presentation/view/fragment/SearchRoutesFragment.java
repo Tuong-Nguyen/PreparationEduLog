@@ -1,5 +1,6 @@
 package com.edulog.driverportal.routes.presentation.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,9 +11,12 @@ import android.view.ViewGroup;
 
 import com.edulog.driverportal.DriverPortalApplication;
 import com.edulog.driverportal.R;
+import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
+import com.edulog.driverportal.routes.data.repository.DriverPortalDbHelper;
+import com.edulog.driverportal.routes.data.repository.RouteRepositoryImpl;
 import com.edulog.driverportal.routes.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routes.domain.interactor.SaveRouteUseCase;
 import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
@@ -22,6 +26,7 @@ import com.edulog.driverportal.routes.data.session.Session;
 import com.edulog.driverportal.routes.presentation.presenter.SearchRoutesPresenter;
 import com.edulog.driverportal.routes.presentation.presenter.SearchRoutesPresenterImpl;
 import com.edulog.driverportal.routes.presentation.view.SearchRoutesView;
+import com.edulog.driverportal.routes.presentation.view.activity.RouteSelectionActivity;
 import com.edulog.driverportal.routes.presentation.view.adapter.SearchResultAdapter;
 
 import java.util.ArrayList;
@@ -53,12 +58,11 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         query = getArguments().getString(KEY_QUERY);
 
         routeModels = new ArrayList<>();
-
+        Session session = ((DriverPortalApplication)getActivity().getApplication()).getSession();
         RouteService routeService = new RouteServiceImpl();
         SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), routeService);
-        SaveRouteUseCase saveRouteUseCase = new SaveRouteUseCase(AndroidSchedulers.mainThread());
-        Session session = ((DriverPortalApplication)getActivity().getApplication()).getSession();
-        searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase, saveRouteUseCase, session);
+        SaveRouteUseCase saveRouteUseCase = new SaveRouteUseCase(AndroidSchedulers.mainThread(), new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity())), session);
+        searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase, saveRouteUseCase);
     }
 
     @Nullable
@@ -75,6 +79,13 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         recyclerView.setAdapter(searchResultAdapter);
 
         return root;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        ((RouteSelectionActivity)getActivity()).collapseSearchView(true);
     }
 
     @Override
@@ -116,6 +127,11 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         RoutePreviewDialogFragment dialogFragment = RoutePreviewDialogFragment.newInstance(routeModel);
         dialogFragment.setTargetFragment(this, 1);
         dialogFragment.show(getActivity().getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void showRouteDetails(RouteModel routeModel) {
+        ((BaseActivity)getActivity()).moveToFragment(RouteDetailsFragment.newInstance(routeModel));
     }
 
     @Override

@@ -4,20 +4,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SessionImpl implements Session {
+    private static final String NAME = "edulog";
+    private static final String KEY_ROUTE_ID = "route_id";
+
     private SharedPreferences sharedPreferences;
 
     public SessionImpl(Context context) {
-        sharedPreferences = context.getSharedPreferences("EDULOG", Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
     }
 
     @Override
     public void putRouteId(String routeId) {
-        putString("route_id", routeId);
+        putString(KEY_ROUTE_ID, routeId);
     }
 
     @Override
     public String getRouteId() {
-        return getString("route_id");
+        return getString(KEY_ROUTE_ID);
     }
 
     private void putString(String key, String value) {

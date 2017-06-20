@@ -1,5 +1,7 @@
 package com.edulog.driverportal.routes.presentation.presenter;
 
+import com.edulog.driverportal.common.presentation.CompositeDisposableObserver;
+import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routes.domain.interactor.RouteIdSuggestionsUseCase;
 import com.edulog.driverportal.routes.presentation.view.RouteSelectionView;
 
@@ -10,9 +12,11 @@ import io.reactivex.observers.DisposableObserver;
 public class RouteSelectionPresenterImpl implements RouteSelectionPresenter {
     private RouteSelectionView routeSelectionView;
     private RouteIdSuggestionsUseCase routeIdSuggestionsUseCase;
+    private CompositeDisposableObserver disposables;
 
     public RouteSelectionPresenterImpl(RouteIdSuggestionsUseCase routeIdSuggestionsUseCase) {
         this.routeIdSuggestionsUseCase = routeIdSuggestionsUseCase;
+        disposables = new CompositeDisposableObserver();
     }
 
     @Override
@@ -23,6 +27,7 @@ public class RouteSelectionPresenterImpl implements RouteSelectionPresenter {
     @Override
     public void detach() {
         routeSelectionView = null;
+        disposables.dispose();
     }
 
     @Override
@@ -32,25 +37,19 @@ public class RouteSelectionPresenterImpl implements RouteSelectionPresenter {
 
     @Override
     public void suggestRouteIds(String query) {
-        routeIdSuggestionsUseCase.execute(createRouteIdSuggestionsObserver(), query);
+        DisposableObserver<List<String>> observer = createRouteIdSuggestionsObserver();
+        disposables.add(observer);
+
+        routeIdSuggestionsUseCase.execute(observer, query);
+
         routeSelectionView.showProgress();
     }
 
     private DisposableObserver<List<String>> createRouteIdSuggestionsObserver() {
-        return new DisposableObserver<List<String>>() {
+        return new DefaultObserver<List<String>>() {
             @Override
             public void onNext(List<String> ids) {
-                routeSelectionView.showRouteIdsSuggestion(ids);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
+                routeSelectionView.showRouteIdSuggestions(ids);
             }
         };
     }

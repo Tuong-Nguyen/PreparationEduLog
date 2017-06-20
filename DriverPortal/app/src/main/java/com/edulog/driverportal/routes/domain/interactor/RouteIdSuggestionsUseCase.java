@@ -5,6 +5,7 @@ import com.edulog.driverportal.routes.data.entity.RouteEntity;
 import com.edulog.driverportal.routes.domain.service.RouteService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -26,10 +27,17 @@ public class RouteIdSuggestionsUseCase extends UseCase<List<String>, String> {
     }
 
     private List<String> getSuggestionIds(List<RouteEntity> routeEntities) {
-        List<String> ids = new ArrayList<>();
-        for (RouteEntity routeEntity : routeEntities) {
-            ids.add(routeEntity.getId());
+        List<String> ids;
+
+        if (routeEntities != null && !routeEntities.isEmpty()) {
+            ids = new ArrayList<>();
+            for (RouteEntity routeEntity : routeEntities) {
+                ids.add(routeEntity.getId());
+            }
+        } else {
+            ids = Collections.emptyList();
         }
+
         return ids;
     }
 }
