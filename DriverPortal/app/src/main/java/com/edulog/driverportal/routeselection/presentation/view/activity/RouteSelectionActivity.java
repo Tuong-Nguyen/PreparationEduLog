@@ -21,6 +21,9 @@ public class RouteSelectionActivity extends BaseActivity {
         });
 
         Button usePreviousRouteButton = (Button)findViewById(R.id.btnUsePreviousRoute);
-        usePreviousRouteButton.setOnClickListener(v -> {});
+        usePreviousRouteButton.setOnClickListener(v -> {
+            Intent intent = new Intent(RouteSelectionActivity.this, PreviousRouteActivity.class);
+            startActivity(intent);
+        });
     }
 }

@@ -30,6 +30,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
+        <activity android:name=".routeselection.presentation.view.activity.PreviousRouteActivity">
+        </activity>
     </application>
 
 </manifest>
