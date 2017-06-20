@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
@@ -55,6 +56,9 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             boolean canBack = getSupportFragmentManager().getBackStackEntryCount() > 0;
+
+            setSearchViewExpandState();
+
             setDisplayHomeAsUp(canBack);
             if (!canBack) {
                 collapseSearchView();
@@ -168,5 +172,18 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
                     .remove(searchRoutesFragment)
                     .commit();
         }
+    }
+
+    private void setSearchViewExpandState() {
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        if (isDisplaySearchSuggestions()) {
+            searchView.setIconifiedByDefault(false);
+        } else {
+            searchView.setIconifiedByDefault(true);
+        }
+    }
+
+    private boolean isDisplaySearchSuggestions() {
+        return routeIdSuggestionsFragment != null && routeIdSuggestionsFragment.isVisible();
     }
 }

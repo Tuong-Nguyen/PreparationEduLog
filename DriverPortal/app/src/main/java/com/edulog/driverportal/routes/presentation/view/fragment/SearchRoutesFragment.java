@@ -72,6 +72,9 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(searchResultAdapter);
 
+        RouteSelectionActivity routeSelectionActivity = (RouteSelectionActivity) getActivity();
+        routeSelectionActivity.setTitle("Search results: " + query);
+
         return root;
     }
 
@@ -79,7 +82,8 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        ((RouteSelectionActivity) getActivity()).normalizeAppBar(true);
+        RouteSelectionActivity routeSelectionActivity = (RouteSelectionActivity) getActivity();
+        routeSelectionActivity.normalizeAppBar(true);
     }
 
     @Override

@@ -74,6 +74,9 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsVi
         routeNameTextView = (TextView) root.findViewById(R.id.tvRouteName);
         stopCountTextView = (TextView) root.findViewById(R.id.tvStopCount);
 
+        RouteSelectionActivity routeSelectionActivity = (RouteSelectionActivity) getActivity();
+        routeSelectionActivity.setTitle(routeId);
+
         return root;
     }
 
@@ -81,7 +84,9 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsVi
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        ((RouteSelectionActivity) getActivity()).normalizeAppBar(false);
+        RouteSelectionActivity routeSelectionActivity = (RouteSelectionActivity) getActivity();
+        routeSelectionActivity.normalizeAppBar(false);
+        routeSelectionActivity.setTitle(routeId);
     }
 
     @Override

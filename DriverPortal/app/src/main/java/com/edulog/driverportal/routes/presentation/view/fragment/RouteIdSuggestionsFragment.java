@@ -1,5 +1,6 @@
 package com.edulog.driverportal.routes.presentation.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.edulog.driverportal.R;
+import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.routes.presentation.view.adapter.RouteIdSuggestionsAdapter;
 
@@ -53,12 +55,22 @@ public class RouteIdSuggestionsFragment extends BaseFragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        ((BaseActivity)getActivity()).setTitle("Search routes");
+
         return root;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        routeIds.clear();
+        routeIdSuggestionsAdapter.notifyDataSetChanged();
     }
 
     public void showRouteIdSuggestions(List<String> routeIds) {

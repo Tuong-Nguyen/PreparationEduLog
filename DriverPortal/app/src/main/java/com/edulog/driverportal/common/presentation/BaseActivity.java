@@ -63,6 +63,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
                 .commit();
     }
 
+    public void setTitle(String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+    }
+
     protected BasePresenter getPresenter() {
         return null;
     }
