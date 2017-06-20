@@ -8,6 +8,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 public abstract class UseCase<T, Params> {
+    // TODO: Change this from constructor DI to property DI - default value: Schedulers.trampoline()
     private Scheduler postExecutionScheduler;
 
     public UseCase(Scheduler postExecutionScheduler) {

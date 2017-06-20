@@ -26,6 +26,7 @@ public class DriverAuthenticateUseCase extends UseCase<Boolean, DriverAuthentica
 
     /**
      * Build driver usecase observable
+     *
      * @param params
      * @return
      */
@@ -34,11 +35,11 @@ public class DriverAuthenticateUseCase extends UseCase<Boolean, DriverAuthentica
         String password = params.password;
         return authenticateService.authenticate(driverId, password)
                 .doOnNext(isSuccess -> {
-            if (!isSuccess) throw new RuntimeException("Authentication was failed.");
-        }).mergeWith(isValidate(params));
+                    if (!isSuccess) throw new RuntimeException("Authentication was failed.");
+                }).mergeWith(isValidate(params));
     }
 
-    private Observable<Boolean> isValidate(Params params){
+    private Observable<Boolean> isValidate(Params params) {
         String busId = params.busId;
         String driverId = params.driverId;
         String password = params.password;
