@@ -39,16 +39,19 @@ public class RouteIdSuggestionsFragment extends BaseFragment {
 
         View root = inflater.inflate(R.layout.fragment_route_id_suggestions, container, false);
 
+        routeIdSuggestionsAdapter = new RouteIdSuggestionsAdapter(routeIds, getActivity());
+        routeIdSuggestionsAdapter.getItemClickObservable().subscribe(routeId -> {
+            PreviewRouteDialogFragment fragment = PreviewRouteDialogFragment.newInstance(routeId);
+            fragment.show(getActivity().getSupportFragmentManager(), null);
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        routeIdSuggestionsAdapter = new RouteIdSuggestionsAdapter(routeIds, getActivity());
         RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.rvRouteIdSuggestions);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(routeIdSuggestionsAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
-
 
         return root;
     }
@@ -60,10 +63,7 @@ public class RouteIdSuggestionsFragment extends BaseFragment {
 
     public void showRouteIdSuggestions(List<String> routeIds) {
         this.routeIds.clear();
-
-        for (String routeId : routeIds) {
-            this.routeIds.add(routeId);
-        }
+        this.routeIds.addAll(routeIds);
 
         routeIdSuggestionsAdapter.notifyDataSetChanged();
     }

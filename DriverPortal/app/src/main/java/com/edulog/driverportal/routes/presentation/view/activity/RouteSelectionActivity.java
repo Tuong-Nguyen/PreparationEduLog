@@ -18,6 +18,8 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
+import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
+import com.edulog.driverportal.routes.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routes.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routes.domain.interactor.RouteIdSuggestionsUseCase;
 import com.edulog.driverportal.routes.domain.service.RouteService;
@@ -53,25 +55,20 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             boolean canBack = getSupportFragmentManager().getBackStackEntryCount() > 0;
-            getSupportActionBar().setDisplayHomeAsUpEnabled(canBack);
+            setDisplayHomeAsUp(canBack);
             if (!canBack) {
-                searchItem.collapseActionView();
-                SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-                searchView.onActionViewCollapsed();
+                collapseSearchView();
             }
 
-            if (getSupportFragmentManager().getBackStackEntryCount() == 0 && searchRoutesFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .remove(searchRoutesFragment)
-                        .commit();
-            }
+            removeSearchFragmentIfAtRoot();
         });
 
         Fragment fragment = RouteSelectionFragment.newInstance();
         openAsRoot(fragment);
 
         Scheduler postExecutionScheduler = AndroidSchedulers.mainThread();
-        RouteService routeService = new RouteServiceImpl();
+        DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
+        RouteService routeService = new RouteServiceImpl(service);
         RouteIdSuggestionsUseCase routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(postExecutionScheduler, routeService);
         routeSelectionPresenter = new RouteSelectionPresenterImpl(routeIdSuggestionsUseCase);
     }
@@ -92,7 +89,7 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
         RxSearchView.queryTextChanges(searchView)
                 .debounce(200, TimeUnit.MILLISECONDS)
                 .filter(query -> query.length() != 0)
-                .map(query -> query.toString())
+                .map(CharSequence::toString)
                 .subscribe(routeSelectionPresenter::suggestRouteIds);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -141,6 +138,11 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
         routeIdSuggestionsFragment.showRouteIdSuggestions(routeIds);
     }
 
+    public void normalizeAppBar(boolean homeAsUpEnabled) {
+        setDisplayHomeAsUp(homeAsUpEnabled);
+        collapseSearchView();
+    }
+
     private void setUpActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -148,12 +150,23 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
         }
     }
 
-    public void collapseSearchView(boolean homeAsUpEnabled) {
+    private void setDisplayHomeAsUp(boolean enabled) {
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUpEnabled);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(enabled);
         }
+    }
+
+    private void collapseSearchView() {
         searchItem.collapseActionView();
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.onActionViewCollapsed();
+    }
+
+    private void removeSearchFragmentIfAtRoot() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0 && searchRoutesFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(searchRoutesFragment)
+                    .commit();
+        }
     }
 }

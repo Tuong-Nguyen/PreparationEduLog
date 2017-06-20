@@ -1,6 +1,5 @@
 package com.edulog.driverportal.routes.presentation.presenter;
 
-import com.edulog.driverportal.routes.domain.interactor.SaveRouteUseCase;
 import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routes.presentation.view.SearchRoutesView;
 
@@ -22,13 +21,11 @@ public class SearchRoutesPresenterTest {
     @Mock
     private SearchRoutesUseCase mockSearchRoutesUseCase;
     @Mock
-    private SaveRouteUseCase mockSaveRouteUseCase;
-    @Mock
     private SearchRoutesView mockSearchRoutesView;
 
     @Before
     public void setUp() throws Exception {
-        searchRoutesPresenter = new SearchRoutesPresenterImpl(mockSearchRoutesUseCase, mockSaveRouteUseCase);
+        searchRoutesPresenter = new SearchRoutesPresenterImpl(mockSearchRoutesUseCase);
         searchRoutesPresenter.attach(mockSearchRoutesView);
     }
 

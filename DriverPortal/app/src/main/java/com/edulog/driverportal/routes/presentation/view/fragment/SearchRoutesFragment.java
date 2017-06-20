@@ -9,17 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.edulog.driverportal.DriverPortalApplication;
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
-import com.edulog.driverportal.routes.data.repository.DriverPortalDbHelper;
-import com.edulog.driverportal.routes.data.repository.RouteRepositoryImpl;
+import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
+import com.edulog.driverportal.routes.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routes.data.service.RouteServiceImpl;
-import com.edulog.driverportal.routes.data.session.Session;
-import com.edulog.driverportal.routes.domain.interactor.SaveRouteUseCase;
 import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.model.RouteModel;
@@ -34,7 +30,7 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class SearchRoutesFragment extends BaseFragment implements SearchRoutesView, RoutePreviewDialogFragment.RoutePreviewDialogListener {
+public class SearchRoutesFragment extends BaseFragment implements SearchRoutesView {
     private static final String KEY_QUERY = "com.edulog.driverportal.KEY_QUERY";
     private String query;
     private List<RouteModel> routeModels;
@@ -56,11 +52,11 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         query = getArguments().getString(KEY_QUERY);
 
         routeModels = new ArrayList<>();
-        Session session = ((DriverPortalApplication) getActivity().getApplication()).getSession();
-        RouteService routeService = new RouteServiceImpl();
+
+        DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
+        RouteService routeService = new RouteServiceImpl(service);
         SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), routeService);
-        SaveRouteUseCase saveRouteUseCase = new SaveRouteUseCase(AndroidSchedulers.mainThread(), new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity())), session);
-        searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase, saveRouteUseCase);
+        searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase);
     }
 
     @Nullable
@@ -70,7 +66,7 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
 
         View root = inflater.inflate(R.layout.fragment_search_routes, container, false);
         searchResultAdapter = new SearchResultAdapter(routeModels, getActivity());
-        searchResultAdapter.getItemClickObservable().subscribe(searchRoutesPresenter::getPreviewRoute);
+        searchResultAdapter.getItemClickObservable().subscribe(this::openPreviewRouteDialog);
 
         RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.rvSearchResults);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -83,7 +79,7 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        ((RouteSelectionActivity) getActivity()).collapseSearchView(true);
+        ((RouteSelectionActivity) getActivity()).normalizeAppBar(true);
     }
 
     @Override
@@ -112,28 +108,13 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
     @Override
     public void showSearchRouteResults(List<RouteModel> routeModels) {
         this.routeModels.clear();
-
-        for (RouteModel routeModel : routeModels) {
-            this.routeModels.add(routeModel);
-        }
+        this.routeModels.addAll(routeModels);
 
         searchResultAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void showRoutePreview(RouteModel routeModel) {
-        RoutePreviewDialogFragment dialogFragment = RoutePreviewDialogFragment.newInstance(routeModel);
-        dialogFragment.setTargetFragment(this, 1);
-        dialogFragment.show(getActivity().getSupportFragmentManager(), null);
-    }
-
-    @Override
-    public void showRouteDetails(RouteModel routeModel) {
-        ((BaseActivity) getActivity()).moveToFragment(RouteDetailsFragment.newInstance(routeModel));
-    }
-
-    @Override
-    public void onDialogPositiveClick(RouteModel routeModel) {
-        searchRoutesPresenter.saveRoute(routeModel);
+    private void openPreviewRouteDialog(RouteModel routeModel) {
+        PreviewRouteDialogFragment previewRouteDialogFragment = PreviewRouteDialogFragment.newInstance(routeModel.getId());
+        previewRouteDialogFragment.show(getActivity().getSupportFragmentManager(), null);
     }
 }

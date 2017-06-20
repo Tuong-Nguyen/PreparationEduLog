@@ -8,19 +8,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.edulog.driverportal.DriverPortalApplication;
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseFragment;
+import com.edulog.driverportal.common.presentation.BasePresenter;
+import com.edulog.driverportal.common.presentation.BaseView;
+import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
+import com.edulog.driverportal.routes.data.net.DriverPortalRouteService;
+import com.edulog.driverportal.routes.data.repository.DriverPortalDbHelper;
+import com.edulog.driverportal.routes.data.repository.RouteRepositoryImpl;
+import com.edulog.driverportal.routes.data.service.RouteServiceImpl;
+import com.edulog.driverportal.routes.data.session.Session;
+import com.edulog.driverportal.routes.domain.interactor.SetActiveRouteUseCase;
+import com.edulog.driverportal.routes.domain.repository.RouteRepository;
+import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.model.RouteModel;
+import com.edulog.driverportal.routes.presentation.presenter.RouteDetailsPresenter;
+import com.edulog.driverportal.routes.presentation.presenter.RouteDetailsPresenterImpl;
+import com.edulog.driverportal.routes.presentation.view.RouteDetailsView;
 import com.edulog.driverportal.routes.presentation.view.activity.RouteSelectionActivity;
 
-public class RouteDetailsFragment extends BaseFragment {
-    private static final String KEY_ROUTE = "com.edulog.driverportal.KEY_ROUTE";
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
-    private RouteModel routeModel;
+public class RouteDetailsFragment extends BaseFragment implements RouteDetailsView {
+    private static final String KEY_ROUTE_ID = "com.edulog.driverportal.KEY_ROUTE_ID";
+    TextView routeIdTextView;
+    TextView routeNameTextView;
+    TextView stopCountTextView;
+    private RouteDetailsPresenter routeDetailsPresenter;
+    private String routeId;
 
-    public static RouteDetailsFragment newInstance(RouteModel routeModel) {
+    public static RouteDetailsFragment newInstance(String routeId) {
         Bundle args = new Bundle();
-        args.putParcelable(KEY_ROUTE, routeModel);
+        args.putString(KEY_ROUTE_ID, routeId);
 
         RouteDetailsFragment fragment = new RouteDetailsFragment();
         fragment.setArguments(args);
@@ -34,8 +54,15 @@ public class RouteDetailsFragment extends BaseFragment {
 
         Bundle args = getArguments();
         if (!args.isEmpty()) {
-            routeModel = args.getParcelable(KEY_ROUTE);
+            routeId = args.getString(KEY_ROUTE_ID);
         }
+
+        DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
+        RouteService routeService = new RouteServiceImpl(service);
+        Session session = ((DriverPortalApplication) getActivity().getApplication()).getSession();
+        RouteRepository routeRepository = new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity()));
+        SetActiveRouteUseCase setActiveRouteUseCase = new SetActiveRouteUseCase(AndroidSchedulers.mainThread(), routeService, routeRepository, session);
+        routeDetailsPresenter = new RouteDetailsPresenterImpl(setActiveRouteUseCase);
     }
 
     @Nullable
@@ -43,14 +70,9 @@ public class RouteDetailsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_route_details, container, false);
 
-        TextView routeIdTextView = (TextView) root.findViewById(R.id.tvRouteId);
-        routeIdTextView.setText(routeModel.getId());
-
-        TextView routeNameTextView = (TextView) root.findViewById(R.id.tvRouteName);
-        routeNameTextView.setText(routeModel.getName());
-
-        TextView stopCountTextView = (TextView) root.findViewById(R.id.tvStopCount);
-        stopCountTextView.setText(String.valueOf(routeModel.getStopCount()));
+        routeIdTextView = (TextView) root.findViewById(R.id.tvRouteId);
+        routeNameTextView = (TextView) root.findViewById(R.id.tvRouteName);
+        stopCountTextView = (TextView) root.findViewById(R.id.tvStopCount);
 
         return root;
     }
@@ -59,6 +81,30 @@ public class RouteDetailsFragment extends BaseFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        ((RouteSelectionActivity) getActivity()).collapseSearchView(false);
+        ((RouteSelectionActivity) getActivity()).normalizeAppBar(false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        routeDetailsPresenter.setActiveRoute(routeId);
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return routeDetailsPresenter;
+    }
+
+    @Override
+    protected BaseView getViewLayer() {
+        return this;
+    }
+
+    @Override
+    public void showRouteDetails(RouteModel routeModel) {
+        routeIdTextView.setText(routeModel.getId());
+        routeNameTextView.setText(routeModel.getName());
+        stopCountTextView.setText(String.valueOf(routeModel.getStopCount()));
     }
 }
