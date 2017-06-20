@@ -26,7 +26,7 @@ import com.edulog.driverportal.routeselection.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsPresenter;
 import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsPresenterImpl;
 import com.edulog.driverportal.routeselection.presentation.view.RouteDetailsView;
-import com.edulog.driverportal.routeselection.presentation.view.activity.RouteSelectionActivity;
+import com.edulog.driverportal.routeselection.presentation.view.activity.NewRouteActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -74,8 +74,8 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsVi
         routeNameTextView = (TextView) root.findViewById(R.id.tvRouteName);
         stopCountTextView = (TextView) root.findViewById(R.id.tvStopCount);
 
-        RouteSelectionActivity routeSelectionActivity = (RouteSelectionActivity) getActivity();
-        routeSelectionActivity.setTitle(routeId);
+        NewRouteActivity newRouteActivity = (NewRouteActivity) getActivity();
+        newRouteActivity.setTitle(routeId);
 
         return root;
     }
@@ -84,9 +84,9 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsVi
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        RouteSelectionActivity routeSelectionActivity = (RouteSelectionActivity) getActivity();
-        routeSelectionActivity.normalizeAppBar(false);
-        routeSelectionActivity.setTitle(routeId);
+        NewRouteActivity newRouteActivity = (NewRouteActivity) getActivity();
+        newRouteActivity.normalizeAppBar(false);
+        newRouteActivity.setTitle(routeId);
     }
 
     @Override

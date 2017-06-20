@@ -4,6 +4,6 @@ import com.edulog.driverportal.common.presentation.BaseView;
 
 import java.util.List;
 
-public interface RouteSelectionView extends BaseView {
+public interface NewRouteView extends BaseView {
     void showRouteIdSuggestions(List<String> routeIds);
 }

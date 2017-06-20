@@ -23,9 +23,9 @@ import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routeselection.domain.interactor.RouteIdSuggestionsUseCase;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.presentation.presenter.RouteSelectionPresenter;
-import com.edulog.driverportal.routeselection.presentation.presenter.RouteSelectionPresenterImpl;
-import com.edulog.driverportal.routeselection.presentation.view.RouteSelectionView;
+import com.edulog.driverportal.routeselection.presentation.presenter.NewRoutePresenter;
+import com.edulog.driverportal.routeselection.presentation.presenter.NewRoutePresenterImpl;
+import com.edulog.driverportal.routeselection.presentation.view.NewRouteView;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.RouteIdSuggestionsFragment;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.RouteSelectionFragment;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.SearchRoutesFragment;
@@ -37,8 +37,8 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class RouteSelectionActivity extends BaseActivity implements RouteSelectionView {
-    private RouteSelectionPresenter routeSelectionPresenter;
+public class NewRouteActivity extends BaseActivity implements NewRouteView {
+    private NewRoutePresenter newRoutePresenter;
     private RouteIdSuggestionsFragment routeIdSuggestionsFragment;
     private SearchRoutesFragment searchRoutesFragment;
 
@@ -47,7 +47,7 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route_selection);
+        setContentView(R.layout.activity_new_route);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,7 +73,7 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
         DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
         RouteIdSuggestionsUseCase routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(postExecutionScheduler, routeService);
-        routeSelectionPresenter = new RouteSelectionPresenterImpl(routeIdSuggestionsUseCase);
+        newRoutePresenter = new NewRoutePresenterImpl(routeIdSuggestionsUseCase);
     }
 
 
@@ -93,7 +93,7 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
                 .debounce(200, TimeUnit.MILLISECONDS)
                 .filter(query -> query.length() != 0)
                 .map(CharSequence::toString)
-                .subscribe(routeSelectionPresenter::suggestRouteIds);
+                .subscribe(newRoutePresenter::suggestRouteIds);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -123,7 +123,7 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
 
     @Override
     protected BasePresenter getPresenter() {
-        return routeSelectionPresenter;
+        return newRoutePresenter;
     }
 
     @Override

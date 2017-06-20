@@ -22,7 +22,7 @@ import com.edulog.driverportal.routeselection.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.presenter.SearchRoutesPresenter;
 import com.edulog.driverportal.routeselection.presentation.presenter.SearchRoutesPresenterImpl;
 import com.edulog.driverportal.routeselection.presentation.view.SearchRoutesView;
-import com.edulog.driverportal.routeselection.presentation.view.activity.RouteSelectionActivity;
+import com.edulog.driverportal.routeselection.presentation.view.activity.NewRouteActivity;
 import com.edulog.driverportal.routeselection.presentation.view.adapter.SearchResultAdapter;
 
 import java.util.ArrayList;
@@ -72,8 +72,8 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(searchResultAdapter);
 
-        RouteSelectionActivity routeSelectionActivity = (RouteSelectionActivity) getActivity();
-        routeSelectionActivity.setTitle("Search results: " + query);
+        NewRouteActivity newRouteActivity = (NewRouteActivity) getActivity();
+        newRouteActivity.setTitle("Search results: " + query);
 
         return root;
     }
@@ -82,8 +82,8 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        RouteSelectionActivity routeSelectionActivity = (RouteSelectionActivity) getActivity();
-        routeSelectionActivity.normalizeAppBar(true);
+        NewRouteActivity newRouteActivity = (NewRouteActivity) getActivity();
+        newRouteActivity.normalizeAppBar(true);
     }
 
     @Override
