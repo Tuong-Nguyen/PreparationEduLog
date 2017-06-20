@@ -1,8 +1,10 @@
 package com.edulog.driverportal.routes.domain.interactor;
 
+import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routes.domain.service.RouteService;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.Mock;
 
@@ -16,6 +18,8 @@ import static org.junit.Assert.*;
 
 public class RouteIdSuggestionsUseCaseTest {
     private RouteIdSuggestionsUseCase routeIdSuggestionsUseCase;
+    @ClassRule
+    public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
     @Mock RouteService mockRouteService;
 
     @Before

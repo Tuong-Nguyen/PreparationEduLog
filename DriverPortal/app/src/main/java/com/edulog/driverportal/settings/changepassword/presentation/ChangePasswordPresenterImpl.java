@@ -10,6 +10,8 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     private ChangePasswordView changePasswordView;
     private ChangePasswordUseCase changePasswordUseCase;
     private ValidationUseCase validationUseCase;
+    private DisposableObserver<ValidationResult> validationObserver;
+    private DisposableObserver<Boolean> changePasswordObserver;
 
     public ChangePasswordPresenterImpl(ChangePasswordUseCase changePasswordUseCase, ValidationUseCase validationUseCase) {
         this.changePasswordUseCase = changePasswordUseCase;
@@ -18,19 +20,18 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
 
     @Override
     public void changePassword(String driverId, String oldPassword, String newPassword) {
-        DisposableObserver<Boolean> observer = createChangePasswordObserver();
+        changePasswordObserver = createChangePasswordObserver();
         ChangePasswordUseCase.Params params = ChangePasswordUseCase.buildParams(driverId, oldPassword, newPassword);
-        changePasswordUseCase.execute(observer, params);
+        changePasswordUseCase.execute(changePasswordObserver, params);
 
         changePasswordView.showProgress();
-        changePasswordView.disableRequestChangePassword();
     }
 
     @Override
     public void validateUserInputs(String driverId, String oldPassword, String newPassword, String confirmNewPassword) {
-        DisposableObserver<ValidationResult> observer = createValidationObserver();
+        validationObserver = createValidationObserver();
         ValidationUseCase.Params params = ValidationUseCase.buildParams(driverId, oldPassword, newPassword, confirmNewPassword);
-        validationUseCase.execute(observer, params);
+        validationUseCase.execute(validationObserver, params);
     }
 
     @Override
@@ -41,6 +42,13 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     @Override
     public void detach() {
         changePasswordView = null;
+
+        if (validationObserver != null && !validationObserver.isDisposed()) {
+            validationObserver.dispose();
+        }
+        if (changePasswordObserver != null && !changePasswordObserver.isDisposed()) {
+            changePasswordObserver.dispose();
+        }
     }
 
     @Override
@@ -52,7 +60,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         return new DisposableObserver<Boolean>() {
             @Override
             public void onNext(Boolean isValid) {
-                changePasswordView.showChangePasswordSuccess("Change password successfully!");
+                changePasswordView.showSuccess("Change password successfully!");
             }
 
             @Override
@@ -63,7 +71,6 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
             @Override
             public void onComplete() {
                 changePasswordView.hideProgress();
-                changePasswordView.enableRequestChangePassword();
             }
         };
     }
@@ -71,19 +78,13 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     private void onChangePasswordError(String message) {
         changePasswordView.showError(message);
         changePasswordView.hideProgress();
-        changePasswordView.enableRequestChangePassword();
     }
 
     private DisposableObserver<ValidationResult> createValidationObserver() {
         return new DisposableObserver<ValidationResult>() {
             @Override
             public void onNext(ValidationResult validationResult) {
-                if (validationResult.isValid()) {
-                    onValidationResultValid(validationResult);
-                } else {
-                    onValidationResultInvalid(validationResult);
-                }
-
+                changePasswordView.showValidationResult(validationResult);
             }
 
             @Override
@@ -96,41 +97,5 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
 
             }
         };
-    }
-
-    private void onValidationResultValid(ValidationResult validationResult) {
-        changePasswordView.enableRequestChangePassword();
-        switch (validationResult.getField()) {
-            case DRIVER_ID:
-                changePasswordView.hideInvalidDriverId();
-                break;
-            case OLD_PASSWORD:
-                changePasswordView.hideInvalidOldPassword();
-                break;
-            case NEW_PASSWORD:
-                changePasswordView.hideInvalidNewPassword();
-                break;
-            case ALL:
-                changePasswordView.hidePasswordDoesNotMatch();
-                break;
-        }
-    }
-
-    private void onValidationResultInvalid(ValidationResult validationResult) {
-        changePasswordView.disableRequestChangePassword();
-        switch (validationResult.getField()) {
-            case DRIVER_ID:
-                changePasswordView.showInvalidDriverId(validationResult.getErrorMessage());
-                break;
-            case OLD_PASSWORD:
-                changePasswordView.showInvalidOldPassword(validationResult.getErrorMessage());
-                break;
-            case NEW_PASSWORD:
-                changePasswordView.showInvalidNewPassword(validationResult.getErrorMessage());
-                break;
-            case ALL:
-                changePasswordView.showPasswordDoesNotMatch();
-                break;
-        }
     }
 }

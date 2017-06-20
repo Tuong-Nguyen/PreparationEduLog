@@ -49,13 +49,6 @@ public class ChangePasswordPresenterTest {
     }
 
     @Test
-    public void changePassword_disableRequestChangePassword() {
-        changePasswordPresenter.changePassword("1", "2", "3");
-
-        verify(mockChangePasswordView).disableRequestChangePassword();
-    }
-
-    @Test
     public void validateUserInputs_useCaseExecuted() {
         changePasswordPresenter.validateUserInputs("1", "2", "3", "3");
 
