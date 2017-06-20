@@ -12,6 +12,7 @@ public class PreviewRoutePresenterImpl implements PreviewRoutePresenter {
     private PreviewRouteView previewRouteView;
     private PreviewRouteUseCase previewRouteUseCase;
 
+    // TODO: This repeats in Presenter classes - Please create a Base class and move this into Base Class
     private CompositeDisposableObserver disposables;
 
     public PreviewRoutePresenterImpl(PreviewRouteUseCase previewRouteUseCase) {
@@ -41,11 +42,13 @@ public class PreviewRoutePresenterImpl implements PreviewRoutePresenter {
         DisposableObserver<RouteModel> previewRouteObserver = createPreviewRouteObserver();
         disposables.add(previewRouteObserver);
 
+        // TODO: Should we showProgress before execute?
         previewRouteUseCase.execute(previewRouteObserver, routeId);
 
         previewRouteView.showProgress();
     }
 
+    // TODO: Please add error handler code
     private DisposableObserver<RouteModel> createPreviewRouteObserver() {
         return new DefaultObserver<RouteModel>() {
             @Override

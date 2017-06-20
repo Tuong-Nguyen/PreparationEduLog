@@ -17,6 +17,7 @@ public class PreviewRouteUseCase extends UseCase<RouteModel, String> {
         this.routeService = routeService;
     }
 
+    // TODO: Transform should be moved to Presenter class
     @Override
     protected Observable<RouteModel> buildUseCaseObservable(String routeId) {
         return routeService.getRoute(routeId)

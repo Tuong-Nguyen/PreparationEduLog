@@ -33,6 +33,7 @@ public class SearchRoutesPresenterTest {
     public void searchRoutes_useCaseExecuted() throws Exception {
         searchRoutesPresenter.searchRoutes("");
 
+        // TODO: we can assert the query instead of anyString
         verify(mockSearchRoutesUseCase).execute(any(DisposableObserver.class), anyString());
     }
 

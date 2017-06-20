@@ -3,6 +3,7 @@ package com.edulog.driverportal.routeselection.data.session;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+// TODO: Move this class into Preference package for reuse
 public class SessionImpl implements Session {
     private static final String NAME = "edulog";
     private static final String KEY_ROUTE_ID = "route_id";

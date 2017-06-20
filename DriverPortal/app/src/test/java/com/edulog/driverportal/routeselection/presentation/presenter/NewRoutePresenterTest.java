@@ -35,6 +35,7 @@ public class NewRoutePresenterTest {
     public void suggestRouteIds_useCaseExecuted() throws Exception {
         newRoutePresenter.suggestRouteIds("0");
 
+        // TODO: we can assert the query instead of anyString
         verify(mockRouteIdSuggestionsUseCase).execute(any(DisposableObserver.class), anyString());
     }
 

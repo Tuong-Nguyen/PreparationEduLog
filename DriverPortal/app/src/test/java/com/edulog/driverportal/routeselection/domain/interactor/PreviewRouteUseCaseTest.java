@@ -31,6 +31,7 @@ public class PreviewRouteUseCaseTest {
         previewRouteUseCase = new PreviewRouteUseCase(AndroidSchedulers.mainThread(), mockRouteService);
     }
 
+    // TODO: I think we can test behaviour, ie: mockRouteServer.getRoute is called - we can test 1 test case instead of 2. Please discuss this.
     @Test
     public void execute_routeExists_returnRouteModel() throws Exception {
         RouteEntity routeEntity = new RouteEntity();

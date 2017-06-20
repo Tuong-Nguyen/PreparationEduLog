@@ -10,6 +10,7 @@ import io.reactivex.observers.DisposableObserver;
 public abstract class UseCase<T, Params> {
     private Scheduler postExecutionScheduler;
 
+    // TODO: Change postExecutionScheduler from constructor DI to set DI - Default value is: Schedulers.trampoline()
     public UseCase(Scheduler postExecutionScheduler) {
         this.postExecutionScheduler = postExecutionScheduler;
     }

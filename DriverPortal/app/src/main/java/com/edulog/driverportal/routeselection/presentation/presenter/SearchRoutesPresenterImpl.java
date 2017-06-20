@@ -47,6 +47,7 @@ public class SearchRoutesPresenterImpl implements SearchRoutesPresenter {
         searchRoutesView.showProgress();
     }
 
+    // TODO: Add error handler
     private DisposableObserver<List<RouteModel>> createSearchRoutesObserver() {
         return new DefaultObserver<List<RouteModel>>() {
             @Override

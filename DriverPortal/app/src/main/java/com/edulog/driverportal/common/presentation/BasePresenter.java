@@ -5,5 +5,6 @@ public interface BasePresenter<V extends BaseView> {
 
     void detach();
 
+    // TODO: This method is not used. Please confirm and remove if Yes
     void onError(String message);
 }

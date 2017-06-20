@@ -46,6 +46,7 @@ public class RouteDetailsPresenterImpl implements RouteDetailsPresenter {
         routeDetailsView.showProgress();
     }
 
+    // TODO: Please add error handler code
     private DisposableObserver<RouteModel> createActiveRouteObserver() {
         return new DefaultObserver<RouteModel>() {
             @Override

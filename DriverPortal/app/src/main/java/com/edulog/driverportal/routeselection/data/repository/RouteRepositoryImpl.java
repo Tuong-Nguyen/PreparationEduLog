@@ -54,6 +54,7 @@ public class RouteRepositoryImpl implements RouteRepository {
         return routeEntities;
     }
 
+    // TODO: This should check
     @Override
     public long insert(RouteEntity routeEntity) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();

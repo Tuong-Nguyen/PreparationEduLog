@@ -34,6 +34,7 @@ public class PreviewRoutePresenterTest {
     public void previewRoute_useCaseExecute() throws Exception {
         previewRoutePresenter.previewRoute("");
 
+        // TODO: we can assert the query instead of anyString
         verify(mockPreviewRouteUseCase).execute(any(Observer.class), anyString());
     }
 
