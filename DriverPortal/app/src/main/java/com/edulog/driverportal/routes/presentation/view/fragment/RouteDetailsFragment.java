@@ -43,13 +43,13 @@ public class RouteDetailsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_route_details, container, false);
 
-        TextView routeIdTextView = (TextView)root.findViewById(R.id.tvRouteId);
+        TextView routeIdTextView = (TextView) root.findViewById(R.id.tvRouteId);
         routeIdTextView.setText(routeModel.getId());
 
-        TextView routeNameTextView = (TextView)root.findViewById(R.id.tvRouteName);
+        TextView routeNameTextView = (TextView) root.findViewById(R.id.tvRouteName);
         routeNameTextView.setText(routeModel.getName());
 
-        TextView stopCountTextView = (TextView)root.findViewById(R.id.tvStopCount);
+        TextView stopCountTextView = (TextView) root.findViewById(R.id.tvStopCount);
         stopCountTextView.setText(String.valueOf(routeModel.getStopCount()));
 
         return root;
@@ -59,6 +59,6 @@ public class RouteDetailsFragment extends BaseFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        ((RouteSelectionActivity)getActivity()).collapseSearchView(false);
+        ((RouteSelectionActivity) getActivity()).collapseSearchView(false);
     }
 }

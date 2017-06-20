@@ -1,6 +1,5 @@
 package com.edulog.driverportal.routes.presentation.presenter;
 
-import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routes.domain.interactor.RouteIdSuggestionsUseCase;
 import com.edulog.driverportal.routes.presentation.view.RouteSelectionView;
 
@@ -14,7 +13,6 @@ import io.reactivex.observers.DisposableObserver;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,20 +26,20 @@ public class RouteSelectionPresenterTest {
     private RouteSelectionView mockRouteSelectionView;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         routeSelectionPresenter = new RouteSelectionPresenterImpl(mockRouteIdSuggestionsUseCase);
         routeSelectionPresenter.attach(mockRouteSelectionView);
     }
 
     @Test
-    public void suggestRouteIds_useCaseExecuted() {
+    public void suggestRouteIds_useCaseExecuted() throws Exception {
         routeSelectionPresenter.suggestRouteIds("0");
 
         verify(mockRouteIdSuggestionsUseCase).execute(any(DisposableObserver.class), anyString());
     }
 
     @Test
-    public void suggestRouteIds_viewShowProgress() {
+    public void suggestRouteIds_viewShowProgress() throws Exception {
         routeSelectionPresenter.suggestRouteIds("0");
 
         verify(mockRouteSelectionView).showProgress();

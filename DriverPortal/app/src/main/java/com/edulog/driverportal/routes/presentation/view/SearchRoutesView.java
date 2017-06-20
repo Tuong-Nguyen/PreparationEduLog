@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface SearchRoutesView extends BaseView {
     void showSearchRouteResults(List<RouteModel> routeModels);
+
     void showRoutePreview(RouteModel routeModel);
+
     void showRouteDetails(RouteModel routeModel);
 }

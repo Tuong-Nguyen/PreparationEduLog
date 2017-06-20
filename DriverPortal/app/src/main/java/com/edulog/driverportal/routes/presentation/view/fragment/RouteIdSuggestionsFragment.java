@@ -42,7 +42,7 @@ public class RouteIdSuggestionsFragment extends BaseFragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         routeIdSuggestionsAdapter = new RouteIdSuggestionsAdapter(routeIds, getActivity());
-        RecyclerView recyclerView = (RecyclerView)root.findViewById(R.id.rvRouteIdSuggestions);
+        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.rvRouteIdSuggestions);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(routeIdSuggestionsAdapter);
 

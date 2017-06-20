@@ -1,7 +1,6 @@
 package com.edulog.driverportal.routes.model;
 
 import com.edulog.driverportal.routes.data.entity.RouteEntity;
-import com.edulog.driverportal.routes.model.RouteModel;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -19,16 +19,6 @@ public class RouteIdSuggestionsAdapter extends RecyclerView.Adapter<RouteIdSugge
         this.context = context;
     }
 
-    class RouteIdViewHolder extends RecyclerView.ViewHolder {
-        public TextView routeIdTextView;
-
-        public RouteIdViewHolder(LayoutInflater inflater, ViewGroup viewGroup) {
-            super(inflater.inflate(R.layout.item_route_id_suggestion, viewGroup, false));
-
-            routeIdTextView = (TextView)itemView.findViewById(R.id.tvRouteId);
-        }
-    }
-
     @Override
     public RouteIdViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -44,5 +34,15 @@ public class RouteIdSuggestionsAdapter extends RecyclerView.Adapter<RouteIdSugge
     @Override
     public int getItemCount() {
         return routeIds.size();
+    }
+
+    class RouteIdViewHolder extends RecyclerView.ViewHolder {
+        public TextView routeIdTextView;
+
+        public RouteIdViewHolder(LayoutInflater inflater, ViewGroup viewGroup) {
+            super(inflater.inflate(R.layout.item_route_id_suggestion, viewGroup, false));
+
+            routeIdTextView = (TextView) itemView.findViewById(R.id.tvRouteId);
+        }
     }
 }

@@ -3,8 +3,6 @@ package com.edulog.driverportal.routes.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import okhttp3.Route;
-
 public class RouteModel implements Parcelable {
     public static final Creator<RouteModel> CREATOR = new Creator<RouteModel>() {
         @Override
@@ -22,7 +20,8 @@ public class RouteModel implements Parcelable {
     private String name;
     private int stopCount;
 
-    public RouteModel() {}
+    public RouteModel() {
+    }
 
     public RouteModel(Parcel source) {
         id = source.readString();

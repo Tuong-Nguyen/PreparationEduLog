@@ -2,7 +2,6 @@ package com.edulog.driverportal.routes.domain.interactor;
 
 import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.routes.data.entity.RouteEntity;
-import com.edulog.driverportal.routes.data.repository.DriverPortalContract;
 import com.edulog.driverportal.routes.data.session.Session;
 import com.edulog.driverportal.routes.domain.repository.RouteRepository;
 import com.edulog.driverportal.routes.model.RouteModel;

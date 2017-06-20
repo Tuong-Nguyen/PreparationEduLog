@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
@@ -25,8 +24,8 @@ import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.presentation.presenter.RouteSelectionPresenter;
 import com.edulog.driverportal.routes.presentation.presenter.RouteSelectionPresenterImpl;
 import com.edulog.driverportal.routes.presentation.view.RouteSelectionView;
-import com.edulog.driverportal.routes.presentation.view.fragment.RouteSelectionFragment;
 import com.edulog.driverportal.routes.presentation.view.fragment.RouteIdSuggestionsFragment;
+import com.edulog.driverportal.routes.presentation.view.fragment.RouteSelectionFragment;
 import com.edulog.driverportal.routes.presentation.view.fragment.SearchRoutesFragment;
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 
@@ -48,7 +47,7 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_selection);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setUpActionBar();
 
@@ -96,7 +95,7 @@ public class RouteSelectionActivity extends BaseActivity implements RouteSelecti
                 .map(query -> query.toString())
                 .subscribe(routeSelectionPresenter::suggestRouteIds);
 
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(true);
 

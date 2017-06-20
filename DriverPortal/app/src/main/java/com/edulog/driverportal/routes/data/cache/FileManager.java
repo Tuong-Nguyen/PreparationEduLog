@@ -1,6 +1,5 @@
 package com.edulog.driverportal.routes.data.cache;
 
-import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -33,12 +32,12 @@ public class FileManager {
     public byte[] readFromBinaryFile(File file) {
         FileInputStream inputStream = null;
         long byteRemaining = file.length();
-        byte[] data = new byte[(int)byteRemaining];
+        byte[] data = new byte[(int) byteRemaining];
         try {
             inputStream = new FileInputStream(file);
             int offset = 0;
             int byteRead;
-            while ((byteRead = inputStream.read(data, offset, (int)byteRemaining)) != -1) {
+            while ((byteRead = inputStream.read(data, offset, (int) byteRemaining)) != -1) {
                 byteRemaining -= byteRead;
                 offset += byteRead;
             }

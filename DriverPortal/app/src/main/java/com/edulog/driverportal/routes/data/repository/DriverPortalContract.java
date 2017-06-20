@@ -3,7 +3,8 @@ package com.edulog.driverportal.routes.data.repository;
 import android.provider.BaseColumns;
 
 public final class DriverPortalContract {
-    private DriverPortalContract() {}
+    private DriverPortalContract() {
+    }
 
     public static class DriverEntry implements BaseColumns {
         public static final String TABLE_NAME = "driver";

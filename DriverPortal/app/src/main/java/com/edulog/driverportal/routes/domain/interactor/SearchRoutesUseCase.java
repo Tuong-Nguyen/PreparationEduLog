@@ -13,8 +13,7 @@ import io.reactivex.Scheduler;
 public class SearchRoutesUseCase extends UseCase<List<RouteModel>, String> {
     private RouteService routeService;
 
-    public SearchRoutesUseCase(Scheduler postExecutionScheduler,
-                               RouteService routeService) {
+    public SearchRoutesUseCase(Scheduler postExecutionScheduler, RouteService routeService) {
         super(postExecutionScheduler);
 
         this.routeService = routeService;

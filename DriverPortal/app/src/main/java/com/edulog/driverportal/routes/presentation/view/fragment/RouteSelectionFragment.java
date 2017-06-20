@@ -1,6 +1,5 @@
 package com.edulog.driverportal.routes.presentation.view.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseFragment;
-import com.edulog.driverportal.routes.presentation.view.activity.RouteSelectionActivity;
 
 public class RouteSelectionFragment extends BaseFragment {
     public static BaseFragment newInstance() {

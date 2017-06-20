@@ -18,11 +18,11 @@ import com.edulog.driverportal.common.presentation.BaseView;
 import com.edulog.driverportal.routes.data.repository.DriverPortalDbHelper;
 import com.edulog.driverportal.routes.data.repository.RouteRepositoryImpl;
 import com.edulog.driverportal.routes.data.service.RouteServiceImpl;
+import com.edulog.driverportal.routes.data.session.Session;
 import com.edulog.driverportal.routes.domain.interactor.SaveRouteUseCase;
 import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.model.RouteModel;
-import com.edulog.driverportal.routes.data.session.Session;
 import com.edulog.driverportal.routes.presentation.presenter.SearchRoutesPresenter;
 import com.edulog.driverportal.routes.presentation.presenter.SearchRoutesPresenterImpl;
 import com.edulog.driverportal.routes.presentation.view.SearchRoutesView;
@@ -36,6 +36,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class SearchRoutesFragment extends BaseFragment implements SearchRoutesView, RoutePreviewDialogFragment.RoutePreviewDialogListener {
     private static final String KEY_QUERY = "com.edulog.driverportal.KEY_QUERY";
+    private String query;
+    private List<RouteModel> routeModels;
+    private SearchResultAdapter searchResultAdapter;
+    private SearchRoutesPresenter searchRoutesPresenter;
 
     public static SearchRoutesFragment newInstance(String query) {
         SearchRoutesFragment fragment = new SearchRoutesFragment();
@@ -45,12 +49,6 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         return fragment;
     }
 
-    private String query;
-    private List<RouteModel> routeModels;
-    private SearchResultAdapter searchResultAdapter;
-
-    private SearchRoutesPresenter searchRoutesPresenter;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +56,7 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         query = getArguments().getString(KEY_QUERY);
 
         routeModels = new ArrayList<>();
-        Session session = ((DriverPortalApplication)getActivity().getApplication()).getSession();
+        Session session = ((DriverPortalApplication) getActivity().getApplication()).getSession();
         RouteService routeService = new RouteServiceImpl();
         SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), routeService);
         SaveRouteUseCase saveRouteUseCase = new SaveRouteUseCase(AndroidSchedulers.mainThread(), new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity())), session);
@@ -74,7 +72,7 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
         searchResultAdapter = new SearchResultAdapter(routeModels, getActivity());
         searchResultAdapter.getItemClickObservable().subscribe(searchRoutesPresenter::getPreviewRoute);
 
-        RecyclerView recyclerView = (RecyclerView)root.findViewById(R.id.rvSearchResults);
+        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.rvSearchResults);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(searchResultAdapter);
 
@@ -85,7 +83,7 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        ((RouteSelectionActivity)getActivity()).collapseSearchView(true);
+        ((RouteSelectionActivity) getActivity()).collapseSearchView(true);
     }
 
     @Override
@@ -131,7 +129,7 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
 
     @Override
     public void showRouteDetails(RouteModel routeModel) {
-        ((BaseActivity)getActivity()).moveToFragment(RouteDetailsFragment.newInstance(routeModel));
+        ((BaseActivity) getActivity()).moveToFragment(RouteDetailsFragment.newInstance(routeModel));
     }
 
     @Override

@@ -16,27 +16,13 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder> {
+    private final PublishSubject<RouteModel> onClickSubject = PublishSubject.create();
     private List<RouteModel> routeModels;
     private Context context;
-    private final PublishSubject<RouteModel> onClickSubject = PublishSubject.create();
 
     public SearchResultAdapter(List<RouteModel> routeModels, Context context) {
         this.routeModels = routeModels;
         this.context = context;
-    }
-
-    class SearchResultViewHolder extends RecyclerView.ViewHolder {
-        public TextView routeIdTextView;
-        public TextView routeNameTextView;
-        public TextView stopCountTextView;
-
-        public SearchResultViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_search_routes_result, parent, false));
-
-            routeIdTextView = (TextView)itemView.findViewById(R.id.tvRouteId);
-            routeNameTextView = (TextView)itemView.findViewById(R.id.tvRouteName);
-            stopCountTextView = (TextView)itemView.findViewById(R.id.tvStopCount);
-        }
     }
 
     @Override
@@ -68,5 +54,19 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     public Observable<RouteModel> getItemClickObservable() {
         return onClickSubject;
+    }
+
+    class SearchResultViewHolder extends RecyclerView.ViewHolder {
+        public TextView routeIdTextView;
+        public TextView routeNameTextView;
+        public TextView stopCountTextView;
+
+        public SearchResultViewHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.item_search_routes_result, parent, false));
+
+            routeIdTextView = (TextView) itemView.findViewById(R.id.tvRouteId);
+            routeNameTextView = (TextView) itemView.findViewById(R.id.tvRouteName);
+            stopCountTextView = (TextView) itemView.findViewById(R.id.tvStopCount);
+        }
     }
 }

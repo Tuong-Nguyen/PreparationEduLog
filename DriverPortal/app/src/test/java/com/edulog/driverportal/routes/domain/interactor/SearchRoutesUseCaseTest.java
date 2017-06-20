@@ -3,6 +3,7 @@ package com.edulog.driverportal.routes.domain.interactor;
 import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routes.data.entity.RouteEntity;
 import com.edulog.driverportal.routes.domain.service.RouteService;
+import com.edulog.driverportal.routes.model.RouteModel;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -12,50 +13,44 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.TestObserver;
 
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RouteIdSuggestionsUseCaseTest {
+public class SearchRoutesUseCaseTest {
     @ClassRule
     public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
-    private RouteIdSuggestionsUseCase routeIdSuggestionsUseCase;
     @Mock
     private RouteService mockRouteService;
+    private SearchRoutesUseCase searchRoutesUseCase;
 
     @Before
     public void setUp() throws Exception {
-        Scheduler postExecutionScheduler = AndroidSchedulers.mainThread();
-        routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(postExecutionScheduler, mockRouteService);
+        searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), mockRouteService);
     }
 
     @Test
-    public void execute_niceQuery_niceIdSuggestions() throws Exception {
-        List<RouteEntity> routeEntities = prepareTestEntities();
-        when(mockRouteService.findRoutes("nice")).thenReturn(Observable.just(routeEntities));
-        TestObserver<List<String>> observer = new TestObserver<>();
+    public void execute_niceQuery_niceRouteModels() throws Exception {
+        TestObserver<List<RouteModel>> observer = new TestObserver<>();
+        when(mockRouteService.findRoutes("nice")).thenReturn(Observable.just(prepareTestEntities()));
 
-        routeIdSuggestionsUseCase.execute(observer, "nice");
+        searchRoutesUseCase.execute(observer, "nice");
 
-        List<String> expectedValues = Arrays.asList("1", "2");
-        observer.assertValue(expectedValues);
+        observer.assertValue(routeModels -> routeModels.get(0).getId().equals("1") && routeModels.get(1).getId().equals("2"));
     }
 
     @Test
     public void execute_badQuery_emptyList() throws Exception {
-        List<RouteEntity> routeEntities = prepareTestEntities();
+        TestObserver<List<RouteModel>> observer = new TestObserver<>();
         when(mockRouteService.findRoutes("bad")).thenReturn(Observable.just(Collections.emptyList()));
-        TestObserver<List<String>> observer = new TestObserver<>();
 
-        routeIdSuggestionsUseCase.execute(observer, "bad");
+        searchRoutesUseCase.execute(observer, "bad");
 
         observer.assertValue(Collections.emptyList());
     }

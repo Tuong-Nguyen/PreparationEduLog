@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.edulog.driverportal.routes.data.entity.RouteEntity;
 import com.edulog.driverportal.routes.domain.repository.RouteRepository;
 
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class RouteRepositoryImpl implements RouteRepository {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String selection = DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ?";
-        String[] selectionArgs = { routeId };
+        String[] selectionArgs = {routeId};
         Cursor cursor = db.query(table, null, selection, selectionArgs, null, null, null);
 
         RouteEntity routeEntity;
@@ -72,7 +71,7 @@ public class RouteRepositoryImpl implements RouteRepository {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         String whereClause = DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ?";
-        String[] whereArgs = { routeId };
+        String[] whereArgs = {routeId};
         db.delete(table, whereClause, whereArgs);
     }
 

@@ -5,7 +5,6 @@ import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routes.domain.interactor.SaveRouteUseCase;
 import com.edulog.driverportal.routes.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routes.model.RouteModel;
-import com.edulog.driverportal.routes.data.session.Session;
 import com.edulog.driverportal.routes.presentation.view.SearchRoutesView;
 
 import java.util.List;
