@@ -10,9 +10,6 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
-/**
- * Created by ntmhanh on 6/21/2017.
- */
 
 public class ErrorValidateUtilsTest {
     private ErrorValidateUtils errorValidateUtils;

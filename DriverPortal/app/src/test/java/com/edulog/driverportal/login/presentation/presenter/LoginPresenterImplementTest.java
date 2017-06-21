@@ -5,8 +5,6 @@ import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
 import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
 import com.edulog.driverportal.login.models.DriverPreferences;
 import com.edulog.driverportal.login.models.Events;
-import com.edulog.driverportal.login.presentation.presenter.LoginPresenterImplement;
-import com.edulog.driverportal.login.presentation.presenter.LoginView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -70,19 +68,11 @@ public class LoginPresenterImplementTest {
     }
 
     @Test
-    public void onLogin_isLoginTrue_returnShowLoginSuccessWasCalled(){
+    public void onLogin_isLoginTrue_returnOnLoggedWasCalled(){
         //Action
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         loginPresenterImplement.onLogin(params);
         //Assert
         verify(loginView).onLogged();
-    }
-    @Test
-    public void onLogin_isLoginFalse_returnShowLoginFailWasCalled(){
-        //Action
-        DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
-        loginPresenterImplement.onLogin(params);
-        //Assert
-        //verify(loginView).onLoginError();
     }
 }
