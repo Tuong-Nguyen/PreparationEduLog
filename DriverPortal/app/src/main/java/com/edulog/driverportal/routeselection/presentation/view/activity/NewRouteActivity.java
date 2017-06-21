@@ -125,11 +125,6 @@ public class NewRouteActivity extends BaseActivity implements NewRouteContract.N
     }
 
     @Override
-    public void showProgress() {
-
-    }
-
-    @Override
     public void showRouteIdSuggestions(List<String> routeIds) {
         routeIdSuggestionsFragment.showRouteIdSuggestions(routeIds);
     }
