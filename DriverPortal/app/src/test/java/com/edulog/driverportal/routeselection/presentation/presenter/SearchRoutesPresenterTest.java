@@ -1,7 +1,6 @@
 package com.edulog.driverportal.routeselection.presentation.presenter;
 
 import com.edulog.driverportal.routeselection.domain.interactor.SearchRoutesUseCase;
-import com.edulog.driverportal.routeselection.presentation.view.SearchRoutesView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +16,11 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SearchRoutesPresenterTest {
-    private SearchRoutesPresenter searchRoutesPresenter;
+    private SearchRoutesContract.SearchRoutesPresenter searchRoutesPresenter;
     @Mock
     private SearchRoutesUseCase mockSearchRoutesUseCase;
     @Mock
-    private SearchRoutesView mockSearchRoutesView;
+    private SearchRoutesContract.SearchRoutesView mockSearchRoutesView;
 
     @Before
     public void setUp() throws Exception {
@@ -31,15 +30,14 @@ public class SearchRoutesPresenterTest {
 
     @Test
     public void searchRoutes_useCaseExecuted() throws Exception {
-        searchRoutesPresenter.searchRoutes("");
+        searchRoutesPresenter.searchRoutes("0");
 
-        // TODO: we can assert the query instead of anyString
         verify(mockSearchRoutesUseCase).execute(any(DisposableObserver.class), anyString());
     }
 
     @Test
     public void searchRoutes_viewShowProgress() throws Exception {
-        searchRoutesPresenter.searchRoutes("");
+        searchRoutesPresenter.searchRoutes("0");
 
         verify(mockSearchRoutesView).showProgress();
     }

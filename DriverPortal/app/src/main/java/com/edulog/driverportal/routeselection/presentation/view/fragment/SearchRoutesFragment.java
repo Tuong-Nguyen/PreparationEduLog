@@ -18,24 +18,21 @@ import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routeselection.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
-import com.edulog.driverportal.routeselection.presentation.presenter.SearchRoutesPresenter;
+import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.presenter.SearchRoutesContract;
 import com.edulog.driverportal.routeselection.presentation.presenter.SearchRoutesPresenterImpl;
-import com.edulog.driverportal.routeselection.presentation.view.SearchRoutesView;
 import com.edulog.driverportal.routeselection.presentation.view.activity.NewRouteActivity;
 import com.edulog.driverportal.routeselection.presentation.view.adapter.SearchResultAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-
-public class SearchRoutesFragment extends BaseFragment implements SearchRoutesView {
+public class SearchRoutesFragment extends BaseFragment implements SearchRoutesContract.SearchRoutesView {
     private static final String KEY_QUERY = "com.edulog.driverportal.KEY_QUERY";
     private String query;
     private List<RouteModel> routeModels;
     private SearchResultAdapter searchResultAdapter;
-    private SearchRoutesPresenter searchRoutesPresenter;
+    private SearchRoutesContract.SearchRoutesPresenter searchRoutesPresenter;
 
     public static SearchRoutesFragment newInstance(String query) {
         SearchRoutesFragment fragment = new SearchRoutesFragment();

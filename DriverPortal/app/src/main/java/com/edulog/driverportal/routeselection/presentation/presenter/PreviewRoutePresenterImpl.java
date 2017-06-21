@@ -1,23 +1,22 @@
 package com.edulog.driverportal.routeselection.presentation.presenter;
 
-import com.edulog.driverportal.common.presentation.CompositeDisposableObserver;
 import com.edulog.driverportal.common.presentation.DefaultObserver;
-import com.edulog.driverportal.routeselection.domain.interactor.PreviewRouteUseCase;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
-import com.edulog.driverportal.routeselection.presentation.view.PreviewRouteView;
+import com.edulog.driverportal.routeselection.domain.interactor.GetRouteUseCase;
+import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class PreviewRoutePresenterImpl extends PreviewRoutePresenter {
-    private PreviewRouteView previewRouteView;
-    private PreviewRouteUseCase previewRouteUseCase;
+public class PreviewRoutePresenterImpl extends PreviewRouteContract.PreviewRoutePresenter {
+    private PreviewRouteContract.PreviewRouteView previewRouteView;
+    private GetRouteUseCase getRouteUseCase;
+    private DisposableObserver<RouteModel> previewRouteObserver;
 
-    public PreviewRoutePresenterImpl(PreviewRouteUseCase previewRouteUseCase) {
-        this.previewRouteUseCase = previewRouteUseCase;
+    public PreviewRoutePresenterImpl(GetRouteUseCase getRouteUseCase) {
+        this.getRouteUseCase = getRouteUseCase;
     }
 
     @Override
-    public void attach(PreviewRouteView previewRouteView) {
+    public void attach(PreviewRouteContract.PreviewRouteView previewRouteView) {
         this.previewRouteView = previewRouteView;
     }
 
@@ -29,12 +28,13 @@ public class PreviewRoutePresenterImpl extends PreviewRoutePresenter {
 
     @Override
     public void previewRoute(String routeId) {
-        DisposableObserver<RouteModel> previewRouteObserver = createPreviewRouteObserver();
+        disposeObserver(previewRouteObserver);
+        previewRouteObserver = createPreviewRouteObserver();
         addDisposable(previewRouteObserver);
 
         previewRouteView.showProgress();
 
-        previewRouteUseCase.execute(previewRouteObserver, routeId);
+        getRouteUseCase.execute(previewRouteObserver, routeId);
     }
 
     private DisposableObserver<RouteModel> createPreviewRouteObserver() {

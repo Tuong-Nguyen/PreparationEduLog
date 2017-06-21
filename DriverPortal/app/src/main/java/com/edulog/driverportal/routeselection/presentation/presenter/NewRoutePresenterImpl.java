@@ -3,22 +3,22 @@ package com.edulog.driverportal.routeselection.presentation.presenter;
 import com.edulog.driverportal.common.presentation.CompositeDisposableObserver;
 import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routeselection.domain.interactor.RouteIdSuggestionsUseCase;
-import com.edulog.driverportal.routeselection.presentation.view.NewRouteView;
 
 import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class NewRoutePresenterImpl extends NewRoutePresenter {
-    private NewRouteView newRouteView;
+public class NewRoutePresenterImpl extends NewRouteContract.NewRoutePresenter {
+    private NewRouteContract.NewRouteView newRouteView;
     private RouteIdSuggestionsUseCase routeIdSuggestionsUseCase;
+    private DisposableObserver<List<String>> routeIdSuggestionsObserver;
 
     public NewRoutePresenterImpl(RouteIdSuggestionsUseCase routeIdSuggestionsUseCase) {
         this.routeIdSuggestionsUseCase = routeIdSuggestionsUseCase;
     }
 
     @Override
-    public void attach(NewRouteView newRouteView) {
+    public void attach(NewRouteContract.NewRouteView newRouteView) {
         this.newRouteView = newRouteView;
     }
 
@@ -30,12 +30,13 @@ public class NewRoutePresenterImpl extends NewRoutePresenter {
 
     @Override
     public void suggestRouteIds(String query) {
-        DisposableObserver<List<String>> observer = createRouteIdSuggestionsObserver();
-        addDisposable(observer);
+        disposeObserver(routeIdSuggestionsObserver);
+        routeIdSuggestionsObserver = createRouteIdSuggestionsObserver();
+        addDisposable(routeIdSuggestionsObserver);
 
         newRouteView.showProgress();
 
-        routeIdSuggestionsUseCase.execute(observer, query);
+        routeIdSuggestionsUseCase.execute(routeIdSuggestionsObserver, query);
     }
 
     private DisposableObserver<List<String>> createRouteIdSuggestionsObserver() {

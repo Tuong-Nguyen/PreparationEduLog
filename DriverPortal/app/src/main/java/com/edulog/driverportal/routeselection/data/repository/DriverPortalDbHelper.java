@@ -9,14 +9,17 @@ public class DriverPortalDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private static final String SQL_CREATE_DRIVER_ENTRY = "CREATE TABLE " + DriverPortalContract.DriverEntry.TABLE_NAME +
-            " (" + DriverPortalContract.DriverEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT)";
+            " (" + DriverPortalContract.DriverEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            DriverPortalContract.DriverEntry.COLUMN_NAME_ID + " TEXT NOT NULL UNIQUE)";
     private static final String SQL_DELETE_DRIVER_ENTRY = "DROP TABLE IF EXISTS " + DriverPortalContract.DriverEntry.TABLE_NAME;
 
     private static final String SQL_CREATE_ROUTE_ENTRY = "CREATE TABLE " + DriverPortalContract.RouteEntry.TABLE_NAME +
             " (" + DriverPortalContract.RouteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " TEXT, " +
-            DriverPortalContract.RouteEntry.COLUMN_NAME_NAME + " TEXT, " +
-            DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT + " INTEGER)";
+            DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " TEXT NOT NULL UNIQUE, " +
+            DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID + " TEXT NOT NULL UNIQUE, " +
+            DriverPortalContract.RouteEntry.COLUMN_NAME_NAME + " TEXT NOT NULL, " +
+            DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT + " INTEGER NOT NULL, " +
+            "FOREIGN KEY(" + DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID + ") REFERENCES " + DriverPortalContract.DriverEntry.TABLE_NAME + "(" + DriverPortalContract.DriverEntry.COLUMN_NAME_ID + ")";
     private static final String SQL_DELETE_ROUTE_ENTRY = "DROP TABLE IF EXISTS " + DriverPortalContract.RouteEntry.TABLE_NAME;
 
     public DriverPortalDbHelper(Context context) {

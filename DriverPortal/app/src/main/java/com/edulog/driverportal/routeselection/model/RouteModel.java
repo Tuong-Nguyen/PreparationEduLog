@@ -1,10 +1,21 @@
-package com.edulog.driverportal.routeselection.data.entity;
+package com.edulog.driverportal.routeselection.model;
 
-public class RouteEntity {
+import android.os.Parcel;
+
+public class RouteModel {
+
     private String id;
-    private String driverId;
     private String name;
     private int stopCount;
+
+    public RouteModel() {
+    }
+
+    public RouteModel(Parcel source) {
+        id = source.readString();
+        name = source.readString();
+        stopCount = source.readInt();
+    }
 
     public String getId() {
         return id;
@@ -12,14 +23,6 @@ public class RouteEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(String driverId) {
-        this.driverId = driverId;
     }
 
     public String getName() {
@@ -37,4 +40,5 @@ public class RouteEntity {
     public void setStopCount(int stopCount) {
         this.stopCount = stopCount;
     }
+
 }

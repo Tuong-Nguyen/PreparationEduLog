@@ -2,8 +2,8 @@ package com.edulog.driverportal.routeselection.domain.interactor;
 
 import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModelDataMapper;
+import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.model.RouteModelDataMapper;
 
 import java.util.List;
 

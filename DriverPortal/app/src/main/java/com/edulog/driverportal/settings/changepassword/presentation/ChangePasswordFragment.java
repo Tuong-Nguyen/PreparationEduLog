@@ -22,10 +22,12 @@ import com.edulog.driverportal.settings.changepassword.domain.service.AuthServic
 import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class ChangePasswordFragment extends BaseFragment implements ChangePasswordView {
+public class ChangePasswordFragment extends BaseFragment implements ChangePasswordContract.ChangePasswordView {
     private TextInputLayout driverIdWrapper;
     private TextInputLayout oldPasswordWrapper;
     private TextInputLayout newPasswordWrapper;
@@ -37,7 +39,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     private Button changePasswordButton;
     private ProgressBar progressBar;
 
-    private ChangePasswordPresenter changePasswordPresenter;
+    private ChangePasswordContract.ChangePasswordPresenter changePasswordPresenter;
 
     public static ChangePasswordFragment newInstance() {
         return new ChangePasswordFragment();
@@ -116,11 +118,13 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     }
 
     @Override
-    public void showValidationResult(ValidationResult validationResult) {
-        if (validationResult.isValid()) {
-            onValidationResultValid(validationResult);
-        } else {
-            onValidationResultInvalid(validationResult);
+    public void showValidationResult(List<ValidationResult> validationResults) {
+        for (ValidationResult validationResult : validationResults) {
+            if (validationResult.isValid()) {
+                onValidationResultValid(validationResult);
+            } else {
+                onValidationResultInvalid(validationResult);
+            }
         }
     }
 
@@ -176,7 +180,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
             case NEW_PASSWORD:
                 hideInvalidNewPassword();
                 break;
-            case ALL:
+            case CONFIRM_NEW_PASSWORD:
                 hidePasswordDoesNotMatch();
                 break;
         }
@@ -194,7 +198,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
             case NEW_PASSWORD:
                 showInvalidNewPassword(validationResult.getErrorMessage());
                 break;
-            case ALL:
+            case CONFIRM_NEW_PASSWORD:
                 showPasswordDoesNotMatch();
                 break;
         }

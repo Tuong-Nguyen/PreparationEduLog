@@ -4,8 +4,8 @@ import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.common.preference.Session;
 import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModelDataMapper;
+import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.model.RouteModelDataMapper;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -27,7 +27,7 @@ public class SetActiveRouteUseCase extends UseCase<RouteModel, String> {
         return routeService.getRoute(routeId)
                 .map(routeEntity -> {
                     // TODO: Why do we need to insert route?
-                    routeRepository.insert(routeEntity);
+                    //routeRepository.insert(routeEntity);
                     session.putRouteId(routeEntity.getId());
                     return RouteModelDataMapper.transform(routeEntity);
                 })

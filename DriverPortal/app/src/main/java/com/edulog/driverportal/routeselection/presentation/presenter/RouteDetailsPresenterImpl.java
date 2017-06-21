@@ -1,23 +1,22 @@
 package com.edulog.driverportal.routeselection.presentation.presenter;
 
-import com.edulog.driverportal.common.presentation.CompositeDisposableObserver;
 import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routeselection.domain.interactor.SetActiveRouteUseCase;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
-import com.edulog.driverportal.routeselection.presentation.view.RouteDetailsView;
+import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class RouteDetailsPresenterImpl extends RouteDetailsPresenter {
-    private RouteDetailsView routeDetailsView;
+public class RouteDetailsPresenterImpl extends RouteDetailsContract.RouteDetailsPresenter {
+    private RouteDetailsContract.RouteDetailsView routeDetailsView;
     private SetActiveRouteUseCase setActiveRouteUseCase;
+    private DisposableObserver<RouteModel> activeRouteObserver;
 
     public RouteDetailsPresenterImpl(SetActiveRouteUseCase setActiveRouteUseCase) {
         this.setActiveRouteUseCase = setActiveRouteUseCase;
     }
 
     @Override
-    public void attach(RouteDetailsView routeDetailsView) {
+    public void attach(RouteDetailsContract.RouteDetailsView routeDetailsView) {
         this.routeDetailsView = routeDetailsView;
     }
 
@@ -29,11 +28,11 @@ public class RouteDetailsPresenterImpl extends RouteDetailsPresenter {
 
     @Override
     public void setActiveRoute(String routeId) {
-        DisposableObserver<RouteModel> activeRouteObserver = createActiveRouteObserver();
+        disposeObserver(activeRouteObserver);
+        activeRouteObserver = createActiveRouteObserver();
         addDisposable(activeRouteObserver);
 
         routeDetailsView.showProgress();
-
         setActiveRouteUseCase.execute(activeRouteObserver, routeId);
     }
 

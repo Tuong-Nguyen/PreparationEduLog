@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
+import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.edulog.driverportal.routeselection.presentation.presenter;
 
-import com.edulog.driverportal.routeselection.domain.interactor.PreviewRouteUseCase;
-import com.edulog.driverportal.routeselection.presentation.view.PreviewRouteView;
+import com.edulog.driverportal.routeselection.domain.interactor.GetRouteUseCase;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,16 +16,16 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PreviewRoutePresenterTest {
-    private PreviewRoutePresenter previewRoutePresenter;
+    private PreviewRouteContract.PreviewRoutePresenter previewRoutePresenter;
 
     @Mock
-    private PreviewRouteUseCase mockPreviewRouteUseCase;
+    private GetRouteUseCase mockGetRouteUseCase;
     @Mock
-    private PreviewRouteView mockPreviewRouteView;
+    private PreviewRouteContract.PreviewRouteView mockPreviewRouteView;
 
     @Before
     public void setUp() throws Exception {
-        previewRoutePresenter = new PreviewRoutePresenterImpl(mockPreviewRouteUseCase);
+        previewRoutePresenter = new PreviewRoutePresenterImpl(mockGetRouteUseCase);
         previewRoutePresenter.attach(mockPreviewRouteView);
     }
 
@@ -35,7 +34,7 @@ public class PreviewRoutePresenterTest {
         previewRoutePresenter.previewRoute("");
 
         // TODO: we can assert the query instead of anyString
-        verify(mockPreviewRouteUseCase).execute(any(Observer.class), anyString());
+        verify(mockGetRouteUseCase).execute(any(Observer.class), anyString());
     }
 
     @Test

@@ -18,4 +18,10 @@ public abstract class BasePresenter<V extends BaseView> {
     protected void addDisposable(Disposable disposable) {
         disposables.add(disposable);
     }
+
+    protected void disposeObserver(Disposable disposable) {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+    }
 }

@@ -3,7 +3,7 @@ package com.edulog.driverportal.routeselection.domain.interactor;
 import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
+import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.TestObserver;
 
 import static org.mockito.Mockito.when;

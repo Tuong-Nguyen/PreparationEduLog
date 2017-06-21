@@ -3,7 +3,7 @@ package com.edulog.driverportal.routeselection.domain.interactor;
 import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
+import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -13,22 +13,21 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.TestObserver;
 
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PreviewRouteUseCaseTest {
+public class GetRouteUseCaseTest {
     @ClassRule
     public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
-    private PreviewRouteUseCase previewRouteUseCase;
+    private GetRouteUseCase getRouteUseCase;
     @Mock
     private RouteService mockRouteService;
 
     @Before
     public void setUp() throws Exception {
-        previewRouteUseCase = new PreviewRouteUseCase(mockRouteService);
+        getRouteUseCase = new GetRouteUseCase(mockRouteService);
     }
 
     // TODO: I think we can test behaviour, ie: mockRouteServer.getRoute is called - we can test 1 test case instead of 2. Please discuss this.
@@ -41,7 +40,7 @@ public class PreviewRouteUseCaseTest {
         TestObserver<RouteModel> observer = new TestObserver<>();
         when(mockRouteService.getRoute("exists_route")).thenReturn(Observable.just(routeEntity));
 
-        previewRouteUseCase.execute(observer, "exists_route");
+        getRouteUseCase.execute(observer, "exists_route");
 
         observer.assertNoErrors();
         observer.assertValue(routeModel -> routeModel.getId().equals(routeEntity.getId()));
@@ -52,7 +51,7 @@ public class PreviewRouteUseCaseTest {
         when(mockRouteService.getRoute("not_exists_route")).thenReturn(Observable.error(new RuntimeException()));
         TestObserver<RouteModel> observer = new TestObserver<>();
 
-        previewRouteUseCase.execute(observer, "not_exists_route");
+        getRouteUseCase.execute(observer, "not_exists_route");
 
         observer.assertError(RuntimeException.class);
     }

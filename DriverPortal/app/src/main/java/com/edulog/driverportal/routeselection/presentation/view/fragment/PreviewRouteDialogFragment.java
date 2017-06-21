@@ -15,19 +15,16 @@ import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
-import com.edulog.driverportal.routeselection.domain.interactor.PreviewRouteUseCase;
+import com.edulog.driverportal.routeselection.domain.interactor.GetRouteUseCase;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
-import com.edulog.driverportal.routeselection.presentation.presenter.PreviewRoutePresenter;
+import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.presenter.PreviewRouteContract;
 import com.edulog.driverportal.routeselection.presentation.presenter.PreviewRoutePresenterImpl;
-import com.edulog.driverportal.routeselection.presentation.view.PreviewRouteView;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-
-public class PreviewRouteDialogFragment extends DialogFragment implements PreviewRouteView {
+public class PreviewRouteDialogFragment extends DialogFragment implements PreviewRouteContract.PreviewRouteView {
     private static final String KEY_ROUTE_ID = "com.edulog.driverportal.KEY_ROUTE_ID";
     private String routeId;
-    private PreviewRoutePresenter previewRoutePresenter;
+    private PreviewRouteContract.PreviewRoutePresenter previewRoutePresenter;
 
     private TextView routeNameTextView;
     private TextView stopCountTextView;
@@ -50,8 +47,8 @@ public class PreviewRouteDialogFragment extends DialogFragment implements Previe
 
         DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
-        PreviewRouteUseCase previewRouteUseCase = new PreviewRouteUseCase(routeService);
-        previewRoutePresenter = new PreviewRoutePresenterImpl(previewRouteUseCase);
+        GetRouteUseCase getRouteUseCase = new GetRouteUseCase(routeService);
+        previewRoutePresenter = new PreviewRoutePresenterImpl(getRouteUseCase);
     }
 
     @NonNull

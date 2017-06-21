@@ -11,7 +11,8 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 
-public class RouteIdSuggestionsUseCase extends UseCase<List<String>, String> {
+public class
+RouteIdSuggestionsUseCase extends UseCase<List<String>, String> {
     private RouteService routeService;
 
     public RouteIdSuggestionsUseCase(RouteService routeService) {

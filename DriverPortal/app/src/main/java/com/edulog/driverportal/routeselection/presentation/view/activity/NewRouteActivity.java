@@ -23,9 +23,8 @@ import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routeselection.domain.interactor.RouteIdSuggestionsUseCase;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.presentation.presenter.NewRoutePresenter;
+import com.edulog.driverportal.routeselection.presentation.presenter.NewRouteContract;
 import com.edulog.driverportal.routeselection.presentation.presenter.NewRoutePresenterImpl;
-import com.edulog.driverportal.routeselection.presentation.view.NewRouteView;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.RouteIdSuggestionsFragment;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.NewRouteFragment;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.SearchRoutesFragment;
@@ -37,8 +36,8 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class NewRouteActivity extends BaseActivity implements NewRouteView {
-    private NewRoutePresenter newRoutePresenter;
+public class NewRouteActivity extends BaseActivity implements NewRouteContract.NewRouteView {
+    private NewRouteContract.NewRoutePresenter newRoutePresenter;
     private RouteIdSuggestionsFragment routeIdSuggestionsFragment;
     private SearchRoutesFragment searchRoutesFragment;
 

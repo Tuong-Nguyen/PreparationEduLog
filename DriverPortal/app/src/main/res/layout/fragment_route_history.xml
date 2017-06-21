@@ -5,8 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/contentFrame"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Previous driven routes (from local database):"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvRouteHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

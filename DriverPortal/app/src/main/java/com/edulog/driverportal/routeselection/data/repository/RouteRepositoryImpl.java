@@ -39,42 +39,6 @@ public class RouteRepositoryImpl implements RouteRepository {
     }
 
     @Override
-    public List<RouteEntity> findAll() {
-        List<RouteEntity> routeEntities = new ArrayList<>();
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(table, null, null, null, null, null, null);
-        while (cursor.moveToNext()) {
-            RouteEntity routeEntity = createRouteEntityFromCursor(cursor);
-            routeEntities.add(routeEntity);
-        }
-
-        cursor.close();
-
-        return routeEntities;
-    }
-
-    @Override
-    public long insert(RouteEntity routeEntity) {
-        long insertedId;
-
-        if (routeEntity != null && !isExists(routeEntity.getId())) {
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-            ContentValues values = new ContentValues();
-            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_ID, routeEntity.getId());
-            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME, routeEntity.getName());
-            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT, routeEntity.getStopCount());
-
-            insertedId =  db.insert(table, null, values);
-        } else {
-            insertedId =  -1;
-        }
-
-        return insertedId;
-    }
-
-    @Override
     public int upsert(RouteEntity routeEntity) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -86,9 +50,9 @@ public class RouteRepositoryImpl implements RouteRepository {
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME, routeEntity.getName());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT, routeEntity.getStopCount());
 
-            if (isExists(routeEntity.getId())) {
-                String whereClause = DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ?";
-                String[] whereArgs = { routeEntity.getId() };
+            if (isExists(routeEntity)) {
+                String whereClause = DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ? AND " + DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID + " = ?";
+                String[] whereArgs = { routeEntity.getId(), routeEntity.getDriverId() };
                 db.update(table, values, whereClause, whereArgs);
             } else {
                 db.insert(table, null, values);
@@ -99,15 +63,6 @@ public class RouteRepositoryImpl implements RouteRepository {
         }
 
         return status;
-    }
-
-    @Override
-    public void delete(String routeId) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        String whereClause = DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ?";
-        String[] whereArgs = {routeId};
-        db.delete(table, whereClause, whereArgs);
     }
 
     private RouteEntity createRouteEntityFromCursor(Cursor cursor) {
@@ -125,11 +80,13 @@ public class RouteRepositoryImpl implements RouteRepository {
         return routeEntity;
     }
 
-    private boolean isExists(String routeId) {
+    private boolean isExists(RouteEntity routeEntity) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT COUNT(*) FROM " + table + " WHERE " + DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ?";
-        String[] selectionArgs = { routeId };
+        String query = "SELECT COUNT(*) FROM " + table +
+                " WHERE " + DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ? AND " +
+                DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID + " = ?";
+        String[] selectionArgs = { routeEntity.getId(), routeEntity.getDriverId() };
         Cursor cursor = db.rawQuery(query, selectionArgs);
 
         int count;

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 public class SessionImpl implements Session {
     private static final String NAME = "edulog";
     private static final String KEY_ROUTE_ID = "route_id";
+    private static final String KEY_DRIVER_ID = "driver_id";
 
     private SharedPreferences sharedPreferences;
 
@@ -21,6 +22,16 @@ public class SessionImpl implements Session {
     @Override
     public String getRouteId() {
         return getString(KEY_ROUTE_ID);
+    }
+
+    @Override
+    public void putDriverId(String driverId) {
+        putString(KEY_DRIVER_ID, driverId);
+    }
+
+    @Override
+    public String getDriverId() {
+        return getString(KEY_DRIVER_ID);
     }
 
     private void putString(String key, String value) {

@@ -22,20 +22,17 @@ import com.edulog.driverportal.common.preference.Session;
 import com.edulog.driverportal.routeselection.domain.interactor.SetActiveRouteUseCase;
 import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
-import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsPresenter;
+import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsContract;
 import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsPresenterImpl;
-import com.edulog.driverportal.routeselection.presentation.view.RouteDetailsView;
 import com.edulog.driverportal.routeselection.presentation.view.activity.NewRouteActivity;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-
-public class RouteDetailsFragment extends BaseFragment implements RouteDetailsView {
+public class RouteDetailsFragment extends BaseFragment implements RouteDetailsContract.RouteDetailsView {
     private static final String KEY_ROUTE_ID = "com.edulog.driverportal.KEY_ROUTE_ID";
     TextView routeIdTextView;
     TextView routeNameTextView;
     TextView stopCountTextView;
-    private RouteDetailsPresenter routeDetailsPresenter;
+    private RouteDetailsContract.RouteDetailsPresenter routeDetailsPresenter;
     private String routeId;
 
     public static RouteDetailsFragment newInstance(String routeId) {
