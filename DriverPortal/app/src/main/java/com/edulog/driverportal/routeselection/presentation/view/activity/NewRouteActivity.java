@@ -125,11 +125,6 @@ public class NewRouteActivity extends BaseActivity implements NewRouteContract.N
     }
 
     @Override
-    protected BaseView getView() {
-        return this;
-    }
-
-    @Override
     public void showProgress() {
 
     }

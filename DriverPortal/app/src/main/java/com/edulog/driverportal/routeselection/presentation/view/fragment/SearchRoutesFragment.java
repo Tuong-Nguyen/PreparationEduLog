@@ -102,11 +102,6 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesCo
     }
 
     @Override
-    protected BaseView getViewLayer() {
-        return this;
-    }
-
-    @Override
     public void showSearchRouteResults(List<RouteModel> routeModels) {
         this.routeModels.clear();
         this.routeModels.addAll(routeModels);

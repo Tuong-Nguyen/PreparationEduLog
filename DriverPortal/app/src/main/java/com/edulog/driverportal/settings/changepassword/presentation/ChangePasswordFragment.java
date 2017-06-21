@@ -108,10 +108,6 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         return changePasswordPresenter;
     }
 
-    @Override
-    protected BaseView getViewLayer() {
-        return this;
-    }
 
     public void showSuccess(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
