@@ -43,6 +43,7 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
     public void detach() {
         changePasswordView = null;
 
+        // TODO: generalize this code and move it to BasePresenter class
         if (validationObserver != null && !validationObserver.isDisposed()) {
             validationObserver.dispose();
         }
