@@ -1,9 +1,9 @@
-package com.edulog.driverportal.login;
+package com.edulog.driverportal.login.domain.inreractor;
 
 import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
 import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateServiceImplement;
-import com.edulog.driverportal.login.domain.utils.LoginValidateUtils;
+import com.edulog.driverportal.login.domain.utils.ErrorValidateUtils;
 import com.edulog.driverportal.login.models.ErrorValidation;
 
 import org.junit.Before;
@@ -24,13 +24,13 @@ public class LoginValidateUseCaseTest {
     private AuthenticateServiceImplement authenticateServiceImplement;
     private LoginValidateUseCase loginValidateUseCase;
     private ErrorValidation errorValidation;
-    private LoginValidateUtils loginValidateUtils;
+    private ErrorValidateUtils errorValidateUtils;
 
     @Before
     public void init(){
         errorValidation = new ErrorValidation();
-        loginValidateUtils = new LoginValidateUtils(errorValidation);
-        authenticateServiceImplement = new AuthenticateServiceImplement(loginValidateUtils);
+        errorValidateUtils = new ErrorValidateUtils(errorValidation);
+        authenticateServiceImplement = new AuthenticateServiceImplement(errorValidateUtils);
         loginValidateUseCase = new LoginValidateUseCase(Schedulers.trampoline(), authenticateServiceImplement);
     }
 

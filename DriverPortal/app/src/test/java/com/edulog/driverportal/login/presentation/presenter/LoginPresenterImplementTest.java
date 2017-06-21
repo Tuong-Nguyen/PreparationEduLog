@@ -1,12 +1,12 @@
-package com.edulog.driverportal.login;
+package com.edulog.driverportal.login.presentation.presenter;
 
 import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
 import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
 import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
 import com.edulog.driverportal.login.models.DriverPreferences;
 import com.edulog.driverportal.login.models.Events;
-import com.edulog.driverportal.login.presentations.presenter.LoginPresenterImplement;
-import com.edulog.driverportal.login.presentations.presenter.LoginView;
+import com.edulog.driverportal.login.presentation.presenter.LoginPresenterImplement;
+import com.edulog.driverportal.login.presentation.presenter.LoginView;
 
 import org.junit.Before;
 import org.junit.Test;

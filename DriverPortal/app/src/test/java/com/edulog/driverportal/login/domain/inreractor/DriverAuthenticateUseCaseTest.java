@@ -1,8 +1,8 @@
-package com.edulog.driverportal.login;
+package com.edulog.driverportal.login.domain.inreractor;
 
 import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateService;
-import com.edulog.driverportal.login.domain.utils.LoginValidateUtils;
+import com.edulog.driverportal.login.domain.utils.ErrorValidateUtils;
 import com.edulog.driverportal.login.models.ErrorValidation;
 
 import org.junit.Before;
@@ -27,16 +27,16 @@ public class DriverAuthenticateUseCaseTest {
     String driverId = "2";
     String password = "123456789";
     private AuthenticateService authenticateService;
-    private LoginValidateUtils loginValidateUtils;
+    private ErrorValidateUtils errorValidateUtils;
     private DriverAuthenticateUseCase driverAuthenticateUseCase;
     private ErrorValidation errorValidation;
 
     @Before
     public void init() {
         authenticateService = Mockito.mock(AuthenticateService.class);
-        loginValidateUtils = Mockito.mock(LoginValidateUtils.class);
+        errorValidateUtils = Mockito.mock(ErrorValidateUtils.class);
         errorValidation = Mockito.mock(ErrorValidation.class);
-        driverAuthenticateUseCase = new DriverAuthenticateUseCase(Schedulers.trampoline(), authenticateService, loginValidateUtils);
+        driverAuthenticateUseCase = new DriverAuthenticateUseCase(Schedulers.trampoline(), authenticateService, errorValidateUtils);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class DriverAuthenticateUseCaseTest {
         // Arrange
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         when(errorValidation.isValid()).thenReturn(true);
-        when(loginValidateUtils.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
+        when(errorValidateUtils.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
         when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
         TestObserver<Boolean> testObserver = new TestObserver<>();
         // Action
@@ -58,7 +58,7 @@ public class DriverAuthenticateUseCaseTest {
         // Arrange
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
         when(errorValidation.isValid()).thenReturn(false);
-        when(loginValidateUtils.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
+        when(errorValidateUtils.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
         when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
         TestObserver<Boolean> testObserver = new TestObserver<>();
         // Action

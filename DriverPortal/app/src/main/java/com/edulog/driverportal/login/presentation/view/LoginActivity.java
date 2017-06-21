@@ -1,4 +1,4 @@
-package com.edulog.driverportal.login.presentations.view;
+package com.edulog.driverportal.login.presentation.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,13 +14,13 @@ import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
 import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateServiceImplement;
 import com.edulog.driverportal.login.domain.services.EventServiceImplement;
-import com.edulog.driverportal.login.domain.utils.LoginValidateUtils;
+import com.edulog.driverportal.login.domain.utils.ErrorValidateUtils;
 import com.edulog.driverportal.login.models.DriverPreferences;
 import com.edulog.driverportal.login.models.Events;
 import com.edulog.driverportal.login.models.ErrorValidation;
-import com.edulog.driverportal.login.presentations.presenter.LoginPresenter;
-import com.edulog.driverportal.login.presentations.presenter.LoginPresenterImplement;
-import com.edulog.driverportal.login.presentations.presenter.LoginView;
+import com.edulog.driverportal.login.presentation.presenter.LoginPresenter;
+import com.edulog.driverportal.login.presentation.presenter.LoginPresenterImplement;
+import com.edulog.driverportal.login.presentation.presenter.LoginView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -46,11 +46,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         btnLogin = (Button)findViewById(R.id.login);
 
         ErrorValidation errorValidation = new ErrorValidation();
-        LoginValidateUtils loginValidateUtils = new LoginValidateUtils(errorValidation);
+        ErrorValidateUtils errorValidateUtils = new ErrorValidateUtils(errorValidation);
 
-        AuthenticateServiceImplement authenticateServiceImplement = new AuthenticateServiceImplement(loginValidateUtils);
+        AuthenticateServiceImplement authenticateServiceImplement = new AuthenticateServiceImplement(errorValidateUtils);
 
-        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(AndroidSchedulers.mainThread(),authenticateServiceImplement, loginValidateUtils);
+        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(AndroidSchedulers.mainThread(),authenticateServiceImplement, errorValidateUtils);
 
         LoginValidateUseCase loginValidateUseCase = new LoginValidateUseCase(AndroidSchedulers.mainThread(), authenticateServiceImplement);
 

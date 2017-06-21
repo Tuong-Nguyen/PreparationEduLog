@@ -1,4 +1,4 @@
-package com.edulog.driverportal.login;
+package com.edulog.driverportal.login.domain.inreractor;
 
 import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
 import com.edulog.driverportal.login.domain.services.EventService;

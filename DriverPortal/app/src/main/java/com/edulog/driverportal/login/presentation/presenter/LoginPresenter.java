@@ -1,4 +1,4 @@
-package com.edulog.driverportal.login.presentations.presenter;
+package com.edulog.driverportal.login.presentation.presenter;
 
 import com.edulog.driverportal.login.models.Events;
 

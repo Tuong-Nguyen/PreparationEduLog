@@ -2,7 +2,7 @@ package com.edulog.driverportal.login.domain.interactors;
 
 import com.edulog.driverportal.common.base.UseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateService;
-import com.edulog.driverportal.login.domain.utils.LoginValidateUtils;
+import com.edulog.driverportal.login.domain.utils.ErrorValidateUtils;
 import com.edulog.driverportal.login.models.ErrorValidation;
 
 import io.reactivex.Observable;
@@ -16,12 +16,12 @@ import io.reactivex.Scheduler;
 public class DriverAuthenticateUseCase extends UseCase<Boolean, DriverAuthenticateUseCase.Params> {
 
     private AuthenticateService authenticateService;
-    private LoginValidateUtils loginValidateUtils;
+    private ErrorValidateUtils errorValidateUtils;
 
-    public DriverAuthenticateUseCase(Scheduler postExecutionScheduler, AuthenticateService authenticateService, LoginValidateUtils loginValidateUtils) {
+    public DriverAuthenticateUseCase(Scheduler postExecutionScheduler, AuthenticateService authenticateService, ErrorValidateUtils errorValidateUtils) {
         super(postExecutionScheduler);
         this.authenticateService = authenticateService;
-        this.loginValidateUtils = loginValidateUtils;
+        this.errorValidateUtils = errorValidateUtils;
     }
 
     /**
@@ -33,7 +33,7 @@ public class DriverAuthenticateUseCase extends UseCase<Boolean, DriverAuthentica
         String busId = params.busId;
         String driverId = params.driverId;
         String password = params.password;
-        ErrorValidation errorValidation = loginValidateUtils.validateLogin(busId, driverId, password);
+        ErrorValidation errorValidation = errorValidateUtils.validateLogin(busId, driverId, password);
         return Observable.just(errorValidation.isValid())
                 .doOnNext(isValid -> {
                     if (!isValid) throw new RuntimeException("Validation was failed ");

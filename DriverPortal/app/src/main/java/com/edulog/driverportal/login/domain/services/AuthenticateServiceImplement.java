@@ -1,6 +1,6 @@
 package com.edulog.driverportal.login.domain.services;
 
-import com.edulog.driverportal.login.domain.utils.LoginValidateUtils;
+import com.edulog.driverportal.login.domain.utils.ErrorValidateUtils;
 import com.edulog.driverportal.login.models.ErrorValidation;
 
 import io.reactivex.Observable;
@@ -10,10 +10,10 @@ import io.reactivex.Observable;
  */
 
 public class AuthenticateServiceImplement implements AuthenticateService {
-    private LoginValidateUtils mLoginValidateUtils;
+    private ErrorValidateUtils mErrorValidateUtils;
 
-    public AuthenticateServiceImplement(LoginValidateUtils loginValidateUtils) {
-            this.mLoginValidateUtils = loginValidateUtils;
+    public AuthenticateServiceImplement(ErrorValidateUtils errorValidateUtils) {
+            this.mErrorValidateUtils = errorValidateUtils;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class AuthenticateServiceImplement implements AuthenticateService {
 
     @Override
     public Observable<ErrorValidation> validate(String busId, String driverId, String password) {
-       ErrorValidation errorValidation = mLoginValidateUtils.validateLogin( busId, driverId, password);
+       ErrorValidation errorValidation = mErrorValidateUtils.validateLogin( busId, driverId, password);
         return Observable.just(errorValidation);
     }
 
