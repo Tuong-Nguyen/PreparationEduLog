@@ -1,11 +1,13 @@
 package com.edulog.driverportal.login;
 
+import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
+import com.edulog.driverportal.login.domain.services.AuthenticateService;
+import com.edulog.driverportal.login.domain.utils.LoginValidateUtils;
+import com.edulog.driverportal.login.models.ErrorValidation;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import com.edulog.driverportal.login.domain.services.AuthenticateService;
-import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
 
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
@@ -20,28 +22,49 @@ import static org.mockito.Mockito.when;
  */
 
 public class DriverAuthenticateUseCaseTest {
-    private DriverAuthenticateUseCase driverAuthenticateUseCase;
+
     String busId = "1";
     String driverId = "2";
-    String password = "123";
-    AuthenticateService authenticateService;
+    String password = "123456789";
+    private AuthenticateService authenticateService;
+    private LoginValidateUtils loginValidateUtils;
+    private DriverAuthenticateUseCase driverAuthenticateUseCase;
+    private ErrorValidation errorValidation;
 
     @Before
     public void init() {
         authenticateService = Mockito.mock(AuthenticateService.class);
-        driverAuthenticateUseCase = new DriverAuthenticateUseCase(Schedulers.trampoline(), authenticateService);
+        loginValidateUtils = Mockito.mock(LoginValidateUtils.class);
+        errorValidation = Mockito.mock(ErrorValidation.class);
+        driverAuthenticateUseCase = new DriverAuthenticateUseCase(Schedulers.trampoline(), authenticateService, loginValidateUtils);
     }
 
     @Test
-    public void execute_inputLoginInformation_returnAuthenticateWasCalled() {
+    public void execute_validateLoginInformation_returnAuthenticateWasCalledAssertValidateAndLoginTrue() {
         // Arrange
         DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
-        when(authenticateService.authenticate(anyString(), anyString())).thenReturn(Observable.just(true));
+        when(errorValidation.isValid()).thenReturn(true);
+        when(loginValidateUtils.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
+        when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
         TestObserver<Boolean> testObserver = new TestObserver<>();
         // Action
         driverAuthenticateUseCase.execute(testObserver, params);
         // Assert
-        verify(authenticateService).authenticate(params.driverId, params.password);
-        testObserver.assertValue(true);
+        verify(authenticateService).login(params.driverId, params.password);
+        testObserver.assertValues(true,true);
+    }
+    @Test
+    public void execute_inValidateLoginInformation_returnAuthenticateWasCalledAssertError() {
+        // Arrange
+        DriverAuthenticateUseCase.Params params = new DriverAuthenticateUseCase.Params(busId, driverId, password);
+        when(errorValidation.isValid()).thenReturn(false);
+        when(loginValidateUtils.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
+        when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
+        TestObserver<Boolean> testObserver = new TestObserver<>();
+        // Action
+        driverAuthenticateUseCase.execute(testObserver, params);
+        // Assert
+        verify(authenticateService).login(params.driverId, params.password);
+        testObserver.assertError(Throwable.class);
     }
 }

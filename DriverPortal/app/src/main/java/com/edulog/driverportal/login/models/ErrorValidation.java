@@ -1,10 +1,10 @@
 package com.edulog.driverportal.login.models;
 
-public class LoginValidation {
+public class ErrorValidation {
     private boolean isValid;
     private String errorMessage;
 
-    public LoginValidation() {
+    public ErrorValidation() {
         isValid = true;
         errorMessage = null;
     }

@@ -5,7 +5,7 @@ import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
 import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
 import com.edulog.driverportal.login.models.DriverPreferences;
 import com.edulog.driverportal.login.models.Events;
-import com.edulog.driverportal.login.models.LoginValidation;
+import com.edulog.driverportal.login.models.ErrorValidation;
 
 import java.lang.ref.WeakReference;
 
@@ -65,12 +65,12 @@ public class LoginPresenterImplement implements LoginPresenter {
     }
 
     /**
-     * Implement authenticateObserve after receiving authenticate driver result
+     * Implement authenticateObserve after receiving login driver result
      */
     public final class AuthenticateObserver extends DisposableObserver<Boolean> {
         @Override
         public void onNext(Boolean isLogin) {
-          onLogin();
+          onLogin(params);
         }
 
         @Override
@@ -84,13 +84,13 @@ public class LoginPresenterImplement implements LoginPresenter {
         }
     }
     /**
-     * Implement authenticateObserve after receiving authenticate driver result
+     * Implement authenticateObserve after receiving login driver result
      */
-    public final class ValidateObserver extends DisposableObserver<LoginValidation> {
+    public final class ValidateObserver extends DisposableObserver<ErrorValidation> {
 
         @Override
-        public void onNext(LoginValidation loginValidation) {
-            mView.get().showLoginValidation(loginValidation);
+        public void onNext(ErrorValidation errorValidation) {
+            mView.get().showLoginValidation(errorValidation);
         }
 
         @Override
@@ -116,7 +116,7 @@ public class LoginPresenterImplement implements LoginPresenter {
 
         @Override
         public void onError(Throwable e) {
-            mView.get().showSentEventFailed(e.getMessage());
+            mView.get().showSentEventFailure(e.getMessage());
         }
 
         @Override
@@ -125,7 +125,7 @@ public class LoginPresenterImplement implements LoginPresenter {
         }
     }
 
-    private void onLogin(){
+    public void onLogin(DriverAuthenticateUseCase.Params params){
         mView.get().onLogged();
         rememberDriverId(params.driverId);
     }

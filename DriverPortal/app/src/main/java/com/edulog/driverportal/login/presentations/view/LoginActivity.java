@@ -17,7 +17,7 @@ import com.edulog.driverportal.login.domain.services.EventServiceImplement;
 import com.edulog.driverportal.login.domain.utils.LoginValidateUtils;
 import com.edulog.driverportal.login.models.DriverPreferences;
 import com.edulog.driverportal.login.models.Events;
-import com.edulog.driverportal.login.models.LoginValidation;
+import com.edulog.driverportal.login.models.ErrorValidation;
 import com.edulog.driverportal.login.presentations.presenter.LoginPresenter;
 import com.edulog.driverportal.login.presentations.presenter.LoginPresenterImplement;
 import com.edulog.driverportal.login.presentations.presenter.LoginView;
@@ -45,7 +45,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         etPassword = (EditText)findViewById(R.id.password);
         btnLogin = (Button)findViewById(R.id.login);
 
-        LoginValidateUtils loginValidateUtils = new LoginValidateUtils(new LoginValidation());
+        ErrorValidation errorValidation = new ErrorValidation();
+        LoginValidateUtils loginValidateUtils = new LoginValidateUtils(errorValidation);
 
         AuthenticateServiceImplement authenticateServiceImplement = new AuthenticateServiceImplement(loginValidateUtils);
 
@@ -101,9 +102,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void showLoginValidation(LoginValidation loginValidation) {
-        if (!loginValidation.isValid()){
-         showErrorValidate(loginValidation.getErrorMessage());
+    public void showLoginValidation(ErrorValidation errorValidation) {
+        if (!errorValidation.isValid()){
+         showErrorValidate(errorValidation.getErrorMessage());
         }
     }
 
@@ -117,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void showSentEventFailed(String message) {
+    public void showSentEventFailure(String message) {
         Toast.makeText(this, "Sending login event is failed", Toast.LENGTH_SHORT).show();
     }
 
