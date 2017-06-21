@@ -18,11 +18,11 @@ import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routeselection.data.repository.DriverPortalDbHelper;
 import com.edulog.driverportal.routeselection.data.repository.RouteRepositoryImpl;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
-import com.edulog.driverportal.routeselection.data.session.Session;
+import com.edulog.driverportal.common.preference.Session;
 import com.edulog.driverportal.routeselection.domain.interactor.SetActiveRouteUseCase;
 import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsPresenter;
 import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsPresenterImpl;
 import com.edulog.driverportal.routeselection.presentation.view.RouteDetailsView;
@@ -61,7 +61,7 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsVi
         RouteService routeService = new RouteServiceImpl(service);
         Session session = ((DriverPortalApplication) getActivity().getApplication()).getSession();
         RouteRepository routeRepository = new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity()));
-        SetActiveRouteUseCase setActiveRouteUseCase = new SetActiveRouteUseCase(AndroidSchedulers.mainThread(), routeService, routeRepository, session);
+        SetActiveRouteUseCase setActiveRouteUseCase = new SetActiveRouteUseCase(routeService, routeRepository, session);
         routeDetailsPresenter = new RouteDetailsPresenterImpl(setActiveRouteUseCase);
     }
 

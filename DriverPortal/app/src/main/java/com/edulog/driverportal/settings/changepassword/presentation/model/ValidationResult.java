@@ -1,6 +1,4 @@
-package com.edulog.driverportal.settings.changepassword.model;
-
-import com.edulog.driverportal.settings.changepassword.model.enums.InputField;
+package com.edulog.driverportal.settings.changepassword.presentation.model;
 
 public class ValidationResult {
     private boolean isValid;

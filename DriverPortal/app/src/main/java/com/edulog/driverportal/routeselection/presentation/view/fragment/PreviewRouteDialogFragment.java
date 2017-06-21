@@ -17,7 +17,7 @@ import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routeselection.domain.interactor.PreviewRouteUseCase;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.presenter.PreviewRoutePresenter;
 import com.edulog.driverportal.routeselection.presentation.presenter.PreviewRoutePresenterImpl;
 import com.edulog.driverportal.routeselection.presentation.view.PreviewRouteView;
@@ -50,7 +50,7 @@ public class PreviewRouteDialogFragment extends DialogFragment implements Previe
 
         DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
-        PreviewRouteUseCase previewRouteUseCase = new PreviewRouteUseCase(AndroidSchedulers.mainThread(), routeService);
+        PreviewRouteUseCase previewRouteUseCase = new PreviewRouteUseCase(routeService);
         previewRoutePresenter = new PreviewRoutePresenterImpl(previewRouteUseCase);
     }
 

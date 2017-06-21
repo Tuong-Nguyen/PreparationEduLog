@@ -19,7 +19,7 @@ import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceI
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
-import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
+import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.Observable;
@@ -48,8 +48,8 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         super.onCreate(savedInstanceState);
 
         AuthService authService = new AuthServiceImpl();
-        ChangePasswordUseCase changePasswordUseCase = new ChangePasswordUseCase(AndroidSchedulers.mainThread(), authService);
-        ValidationUseCase validationUseCase = new ValidationUseCase(AndroidSchedulers.mainThread());
+        ChangePasswordUseCase changePasswordUseCase = new ChangePasswordUseCase(authService);
+        ValidationUseCase validationUseCase = new ValidationUseCase();
         changePasswordPresenter = new ChangePasswordPresenterImpl(changePasswordUseCase, validationUseCase);
     }
 

@@ -54,17 +54,51 @@ public class RouteRepositoryImpl implements RouteRepository {
         return routeEntities;
     }
 
-    // TODO: This should check
     @Override
     public long insert(RouteEntity routeEntity) {
+        long insertedId;
+
+        if (routeEntity != null && !isExists(routeEntity.getId())) {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_ID, routeEntity.getId());
+            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME, routeEntity.getName());
+            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT, routeEntity.getStopCount());
+
+            insertedId =  db.insert(table, null, values);
+        } else {
+            insertedId =  -1;
+        }
+
+        return insertedId;
+    }
+
+    @Override
+    public int upsert(RouteEntity routeEntity) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_ID, routeEntity.getId());
-        values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME, routeEntity.getName());
-        values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT, routeEntity.getStopCount());
+        int status;
 
-        return db.insert(table, null, values);
+        if (routeEntity != null) {
+            ContentValues values = new ContentValues();
+            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_ID, routeEntity.getId());
+            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME, routeEntity.getName());
+            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT, routeEntity.getStopCount());
+
+            if (isExists(routeEntity.getId())) {
+                String whereClause = DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ?";
+                String[] whereArgs = { routeEntity.getId() };
+                db.update(table, values, whereClause, whereArgs);
+            } else {
+                db.insert(table, null, values);
+            }
+            status = 1;
+        } else {
+            status = -1;
+        }
+
+        return status;
     }
 
     @Override
@@ -89,5 +123,23 @@ public class RouteRepositoryImpl implements RouteRepository {
         routeEntity.setStopCount(stopCount);
 
         return routeEntity;
+    }
+
+    private boolean isExists(String routeId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT COUNT(*) FROM " + table + " WHERE " + DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ?";
+        String[] selectionArgs = { routeId };
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        int count;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        } else {
+            count = 0;
+        }
+        cursor.close();
+
+        return count != 0;
     }
 }

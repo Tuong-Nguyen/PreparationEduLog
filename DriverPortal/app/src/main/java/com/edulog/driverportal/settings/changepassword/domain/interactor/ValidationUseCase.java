@@ -1,10 +1,9 @@
 package com.edulog.driverportal.settings.changepassword.domain.interactor;
 
 import com.edulog.driverportal.common.domain.UseCase;
-import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
+import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 
 import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateAll;
 import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateDriverId;
@@ -13,10 +12,6 @@ import static com.edulog.driverportal.settings.changepassword.domain.util.Change
 import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validatePasswordConfirmation;
 
 public class ValidationUseCase extends UseCase<ValidationResult, ValidationUseCase.Params> {
-    public ValidationUseCase(Scheduler postExecutionScheduler) {
-        super(postExecutionScheduler);
-    }
-
     public static Params buildParams(String driverId, String oldPassword, String newPassword, String confirmNewPassword) {
         Params params = new Params();
 

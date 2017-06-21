@@ -1,7 +1,7 @@
 package com.edulog.driverportal.settings.changepassword.domain.util;
 
-import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
-import com.edulog.driverportal.settings.changepassword.model.enums.InputField;
+import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
+import com.edulog.driverportal.settings.changepassword.presentation.model.InputField;
 
 public final class ChangePasswordValidator {
     public static ValidationResult validateDriverId(String driverId) {

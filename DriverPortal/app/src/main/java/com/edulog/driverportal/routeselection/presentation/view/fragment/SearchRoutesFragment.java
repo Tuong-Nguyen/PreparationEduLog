@@ -18,7 +18,7 @@ import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routeselection.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.presenter.SearchRoutesPresenter;
 import com.edulog.driverportal.routeselection.presentation.presenter.SearchRoutesPresenterImpl;
 import com.edulog.driverportal.routeselection.presentation.view.SearchRoutesView;
@@ -55,7 +55,7 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesVi
 
         DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
-        SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), routeService);
+        SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(routeService);
         searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase);
     }
 

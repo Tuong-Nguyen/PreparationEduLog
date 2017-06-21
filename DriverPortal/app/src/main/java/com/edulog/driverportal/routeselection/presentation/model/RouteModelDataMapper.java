@@ -1,4 +1,4 @@
-package com.edulog.driverportal.routeselection.model;
+package com.edulog.driverportal.routeselection.presentation.model;
 
 import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 

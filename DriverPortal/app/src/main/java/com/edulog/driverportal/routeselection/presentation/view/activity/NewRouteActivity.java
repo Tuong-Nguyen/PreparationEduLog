@@ -69,10 +69,9 @@ public class NewRouteActivity extends BaseActivity implements NewRouteView {
         Fragment fragment = NewRouteFragment.newInstance();
         openAsRoot(fragment);
 
-        Scheduler postExecutionScheduler = AndroidSchedulers.mainThread();
         DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
-        RouteIdSuggestionsUseCase routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(postExecutionScheduler, routeService);
+        RouteIdSuggestionsUseCase routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(routeService);
         newRoutePresenter = new NewRoutePresenterImpl(routeIdSuggestionsUseCase);
     }
 

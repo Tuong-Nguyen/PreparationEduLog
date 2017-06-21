@@ -1,7 +1,7 @@
 package com.edulog.driverportal.settings.changepassword.domain.interactor;
 
 import com.edulog.driverportal.RxImmediateSchedulerRule;
-import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
+import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -18,7 +18,7 @@ public class ValidationUseCaseTest {
 
     @Before
     public void setUp() {
-        validationUseCase = new ValidationUseCase(AndroidSchedulers.mainThread());
+        validationUseCase = new ValidationUseCase();
     }
 
     @Test

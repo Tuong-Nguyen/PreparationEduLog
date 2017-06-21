@@ -3,7 +3,7 @@ package com.edulog.driverportal.routeselection.domain.interactor;
 import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -28,7 +28,7 @@ public class PreviewRouteUseCaseTest {
 
     @Before
     public void setUp() throws Exception {
-        previewRouteUseCase = new PreviewRouteUseCase(AndroidSchedulers.mainThread(), mockRouteService);
+        previewRouteUseCase = new PreviewRouteUseCase(mockRouteService);
     }
 
     // TODO: I think we can test behaviour, ie: mockRouteServer.getRoute is called - we can test 1 test case instead of 2. Please discuss this.

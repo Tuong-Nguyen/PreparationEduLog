@@ -3,16 +3,17 @@ package com.edulog.driverportal.common.domain;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public abstract class UseCase<T, Params> {
     private Scheduler postExecutionScheduler;
 
-    // TODO: Change postExecutionScheduler from constructor DI to set DI - Default value is: Schedulers.trampoline()
-    public UseCase(Scheduler postExecutionScheduler) {
-        this.postExecutionScheduler = postExecutionScheduler;
+    public UseCase() {
+        this.postExecutionScheduler = AndroidSchedulers.mainThread();
     }
 
     protected abstract Observable<T> buildUseCaseObservable(Params params);
@@ -23,5 +24,9 @@ public abstract class UseCase<T, Params> {
         observable
                 .observeOn(postExecutionScheduler)
                 .subscribe(observer);
+    }
+
+    public void setPostExecutionScheduler(Scheduler scheduler) {
+        this.postExecutionScheduler = scheduler;
     }
 }

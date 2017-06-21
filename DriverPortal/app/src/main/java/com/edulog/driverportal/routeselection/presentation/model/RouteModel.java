@@ -1,9 +1,8 @@
-package com.edulog.driverportal.routeselection.model;
+package com.edulog.driverportal.routeselection.presentation.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-// TODO: RouteModel and RouteModelDataMapper should be in presentation package
 public class RouteModel implements Parcelable {
     public static final Creator<RouteModel> CREATOR = new Creator<RouteModel>() {
         @Override

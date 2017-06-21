@@ -14,9 +14,7 @@ import io.reactivex.Scheduler;
 public class RouteIdSuggestionsUseCase extends UseCase<List<String>, String> {
     private RouteService routeService;
 
-    public RouteIdSuggestionsUseCase(Scheduler postExecutionScheduler, RouteService routeService) {
-        super(postExecutionScheduler);
-
+    public RouteIdSuggestionsUseCase(RouteService routeService) {
         this.routeService = routeService;
     }
 

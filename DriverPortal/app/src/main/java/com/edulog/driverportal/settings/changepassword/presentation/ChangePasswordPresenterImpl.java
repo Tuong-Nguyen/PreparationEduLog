@@ -2,11 +2,11 @@ package com.edulog.driverportal.settings.changepassword.presentation;
 
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
-import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
+import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
+public class ChangePasswordPresenterImpl extends ChangePasswordPresenter {
     private ChangePasswordView changePasswordView;
     private ChangePasswordUseCase changePasswordUseCase;
     private ValidationUseCase validationUseCase;
@@ -49,11 +49,6 @@ public class ChangePasswordPresenterImpl implements ChangePasswordPresenter {
         if (changePasswordObserver != null && !changePasswordObserver.isDisposed()) {
             changePasswordObserver.dispose();
         }
-    }
-
-    @Override
-    public void onError(String message) {
-        // on error
     }
 
     private DisposableObserver<Boolean> createChangePasswordObserver() {

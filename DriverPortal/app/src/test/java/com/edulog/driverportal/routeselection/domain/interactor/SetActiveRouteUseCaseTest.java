@@ -2,10 +2,10 @@ package com.edulog.driverportal.routeselection.domain.interactor;
 
 import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
-import com.edulog.driverportal.routeselection.data.session.Session;
+import com.edulog.driverportal.common.preference.Session;
 import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -36,8 +36,7 @@ public class SetActiveRouteUseCaseTest {
 
     @Before
     public void setUp() throws Exception {
-        setActiveRouteUseCase = new SetActiveRouteUseCase(AndroidSchedulers.mainThread(),
-                mockRouteService, mockRouteRepository, mockSession);
+        setActiveRouteUseCase = new SetActiveRouteUseCase(mockRouteService, mockRouteRepository, mockSession);
     }
 
     @Test

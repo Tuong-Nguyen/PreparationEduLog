@@ -3,21 +3,17 @@ package com.edulog.driverportal.routeselection.presentation.presenter;
 import com.edulog.driverportal.common.presentation.CompositeDisposableObserver;
 import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routeselection.domain.interactor.SetActiveRouteUseCase;
-import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.view.RouteDetailsView;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class RouteDetailsPresenterImpl implements RouteDetailsPresenter {
+public class RouteDetailsPresenterImpl extends RouteDetailsPresenter {
     private RouteDetailsView routeDetailsView;
     private SetActiveRouteUseCase setActiveRouteUseCase;
 
-    private CompositeDisposableObserver disposables;
-
     public RouteDetailsPresenterImpl(SetActiveRouteUseCase setActiveRouteUseCase) {
         this.setActiveRouteUseCase = setActiveRouteUseCase;
-
-        disposables = new CompositeDisposableObserver();
     }
 
     @Override
@@ -27,32 +23,32 @@ public class RouteDetailsPresenterImpl implements RouteDetailsPresenter {
 
     @Override
     public void detach() {
+        super.detach();
         routeDetailsView = null;
-        disposables.dispose();
-    }
-
-    @Override
-    public void onError(String message) {
-
     }
 
     @Override
     public void setActiveRoute(String routeId) {
         DisposableObserver<RouteModel> activeRouteObserver = createActiveRouteObserver();
-        disposables.add(activeRouteObserver);
-
-        setActiveRouteUseCase.execute(activeRouteObserver, routeId);
+        addDisposable(activeRouteObserver);
 
         routeDetailsView.showProgress();
+
+        setActiveRouteUseCase.execute(activeRouteObserver, routeId);
     }
 
-    // TODO: Please add error handler code
     private DisposableObserver<RouteModel> createActiveRouteObserver() {
         return new DefaultObserver<RouteModel>() {
             @Override
             public void onNext(RouteModel routeModel) {
-                routeDetailsView.showRouteDetails(routeModel);
                 routeDetailsView.hideProgress();
+                routeDetailsView.showRouteDetails(routeModel);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                routeDetailsView.hideProgress();
+                routeDetailsView.showError(e.getMessage());
             }
         };
     }

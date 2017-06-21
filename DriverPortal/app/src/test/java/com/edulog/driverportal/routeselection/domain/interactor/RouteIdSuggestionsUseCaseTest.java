@@ -33,8 +33,7 @@ public class RouteIdSuggestionsUseCaseTest {
 
     @Before
     public void setUp() throws Exception {
-        Scheduler postExecutionScheduler = AndroidSchedulers.mainThread();
-        routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(postExecutionScheduler, mockRouteService);
+        routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(mockRouteService);
     }
 
     @Test

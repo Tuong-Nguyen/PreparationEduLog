@@ -31,8 +31,7 @@ public class ChangePasswordUseCaseTest {
 
     @Before
     public void setUp() {
-        Scheduler postExecutionScheduler = AndroidSchedulers.mainThread();
-        changePasswordUseCase = new ChangePasswordUseCase(postExecutionScheduler, mockAuthService);
+        changePasswordUseCase = new ChangePasswordUseCase(mockAuthService);
     }
 
     @Test

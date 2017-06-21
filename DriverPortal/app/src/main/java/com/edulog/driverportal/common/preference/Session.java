@@ -1,4 +1,4 @@
-package com.edulog.driverportal.routeselection.data.session;
+package com.edulog.driverportal.common.preference;
 
 public interface Session {
     void putRouteId(String routeId);

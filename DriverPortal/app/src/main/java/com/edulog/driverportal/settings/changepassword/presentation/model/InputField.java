@@ -1,4 +1,4 @@
-package com.edulog.driverportal.settings.changepassword.model.enums;
+package com.edulog.driverportal.settings.changepassword.presentation.model;
 
 public enum InputField {
     DRIVER_ID,

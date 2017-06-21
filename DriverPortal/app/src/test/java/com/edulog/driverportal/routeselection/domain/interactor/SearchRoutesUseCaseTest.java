@@ -3,7 +3,7 @@ package com.edulog.driverportal.routeselection.domain.interactor;
 import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
-import com.edulog.driverportal.routeselection.model.RouteModel;
+import com.edulog.driverportal.routeselection.presentation.model.RouteModel;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -32,7 +32,7 @@ public class SearchRoutesUseCaseTest {
 
     @Before
     public void setUp() throws Exception {
-        searchRoutesUseCase = new SearchRoutesUseCase(AndroidSchedulers.mainThread(), mockRouteService);
+        searchRoutesUseCase = new SearchRoutesUseCase(mockRouteService);
     }
 
     @Test
