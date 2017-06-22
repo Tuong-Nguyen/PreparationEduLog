@@ -8,6 +8,7 @@ import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RouteRepositoryImpl implements RouteRepository {
@@ -47,6 +48,7 @@ public class RouteRepositoryImpl implements RouteRepository {
         if (routeEntity != null) {
             ContentValues values = new ContentValues();
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_ID, routeEntity.getId());
+            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID, routeEntity.getDriverId());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME, routeEntity.getName());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT, routeEntity.getStopCount());
 
@@ -65,11 +67,31 @@ public class RouteRepositoryImpl implements RouteRepository {
         return status;
     }
 
+    @Override
+    public List<RouteEntity> findByDriverId(String driverId) {
+        List<RouteEntity> routeEntities = new ArrayList<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selection = DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID + " = ?";
+        String[] selectionArgs = { driverId };
+        try (Cursor cursor = db.query(table, null, selection, selectionArgs, null, null, null)) {
+            while (cursor.moveToNext()) {
+                RouteEntity routeEntity = createRouteEntityFromCursor(cursor);
+                routeEntities.add(routeEntity);
+            }
+        }
+
+        return routeEntities;
+    }
+
     private RouteEntity createRouteEntityFromCursor(Cursor cursor) {
         RouteEntity routeEntity = new RouteEntity();
 
         String id = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_ID));
         routeEntity.setId(id);
+
+        String driverId = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID));
+        routeEntity.setDriverId(driverId);
 
         String name = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME));
         routeEntity.setName(name);

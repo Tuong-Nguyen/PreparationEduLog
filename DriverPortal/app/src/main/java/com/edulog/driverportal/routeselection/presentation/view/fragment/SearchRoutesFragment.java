@@ -18,6 +18,7 @@ import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routeselection.domain.interactor.SearchRoutesUseCase;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.presenter.SearchRoutesContract;
 import com.edulog.driverportal.routeselection.presentation.presenter.SearchRoutesPresenterImpl;
@@ -115,7 +116,7 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesCo
     }
 
     private void openPreviewRouteDialog(RouteModel routeModel) {
-        PreviewRouteDialogFragment previewRouteDialogFragment = PreviewRouteDialogFragment.newInstance(routeModel.getId());
+        PreviewRouteDialogFragment previewRouteDialogFragment = PreviewRouteDialogFragment.newInstance(routeModel.getId(), LoadMode.REMOTE);
         previewRouteDialogFragment.show(getActivity().getSupportFragmentManager(), null);
     }
 }

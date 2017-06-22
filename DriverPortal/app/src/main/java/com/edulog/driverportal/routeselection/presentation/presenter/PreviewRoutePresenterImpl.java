@@ -2,6 +2,7 @@ package com.edulog.driverportal.routeselection.presentation.presenter;
 
 import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routeselection.domain.interactor.GetRouteUseCase;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import io.reactivex.observers.DisposableObserver;
@@ -27,14 +28,15 @@ public class PreviewRoutePresenterImpl extends PreviewRouteContract.PreviewRoute
     }
 
     @Override
-    public void previewRoute(String routeId) {
+    public void previewRoute(String routeId, LoadMode loadMode) {
         disposeObserver(previewRouteObserver);
         previewRouteObserver = createPreviewRouteObserver();
         addDisposable(previewRouteObserver);
 
         previewRouteView.showProgress();
 
-        getRouteUseCase.execute(previewRouteObserver, routeId);
+        GetRouteUseCase.Params params = GetRouteUseCase.buildParams(routeId, loadMode);
+        getRouteUseCase.execute(previewRouteObserver, params);
     }
 
     private DisposableObserver<RouteModel> createPreviewRouteObserver() {

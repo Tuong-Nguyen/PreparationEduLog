@@ -22,6 +22,7 @@ import com.edulog.driverportal.common.preference.Session;
 import com.edulog.driverportal.routeselection.domain.interactor.SetActiveRouteUseCase;
 import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsContract;
 import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsPresenterImpl;
@@ -29,15 +30,20 @@ import com.edulog.driverportal.routeselection.presentation.view.activity.NewRout
 
 public class RouteDetailsFragment extends BaseFragment implements RouteDetailsContract.RouteDetailsView {
     private static final String KEY_ROUTE_ID = "com.edulog.driverportal.KEY_ROUTE_ID";
-    TextView routeIdTextView;
-    TextView routeNameTextView;
-    TextView stopCountTextView;
-    private RouteDetailsContract.RouteDetailsPresenter routeDetailsPresenter;
-    private String routeId;
+    private static final String KEY_LOAD_MORE = "com.edulog.driverportal.KEY_LOAD_MORE";
 
-    public static RouteDetailsFragment newInstance(String routeId) {
+    private String routeId;
+    private LoadMode loadMode;
+    private RouteDetailsContract.RouteDetailsPresenter routeDetailsPresenter;
+
+    private TextView routeIdTextView;
+    private TextView routeNameTextView;
+    private TextView stopCountTextView;
+
+    public static RouteDetailsFragment newInstance(String routeId, LoadMode loadMode) {
         Bundle args = new Bundle();
         args.putString(KEY_ROUTE_ID, routeId);
+        args.putSerializable(KEY_LOAD_MORE, loadMode);
 
         RouteDetailsFragment fragment = new RouteDetailsFragment();
         fragment.setArguments(args);
@@ -52,6 +58,7 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsCo
         Bundle args = getArguments();
         if (!args.isEmpty()) {
             routeId = args.getString(KEY_ROUTE_ID);
+            loadMode = (LoadMode)args.getSerializable(KEY_LOAD_MORE);
         }
 
         DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
@@ -71,26 +78,19 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsCo
         routeNameTextView = (TextView) root.findViewById(R.id.tvRouteName);
         stopCountTextView = (TextView) root.findViewById(R.id.tvStopCount);
 
-        NewRouteActivity newRouteActivity = (NewRouteActivity) getActivity();
-        newRouteActivity.setTitle(routeId);
-
         return root;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        NewRouteActivity newRouteActivity = (NewRouteActivity) getActivity();
-        newRouteActivity.normalizeAppBar(false);
-        newRouteActivity.setTitle(routeId);
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        routeDetailsPresenter.setActiveRoute(routeId);
+        routeDetailsPresenter.setActiveRoute(routeId, loadMode);
     }
 
     @Override

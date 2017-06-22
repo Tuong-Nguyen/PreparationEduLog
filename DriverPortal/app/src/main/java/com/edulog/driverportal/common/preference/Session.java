@@ -8,4 +8,6 @@ public interface Session {
     void putDriverId(String driverId);
 
     String getDriverId();
+
+    void clear();
 }

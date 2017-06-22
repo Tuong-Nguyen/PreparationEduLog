@@ -11,8 +11,12 @@ import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+
 public class RouteHistoryAdapter extends RecyclerView.Adapter<RouteHistoryAdapter.ViewHolder> {
     private List<RouteModel> routeModels;
+    private PublishSubject<RouteModel> onClickSubject = PublishSubject.create();
 
     public RouteHistoryAdapter(List<RouteModel> routeModels) {
         this.routeModels = routeModels;
@@ -45,10 +49,16 @@ public class RouteHistoryAdapter extends RecyclerView.Adapter<RouteHistoryAdapte
         viewHolder.routeId.setText(routeModel.getId());
         viewHolder.routeName.setText(routeModel.getName());
         viewHolder.stopCount.setText(String.valueOf(routeModel.getStopCount()));
+
+        viewHolder.itemView.setOnClickListener(v -> onClickSubject.onNext(routeModel));
     }
 
     @Override
     public int getItemCount() {
         return routeModels.size();
+    }
+
+    public Observable<RouteModel> getItemClickObservable() {
+        return onClickSubject;
     }
 }

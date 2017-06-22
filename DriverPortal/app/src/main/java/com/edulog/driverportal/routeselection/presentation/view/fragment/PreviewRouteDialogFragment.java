@@ -14,26 +14,34 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
+import com.edulog.driverportal.routeselection.data.repository.DriverPortalDbHelper;
+import com.edulog.driverportal.routeselection.data.repository.RouteRepositoryImpl;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routeselection.domain.interactor.GetRouteUseCase;
+import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.presenter.PreviewRouteContract;
 import com.edulog.driverportal.routeselection.presentation.presenter.PreviewRoutePresenterImpl;
 
 public class PreviewRouteDialogFragment extends DialogFragment implements PreviewRouteContract.PreviewRouteView {
     private static final String KEY_ROUTE_ID = "com.edulog.driverportal.KEY_ROUTE_ID";
+    private static final String KEY_LOAD_MODE = "com.edulog.driverportal.KEY_LOAD_MODE";
+
     private String routeId;
+    private LoadMode loadMode;
     private PreviewRouteContract.PreviewRoutePresenter previewRoutePresenter;
 
     private TextView routeNameTextView;
     private TextView stopCountTextView;
 
-    public static PreviewRouteDialogFragment newInstance(String routeId) {
+    public static PreviewRouteDialogFragment newInstance(String routeId, LoadMode loadMode) {
         PreviewRouteDialogFragment fragment = new PreviewRouteDialogFragment();
 
         Bundle args = new Bundle();
         args.putString(KEY_ROUTE_ID, routeId);
+        args.putSerializable(KEY_LOAD_MODE, loadMode);
         fragment.setArguments(args);
 
         return fragment;
@@ -43,11 +51,15 @@ public class PreviewRouteDialogFragment extends DialogFragment implements Previe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        routeId = getArguments().getString(KEY_ROUTE_ID);
+        if (getArguments() != null) {
+            routeId = getArguments().getString(KEY_ROUTE_ID);
+            loadMode = (LoadMode) getArguments().getSerializable(KEY_LOAD_MODE);
+        }
 
         DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
-        GetRouteUseCase getRouteUseCase = new GetRouteUseCase(routeService);
+        RouteRepository routeRepository = new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity()));
+        GetRouteUseCase getRouteUseCase = new GetRouteUseCase(routeService, routeRepository);
         previewRoutePresenter = new PreviewRoutePresenterImpl(getRouteUseCase);
     }
 
@@ -75,7 +87,7 @@ public class PreviewRouteDialogFragment extends DialogFragment implements Previe
     public void onStart() {
         super.onStart();
         previewRoutePresenter.attach(this);
-        previewRoutePresenter.previewRoute(routeId);
+        previewRoutePresenter.previewRoute(routeId, loadMode);
     }
 
     @Override
@@ -106,6 +118,6 @@ public class PreviewRouteDialogFragment extends DialogFragment implements Previe
     }
 
     public void showRouteDetails() {
-        ((BaseActivity) getActivity()).moveToFragment(RouteDetailsFragment.newInstance(routeId));
+        ((BaseActivity) getActivity()).moveToFragment(RouteDetailsFragment.newInstance(routeId, loadMode));
     }
 }

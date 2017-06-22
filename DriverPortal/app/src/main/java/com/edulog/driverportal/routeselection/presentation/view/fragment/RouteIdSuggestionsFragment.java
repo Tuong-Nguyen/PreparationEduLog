@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.presentation.BaseFragment;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.presentation.view.adapter.RouteIdSuggestionsAdapter;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class RouteIdSuggestionsFragment extends BaseFragment {
 
         routeIdSuggestionsAdapter = new RouteIdSuggestionsAdapter(routeIds, getActivity());
         routeIdSuggestionsAdapter.getItemClickObservable().subscribe(routeId -> {
-            PreviewRouteDialogFragment fragment = PreviewRouteDialogFragment.newInstance(routeId);
+            PreviewRouteDialogFragment fragment = PreviewRouteDialogFragment.newInstance(routeId, LoadMode.REMOTE);
             fragment.show(getActivity().getSupportFragmentManager(), null);
         });
 

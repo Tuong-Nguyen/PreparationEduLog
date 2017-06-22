@@ -2,6 +2,7 @@ package com.edulog.driverportal.routeselection.presentation.presenter;
 
 import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routeselection.domain.interactor.SetActiveRouteUseCase;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import io.reactivex.observers.DisposableObserver;
@@ -27,13 +28,14 @@ public class RouteDetailsPresenterImpl extends RouteDetailsContract.RouteDetails
     }
 
     @Override
-    public void setActiveRoute(String routeId) {
+    public void setActiveRoute(String routeId, LoadMode loadMode) {
         disposeObserver(activeRouteObserver);
         activeRouteObserver = createActiveRouteObserver();
         addDisposable(activeRouteObserver);
 
+        SetActiveRouteUseCase.Params params = SetActiveRouteUseCase.buildParams(routeId, loadMode);
         routeDetailsView.showProgress();
-        setActiveRouteUseCase.execute(activeRouteObserver, routeId);
+        setActiveRouteUseCase.execute(activeRouteObserver, params);
     }
 
     private DisposableObserver<RouteModel> createActiveRouteObserver() {

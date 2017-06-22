@@ -18,7 +18,6 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Observable<RouteEntity> getRoute(String routeId) {
-        // Todo: Get route from cache if internet connection is not available
         return driverPortalRouteService.getRoute(routeId)
                 .subscribeOn(Schedulers.io());
     }
