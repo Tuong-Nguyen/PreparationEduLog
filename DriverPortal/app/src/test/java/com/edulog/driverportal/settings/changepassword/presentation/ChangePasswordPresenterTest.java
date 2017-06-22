@@ -13,10 +13,11 @@ import io.reactivex.observers.DisposableObserver;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChangePasswordPresenterTest {
-    private ChangePasswordPresenter changePasswordPresenter;
+    private ChangePasswordContract.ChangePasswordPresenter changePasswordPresenter;
 
     @Mock
     private ChangePasswordUseCase mockChangePasswordUseCase;
@@ -25,7 +26,7 @@ public class ChangePasswordPresenterTest {
     private ValidationUseCase mockValidationUseCase;
 
     @Mock
-    private ChangePasswordView mockChangePasswordView;
+    private ChangePasswordContract.ChangePasswordView mockChangePasswordView;
 
     @Before
     public void setUp() {
