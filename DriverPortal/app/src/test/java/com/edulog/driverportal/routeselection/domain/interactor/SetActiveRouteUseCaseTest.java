@@ -5,6 +5,7 @@ import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 import com.edulog.driverportal.common.preference.Session;
 import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import org.junit.Before;
@@ -15,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.observers.TestObserver;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -36,5 +38,30 @@ public class SetActiveRouteUseCaseTest {
     @Before
     public void setUp() throws Exception {
         setActiveRouteUseCase = new SetActiveRouteUseCase(mockRouteService, mockRouteRepository, mockSession);
+    }
+
+    @Test
+    public void execute_local() throws Exception {
+        RouteEntity routeEntity = new RouteEntity();
+        routeEntity.setId("route_id");
+        when(mockRouteRepository.findOne("route_id")).thenReturn(routeEntity);
+        when(mockSession.getDriverId()).thenReturn("driver_id");
+
+        setActiveRouteUseCase.execute(new TestObserver<>(), SetActiveRouteUseCase.buildParams("route_id", LoadMode.LOCAL));
+
+        verify(mockSession).putRouteId("route_id");
+    }
+
+    @Test
+    public void execute_remote() throws Exception {
+        RouteEntity routeEntity = new RouteEntity();
+        routeEntity.setId("route_id");
+        when(mockRouteService.getRoute("route_id")).thenReturn(Observable.just(routeEntity));
+        when(mockSession.getDriverId()).thenReturn("driver_id");
+
+        setActiveRouteUseCase.execute(new TestObserver<>(), SetActiveRouteUseCase.buildParams("route_id", LoadMode.REMOTE));
+
+        verify(mockRouteRepository).upsert(any(RouteEntity.class));
+        verify(mockSession).putRouteId("route_id");
     }
 }

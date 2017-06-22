@@ -1,6 +1,7 @@
 package com.edulog.driverportal.routeselection.presentation.presenter;
 
 import com.edulog.driverportal.routeselection.domain.interactor.SetActiveRouteUseCase;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,14 +31,14 @@ public class RouteDetailsPresenterTest {
 
     @Test
     public void setActiveRoute_useCaseExecute() throws Exception {
-        routeDetailsPresenter.setActiveRoute("");
+        routeDetailsPresenter.setActiveRoute("", LoadMode.REMOTE);
 
-        verify(mockSetActiveRouteUseCase).execute(any(Observer.class), anyString());
+        verify(mockSetActiveRouteUseCase).execute(any(Observer.class), any(SetActiveRouteUseCase.Params.class));
     }
 
     @Test
     public void setActiveRoute_viewShowProgress() throws Exception {
-        routeDetailsPresenter.setActiveRoute("");
+        routeDetailsPresenter.setActiveRoute("", LoadMode.REMOTE);
 
         verify(mockRouteDetailsView).showProgress();
     }

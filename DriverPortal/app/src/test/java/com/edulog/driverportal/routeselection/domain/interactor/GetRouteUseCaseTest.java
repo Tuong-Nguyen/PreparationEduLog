@@ -2,7 +2,9 @@ package com.edulog.driverportal.routeselection.domain.interactor;
 
 import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
+import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import org.junit.Before;
@@ -13,8 +15,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.observers.TestObserver;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -25,18 +30,29 @@ public class GetRouteUseCaseTest {
     private GetRouteUseCase getRouteUseCase;
     @Mock
     private RouteService mockRouteService;
+    @Mock
+    private RouteRepository mockRouteRepository;
 
     @Before
     public void setUp() throws Exception {
-        getRouteUseCase = new GetRouteUseCase(mockRouteService);
+        getRouteUseCase = new GetRouteUseCase(mockRouteService, mockRouteRepository);
     }
 
     @Test
     public void execute_getRoute() {
         when(mockRouteService.getRoute("route_id")).thenReturn(Observable.just(new RouteEntity()));
 
-        getRouteUseCase.execute(new TestObserver<RouteModel>(), "route_id");
+        getRouteUseCase.execute(new TestObserver<>(), GetRouteUseCase.buildParams("route_id", LoadMode.REMOTE));
 
         verify(mockRouteService).getRoute("route_id");
+    }
+
+    @Test
+    public void execute_findOne() {
+        when(mockRouteRepository.findOne("route_id")).thenReturn(new RouteEntity());
+
+        getRouteUseCase.execute(new TestObserver<>(), GetRouteUseCase.buildParams("route_id", LoadMode.LOCAL));
+
+        verify(mockRouteRepository).findOne("route_id");
     }
 }

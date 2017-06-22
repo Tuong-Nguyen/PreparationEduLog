@@ -36,7 +36,7 @@ public class SetActiveRouteUseCase extends UseCase<RouteModel, SetActiveRouteUse
                 observable = routeService.getRoute(routeId)
                         .doOnNext(routeEntity -> {
                             if (session.getDriverId() == null) {
-                                throw new RuntimeException("Use not logged in!");
+                                throw new RuntimeException("Driver not logged in!");
                             }
                         })
                         .map(routeEntity -> {
@@ -51,7 +51,7 @@ public class SetActiveRouteUseCase extends UseCase<RouteModel, SetActiveRouteUse
                 observable = Observable.just(routeRepository.findOne(routeId))
                         .doOnNext(routeEntity -> {
                             if (session.getDriverId() == null) {
-                                throw new RuntimeException("Use not logged in!");
+                                throw new RuntimeException("Driver not logged in!");
                             }
                         })
                         .map(routeEntity -> {

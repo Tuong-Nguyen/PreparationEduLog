@@ -1,6 +1,7 @@
 package com.edulog.driverportal.routeselection.presentation.presenter;
 
 import com.edulog.driverportal.routeselection.domain.interactor.GetRouteUseCase;
+import com.edulog.driverportal.routeselection.model.LoadMode;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,15 +32,14 @@ public class PreviewRoutePresenterTest {
 
     @Test
     public void previewRoute_useCaseExecute() throws Exception {
-        previewRoutePresenter.previewRoute("");
+        previewRoutePresenter.previewRoute("", LoadMode.REMOTE);
 
-        // TODO: we can assert the query instead of anyString
-        verify(mockGetRouteUseCase).execute(any(Observer.class), anyString());
+        verify(mockGetRouteUseCase).execute(any(Observer.class), any(GetRouteUseCase.Params.class));
     }
 
     @Test
     public void previewRoute_viewShowProgress() throws Exception {
-        previewRoutePresenter.previewRoute("");
+        previewRoutePresenter.previewRoute("", LoadMode.REMOTE);
 
         verify(mockPreviewRouteView).showProgress();
     }
