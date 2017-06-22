@@ -37,7 +37,9 @@ public class DriverAuthenticateUseCase extends UseCase<Boolean, DriverAuthentica
         return Observable.just(errorValidation.isValid())
                 .doOnNext(isValid -> {
                     if (!isValid) throw new RuntimeException("Validation was failed ");
-                }).mergeWith(isLogin(params));
+                }).zipWith(isLogin(params),(aBoolean, aBoolean2) -> {
+                    return aBoolean;
+                });
     }
 
     /**
