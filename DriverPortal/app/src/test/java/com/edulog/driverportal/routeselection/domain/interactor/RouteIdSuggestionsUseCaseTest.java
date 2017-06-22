@@ -3,6 +3,7 @@ package com.edulog.driverportal.routeselection.domain.interactor;
 import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
+import com.edulog.driverportal.routeselection.model.RouteModel;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -21,6 +22,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.TestObserver;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,43 +39,11 @@ public class RouteIdSuggestionsUseCaseTest {
     }
 
     @Test
-    public void execute_niceQuery_niceIdSuggestions() throws Exception {
-        List<RouteEntity> routeEntities = prepareTestEntities();
-        when(mockRouteService.findRoutes("nice")).thenReturn(Observable.just(routeEntities));
-        TestObserver<List<String>> observer = new TestObserver<>();
+    public void execute_findRoutes() {
+        when(mockRouteService.findRoutes("query")).thenReturn(Observable.just(new ArrayList<>()));
 
-        routeIdSuggestionsUseCase.execute(observer, "nice");
+        routeIdSuggestionsUseCase.execute(new TestObserver<>(), "query");
 
-        List<String> expectedValues = Arrays.asList("1", "2");
-        observer.assertValue(expectedValues);
-    }
-
-    @Test
-    public void execute_badQuery_emptyList() throws Exception {
-        List<RouteEntity> routeEntities = prepareTestEntities();
-        when(mockRouteService.findRoutes("bad")).thenReturn(Observable.just(Collections.emptyList()));
-        TestObserver<List<String>> observer = new TestObserver<>();
-
-        routeIdSuggestionsUseCase.execute(observer, "bad");
-
-        observer.assertValue(Collections.emptyList());
-    }
-
-    private List<RouteEntity> prepareTestEntities() {
-        List<RouteEntity> routeEntities = new ArrayList<>();
-
-        RouteEntity entity1 = new RouteEntity();
-        entity1.setId("1");
-        entity1.setName("entity1");
-        entity1.setStopCount(1);
-        routeEntities.add(entity1);
-
-        RouteEntity entity2 = new RouteEntity();
-        entity2.setId("2");
-        entity2.setName("entity2");
-        entity2.setStopCount(2);
-        routeEntities.add(entity2);
-
-        return routeEntities;
+        verify(mockRouteService).findRoutes("query");
     }
 }

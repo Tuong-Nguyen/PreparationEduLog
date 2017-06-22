@@ -50,8 +50,8 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         super.onCreate(savedInstanceState);
 
         AuthService authService = new AuthServiceImpl();
-        ChangePasswordUseCase changePasswordUseCase = new ChangePasswordUseCase(authService);
         ValidationUseCase validationUseCase = new ValidationUseCase();
+        ChangePasswordUseCase changePasswordUseCase = new ChangePasswordUseCase(authService, validationUseCase);
         changePasswordPresenter = new ChangePasswordPresenterImpl(changePasswordUseCase, validationUseCase);
     }
 

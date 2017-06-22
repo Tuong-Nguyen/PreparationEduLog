@@ -4,7 +4,10 @@ import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
 import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
 
+import java.util.List;
+
 import io.reactivex.Observable;
+import io.reactivex.functions.BiFunction;
 
 import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateAll;
 import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateDriverId;
@@ -13,9 +16,11 @@ import static com.edulog.driverportal.settings.changepassword.domain.util.Change
 
 public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCase.Params> {
     private AuthService authService;
+    private ValidationUseCase validationUseCase;
 
-    public ChangePasswordUseCase(AuthService authService) {
+    public ChangePasswordUseCase(AuthService authService, ValidationUseCase validationUseCase) {
         this.authService = authService;
+        this.validationUseCase = validationUseCase;
     }
 
     public static Params buildParams(String driverId, String oldPassword, String newPassword) {
@@ -27,22 +32,15 @@ public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCas
     }
 
     @Override
-    protected Observable<Boolean> buildUseCaseObservable(Params params) {
+    public Observable<Boolean> buildUseCaseObservable(Params params) {
         String driverId = params.driverId;
         String oldPassword = params.oldPassword;
         String newPassword = params.newPassword;
 
-        ValidationResult driverIdResult = validateDriverId(driverId);
-        ValidationResult oldPasswordResult = validateOldPassword(oldPassword);
-        ValidationResult newPasswordResult = validateNewPassword(newPassword);
-        ValidationResult allResult = validateAll(driverIdResult, oldPasswordResult, newPasswordResult);
-
-        return Observable.just(allResult.isValid())
-                .doOnNext(isValid -> {
-                    if (!isValid) throw new RuntimeException("Invalid information.");
-                })
-                .skip(1)
-                .mergeWith(createRequestChangePasswordObservable(driverId, oldPassword, newPassword));
+        return validationUseCase
+                .buildUseCaseObservable(ValidationUseCase.buildParams(driverId, oldPassword, newPassword, newPassword))
+                .zipWith(createRequestChangePasswordObservable(driverId, oldPassword, newPassword),
+                        ((validationResults, isSuccess) -> isSuccess));
     }
 
     private Observable<Boolean> createRequestChangePasswordObservable(String driverId, String oldPassword, String newPassword) {

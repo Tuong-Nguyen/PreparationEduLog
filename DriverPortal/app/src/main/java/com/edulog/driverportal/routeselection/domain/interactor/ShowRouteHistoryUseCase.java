@@ -7,7 +7,7 @@ import io.reactivex.Observable;
 
 public class ShowRouteHistoryUseCase extends UseCase<RouteModel, Void> {
     @Override
-    protected Observable<RouteModel> buildUseCaseObservable(Void aVoid) {
+    public Observable<RouteModel> buildUseCaseObservable(Void aVoid) {
         return Observable.just(new RouteModel());
     }
 }

@@ -15,6 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,29 +31,12 @@ public class GetRouteUseCaseTest {
         getRouteUseCase = new GetRouteUseCase(mockRouteService);
     }
 
-    // TODO: I think we can test behaviour, ie: mockRouteServer.getRoute is called - we can test 1 test case instead of 2. Please discuss this.
     @Test
-    public void execute_routeExists_returnRouteModel() throws Exception {
-        RouteEntity routeEntity = new RouteEntity();
-        routeEntity.setId("exists_route");
-        routeEntity.setName("exists_route_name");
-        routeEntity.setStopCount(3);
-        TestObserver<RouteModel> observer = new TestObserver<>();
-        when(mockRouteService.getRoute("exists_route")).thenReturn(Observable.just(routeEntity));
+    public void execute_getRoute() {
+        when(mockRouteService.getRoute("route_id")).thenReturn(Observable.just(new RouteEntity()));
 
-        getRouteUseCase.execute(observer, "exists_route");
+        getRouteUseCase.execute(new TestObserver<RouteModel>(), "route_id");
 
-        observer.assertNoErrors();
-        observer.assertValue(routeModel -> routeModel.getId().equals(routeEntity.getId()));
-    }
-
-    @Test
-    public void execute_routeNotExists_error() throws Exception {
-        when(mockRouteService.getRoute("not_exists_route")).thenReturn(Observable.error(new RuntimeException()));
-        TestObserver<RouteModel> observer = new TestObserver<>();
-
-        getRouteUseCase.execute(observer, "not_exists_route");
-
-        observer.assertError(RuntimeException.class);
+        verify(mockRouteService).getRoute("route_id");
     }
 }

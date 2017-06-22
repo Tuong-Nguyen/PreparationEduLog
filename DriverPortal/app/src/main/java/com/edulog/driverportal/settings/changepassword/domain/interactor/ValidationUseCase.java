@@ -29,7 +29,7 @@ public class ValidationUseCase extends UseCase<List<ValidationResult>, Validatio
     }
 
     @Override
-    protected Observable<List<ValidationResult>> buildUseCaseObservable(Params params) {
+    public Observable<List<ValidationResult>> buildUseCaseObservable(Params params) {
         ValidationResult driverIdResult = validateDriverId(params.driverId);
         ValidationResult oldPasswordResult = validateOldPassword(params.oldPassword);
         ValidationResult newPasswordResult = validateNewPassword(params.newPassword);

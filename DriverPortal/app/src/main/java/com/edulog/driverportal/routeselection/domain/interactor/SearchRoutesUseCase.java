@@ -16,9 +16,8 @@ public class SearchRoutesUseCase extends UseCase<List<RouteModel>, String> {
         this.routeService = routeService;
     }
 
-    // TODO: Transform should be moved to Presenter class
     @Override
-    protected Observable<List<RouteModel>> buildUseCaseObservable(String query) {
+    public Observable<List<RouteModel>> buildUseCaseObservable(String query) {
         return routeService.findRoutes(query)
                 .map(RouteModelDataMapper::transform);
     }

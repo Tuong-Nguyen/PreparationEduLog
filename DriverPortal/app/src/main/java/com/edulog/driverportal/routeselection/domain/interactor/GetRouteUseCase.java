@@ -15,7 +15,7 @@ public class GetRouteUseCase extends UseCase<RouteModel, String> {
     }
 
     @Override
-    protected Observable<RouteModel> buildUseCaseObservable(String routeId) {
+    public Observable<RouteModel> buildUseCaseObservable(String routeId) {
         return routeService.getRoute(routeId)
                 .map(RouteModelDataMapper::transform);
     }

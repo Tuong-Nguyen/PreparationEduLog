@@ -10,13 +10,17 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.TestObserver;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -26,43 +30,44 @@ public class ChangePasswordUseCaseTest {
 
     @Mock
     private AuthService mockAuthService;
+    @Mock
+    private ValidationUseCase mockValidationUseCase;
 
     private ChangePasswordUseCase changePasswordUseCase;
 
     @Before
     public void setUp() {
-        changePasswordUseCase = new ChangePasswordUseCase(mockAuthService);
+        changePasswordUseCase = new ChangePasswordUseCase(mockAuthService, mockValidationUseCase);
+        when(mockAuthService.changePassword("driver_id", "old_pass", "new_pass")).thenReturn(Observable.just(true));
+        when(mockValidationUseCase.buildUseCaseObservable(any(ValidationUseCase.Params.class)))
+                .thenReturn(Observable.just(new ArrayList<>()));
+    }
+
+    @Test
+    public void execute_buildUseCaseObservable() {
+        TestObserver<Boolean> observer = new TestObserver<>();
+
+        changePasswordUseCase.execute(observer, ChangePasswordUseCase.buildParams("driver_id", "old_pass", "new_pass"));
+
+        verify(mockValidationUseCase).buildUseCaseObservable(any(ValidationUseCase.Params.class));
+    }
+
+    @Test
+    public void execute_changePassword() {
+        TestObserver<Boolean> observer = new TestObserver<>();
+
+        changePasswordUseCase.execute(observer, ChangePasswordUseCase.buildParams("driver_id", "old_pass", "new_pass"));
+
+        verify(mockAuthService).changePassword("driver_id", "old_pass", "new_pass");
     }
 
     @Test
     public void execute_validCredentials_success() {
-        when(mockAuthService.changePassword(anyString(), anyString(), anyString())).thenReturn(Observable.just(true));
-
         TestObserver<Boolean> observer = new TestObserver<>();
+
         changePasswordUseCase.execute(observer, ChangePasswordUseCase.buildParams("driver_id", "old_pass", "new_pass"));
 
         observer.assertNoErrors();
-
         observer.assertResult(true);
-    }
-
-    @Test
-    public void execute_invalidCredentials_failure() {
-        when(mockAuthService.changePassword(anyString(), anyString(), anyString())).thenReturn(Observable.just(false));
-
-        TestObserver<Boolean> observer = new TestObserver<>();
-        changePasswordUseCase.execute(observer, ChangePasswordUseCase.buildParams("driver_id", "old_pass", "new_pass"));
-
-        observer.assertError(Throwable.class);
-    }
-
-    @Test
-    public void execute_validCredentialsButNewPasswordNotValid_failure() {
-        when(mockAuthService.changePassword(anyString(), anyString(), anyString())).thenReturn(Observable.just(true));
-
-        TestObserver<Boolean> observer = new TestObserver<>();
-        changePasswordUseCase.execute(observer, ChangePasswordUseCase.buildParams("driver_id", "old_pass", ""));
-
-        observer.assertError(Throwable.class);
     }
 }

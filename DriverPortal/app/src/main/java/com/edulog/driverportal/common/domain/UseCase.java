@@ -16,7 +16,7 @@ public abstract class UseCase<T, Params> {
         this.postExecutionScheduler = AndroidSchedulers.mainThread();
     }
 
-    protected abstract Observable<T> buildUseCaseObservable(Params params);
+    public abstract Observable<T> buildUseCaseObservable(Params params);
 
     public void execute(Observer<T> observer, Params params) {
         Observable<T> observable = buildUseCaseObservable(params);

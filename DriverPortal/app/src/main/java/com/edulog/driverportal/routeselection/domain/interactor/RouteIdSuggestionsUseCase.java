@@ -20,7 +20,7 @@ RouteIdSuggestionsUseCase extends UseCase<List<String>, String> {
     }
 
     @Override
-    protected Observable<List<String>> buildUseCaseObservable(String query) {
+    public Observable<List<String>> buildUseCaseObservable(String query) {
         return routeService.findRoutes(query)
                 .map(this::getSuggestionIds);
     }

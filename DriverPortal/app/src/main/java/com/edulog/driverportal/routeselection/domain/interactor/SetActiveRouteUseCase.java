@@ -21,9 +21,8 @@ public class SetActiveRouteUseCase extends UseCase<RouteModel, String> {
         this.session = session;
     }
 
-    // TODO: Transform should be moved to Presenter class
     @Override
-    protected Observable<RouteModel> buildUseCaseObservable(String routeId) {
+    public Observable<RouteModel> buildUseCaseObservable(String routeId) {
         return routeService.getRoute(routeId)
                 .map(routeEntity -> {
                     // TODO: Why do we need to insert route?
