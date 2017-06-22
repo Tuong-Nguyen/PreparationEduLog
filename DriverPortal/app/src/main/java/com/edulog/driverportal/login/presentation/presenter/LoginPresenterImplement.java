@@ -16,9 +16,7 @@ import io.reactivex.observers.DisposableObserver;
 public class LoginPresenterImplement implements LoginPresenter {
 
     // Layer View reference
-    // TODO: ntmhanh Why do we use WeakReference?
     private LoginView loginView;
-    // TODO: ntmhanh Do not prefix with m
     private DriverAuthenticateUseCase loginAuthenticateUseCase;
     public DriverAuthenticateUseCase.Params params;
     private DriverPreferences driverPreferences;
@@ -82,7 +80,6 @@ public class LoginPresenterImplement implements LoginPresenter {
         }
 
         @Override
-        // TODO: ntmhanh If validation fails, it should be handled here
         public void onError(Throwable e) {
             loginView.onErrorValidate(e.getMessage());
         }
