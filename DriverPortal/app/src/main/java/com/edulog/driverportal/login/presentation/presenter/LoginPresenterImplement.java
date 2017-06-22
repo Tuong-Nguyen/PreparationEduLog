@@ -62,6 +62,7 @@ public class LoginPresenterImplement implements LoginPresenter {
 
         @Override
         public void onComplete() {
+
         }
     }
 }
