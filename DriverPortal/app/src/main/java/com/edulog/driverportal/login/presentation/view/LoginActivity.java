@@ -13,10 +13,9 @@ import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCas
 import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
 import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateServiceImplement;
+import com.edulog.driverportal.login.domain.services.DriverPreferences;
 import com.edulog.driverportal.login.domain.services.EventServiceImplement;
 import com.edulog.driverportal.login.domain.utils.ErrorValidateUtils;
-import com.edulog.driverportal.login.models.DriverPreferences;
-import com.edulog.driverportal.login.models.Events;
 import com.edulog.driverportal.login.models.ErrorValidation;
 import com.edulog.driverportal.login.presentation.presenter.LoginPresenter;
 import com.edulog.driverportal.login.presentation.presenter.LoginPresenterImplement;
@@ -46,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         btnLogin = (Button)findViewById(R.id.login);
 
         ErrorValidation errorValidation = new ErrorValidation();
+
         ErrorValidateUtils errorValidateUtils = new ErrorValidateUtils(errorValidation);
 
         AuthenticateServiceImplement authenticateServiceImplement = new AuthenticateServiceImplement(errorValidateUtils);
@@ -64,13 +64,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
 
+        presenter.setViewRememberDriverId();
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 busId = etBusId.getText().toString();
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
-                presenter.doLogin(busId, driverId, password, Events.LOG_IN);
+                presenter.doLogin(busId, driverId, password);
             }
         });
 
@@ -102,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void showLoginValidation(ErrorValidation errorValidation) {
+    public void showErrorValidationMessage(ErrorValidation errorValidation) {
         if (!errorValidation.isValid()){
          showErrorValidate(errorValidation.getErrorMessage());
         }

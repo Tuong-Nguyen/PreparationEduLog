@@ -10,7 +10,7 @@ public interface LoginView {
     void setTextRememberDriverId(String driverId);
     void rememberDriverIdCheckbox(boolean isChecked);
     void onLoginError(String message);
-    void showLoginValidation(ErrorValidation errorValidation);
+    void showErrorValidationMessage(ErrorValidation errorValidation);
     void showSentEventSuccess();
     void showSentEventFailure(String message);
     void onLogged();

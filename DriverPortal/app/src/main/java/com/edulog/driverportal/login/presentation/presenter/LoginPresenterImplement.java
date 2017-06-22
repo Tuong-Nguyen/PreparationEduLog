@@ -3,11 +3,9 @@ package com.edulog.driverportal.login.presentation.presenter;
 import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
 import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
 import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
-import com.edulog.driverportal.login.models.DriverPreferences;
-import com.edulog.driverportal.login.models.Events;
+import com.edulog.driverportal.login.domain.services.DriverPreferences;
 import com.edulog.driverportal.login.models.ErrorValidation;
-
-import java.lang.ref.WeakReference;
+import com.edulog.driverportal.login.models.Events;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -19,40 +17,28 @@ public class LoginPresenterImplement implements LoginPresenter {
 
     // Layer View reference
     // TODO: ntmhanh Why do we use WeakReference?
-    private WeakReference<LoginView> mView;
+    private LoginView loginView;
     // TODO: ntmhanh Do not prefix with m
-    private DriverAuthenticateUseCase mloginAuthenticateUseCase;
+    private DriverAuthenticateUseCase loginAuthenticateUseCase;
     public DriverAuthenticateUseCase.Params params;
-    private DriverPreferences mDriverPreferences;
+    private DriverPreferences driverPreferences;
     private SendEventUseCase sendEventUseCase;
-    private LoginValidateUseCase mLoginValidateUseCase;
+    private LoginValidateUseCase loginValidateUseCase;
 
-    public LoginPresenterImplement(LoginView view, DriverAuthenticateUseCase loginAuthenticateUseCase, DriverPreferences driverPreferences, SendEventUseCase sendEventUseCase, LoginValidateUseCase loginValidateUseCase) {
-        this.mView = new WeakReference<>(view);
-        this.mloginAuthenticateUseCase = loginAuthenticateUseCase;
-        this.mDriverPreferences = driverPreferences;
+    public LoginPresenterImplement(LoginView loginView, DriverAuthenticateUseCase loginAuthenticateUseCase, DriverPreferences driverPreferences, SendEventUseCase sendEventUseCase, LoginValidateUseCase loginValidateUseCase) {
+        this.loginView = loginView;
+        this.loginAuthenticateUseCase = loginAuthenticateUseCase;
+        this.driverPreferences = driverPreferences;
         this.sendEventUseCase = sendEventUseCase;
-        this.mLoginValidateUseCase = loginValidateUseCase;
+        this.loginValidateUseCase = loginValidateUseCase;
     }
 
     @Override
-    public void doLogin(String busID, String driverId, String password, Events events) {
-        sendEventUseCase.execute(new EventObserver(), events);
+    public void doLogin(String busID, String driverId, String password) {
+        sendEventUseCase.execute(new EventObserver(), Events.LOG_IN);
         params = new DriverAuthenticateUseCase.Params(busID, driverId, password);
-        mloginAuthenticateUseCase.execute(new AuthenticateObserver(),params);
-    }
-
-    /**
-     * Implement doLogin, which get values from view and return for UseCase
-     * @param busID
-     * @param driverId
-     * @param password
-     */
-
-    @Override
-    public void validateCredentials(String busID, String driverId, String password) {
-        params = new DriverAuthenticateUseCase.Params(busID, driverId, password);
-        mLoginValidateUseCase.execute(new ValidateObserver(), params);
+        loginAuthenticateUseCase.execute(new AuthenticateObserver(),params);
+        loginValidateUseCase.execute(new ValidateObserver(), params);
     }
 
     /**
@@ -60,9 +46,9 @@ public class LoginPresenterImplement implements LoginPresenter {
      */
     @Override
     public void setViewRememberDriverId() {
-        if (!mDriverPreferences.getDriverId().isEmpty()){
-            mView.get().setTextRememberDriverId(mDriverPreferences.getDriverId());
-            mView.get().rememberDriverIdCheckbox(true);
+        if (!driverPreferences.getDriverId().isEmpty()){
+            loginView.setTextRememberDriverId(driverPreferences.getDriverId());
+            loginView.rememberDriverIdCheckbox(true);
         }
     }
 
@@ -77,7 +63,7 @@ public class LoginPresenterImplement implements LoginPresenter {
 
         @Override
         public void onError(Throwable e) {
-            mView.get().onLoginError(e.getMessage());
+            loginView.onLoginError(e.getMessage());
         }
 
         @Override
@@ -92,7 +78,7 @@ public class LoginPresenterImplement implements LoginPresenter {
 
         @Override
         public void onNext(ErrorValidation errorValidation) {
-            mView.get().showLoginValidation(errorValidation);
+            loginView.showErrorValidationMessage(errorValidation);
         }
 
         @Override
@@ -114,12 +100,12 @@ public class LoginPresenterImplement implements LoginPresenter {
     public final class EventObserver extends DisposableObserver<Boolean> {
         @Override
         public void onNext(Boolean isSent) {
-            mView.get().showSentEventSuccess();
+            loginView.showSentEventSuccess();
         }
 
         @Override
         public void onError(Throwable e) {
-            mView.get().showSentEventFailure(e.getMessage());
+            loginView.showSentEventFailure(e.getMessage());
         }
 
         @Override
@@ -129,17 +115,15 @@ public class LoginPresenterImplement implements LoginPresenter {
     }
 
     public void onLogin(DriverAuthenticateUseCase.Params params){
-        mView.get().onLogged();
+        loginView.onLogged();
         rememberDriverId(params.driverId);
     }
 
     public void rememberDriverId(String driverId){
-        if (mView != null) {
-            if (mView.get().isRememberChecked()) {
-                mDriverPreferences.settingValue(driverId);
-            } else {
-                mDriverPreferences.removeValueItem();
-            }
+        if (loginView.isRememberChecked()) {
+            driverPreferences.setValuePreferences(driverId);
+        } else {
+            driverPreferences.removeValueItem();
         }
     }
 

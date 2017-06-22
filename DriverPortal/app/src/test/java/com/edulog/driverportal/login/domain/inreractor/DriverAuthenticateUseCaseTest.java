@@ -51,7 +51,7 @@ public class DriverAuthenticateUseCaseTest {
         driverAuthenticateUseCase.execute(testObserver, params);
         // Assert
         verify(authenticateService).login(params.driverId, params.password);
-        testObserver.assertValues(true,true);
+        testObserver.assertValues(true);
     }
     @Test
     public void execute_inValidateLoginInformation_returnAuthenticateWasCalledAssertError() {

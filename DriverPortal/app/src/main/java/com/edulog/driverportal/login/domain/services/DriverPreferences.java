@@ -1,4 +1,4 @@
-package com.edulog.driverportal.login.models;
+package com.edulog.driverportal.login.domain.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,7 +18,7 @@ public class DriverPreferences {
     public DriverPreferences(Context context) {
         this.context = context;
         //Create SharedPreferences
-        loginPreferences = context.getSharedPreferences("driverPrefs", MODE_PRIVATE);
+        loginPreferences = this.context.getSharedPreferences("driverPrefs", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
     }
 
@@ -29,7 +29,7 @@ public class DriverPreferences {
 
     // TODO: ntmhanh Please use name which reflects the method's purpose
     //Set String values in the preferences editor
-    public void settingValue(String driverId){
+    public void setValuePreferences(String driverId){
         loginPrefsEditor.putString("driverId", driverId);
         loginPrefsEditor.commit();  // commit changes
     }

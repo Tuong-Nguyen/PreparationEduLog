@@ -3,8 +3,7 @@ package com.edulog.driverportal.login.presentation.presenter;
 import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
 import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
 import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
-import com.edulog.driverportal.login.models.DriverPreferences;
-import com.edulog.driverportal.login.models.Events;
+import com.edulog.driverportal.login.domain.services.DriverPreferences;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +44,7 @@ public class LoginPresenterImplementTest {
     @Test
     public void doLogin_getInformationFromLoginPage_returnExecuteWasCalled() {
         //Action
-        loginPresenterImplement.doLogin(busId, driverId, password, Events.LOG_IN);
+        loginPresenterImplement.doLogin(busId, driverId, password);
         //Assert
         verify(loginAuthenticateUseCase).execute(any(DisposableObserver.class), any(DriverAuthenticateUseCase.Params.class));
     }
@@ -56,7 +55,7 @@ public class LoginPresenterImplementTest {
         when(loginView.isRememberChecked()).thenReturn(true);
         loginPresenterImplement.onLogin(params);
         //Assert
-        verify(driverPreferences).settingValue(anyString());
+        verify(driverPreferences).setValuePreferences(anyString());
     }
   @Test
     public void onLogin_loginSuccessAndRememberIdWasNotChecked_returnRemoveValueItemWasCalled() {
