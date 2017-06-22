@@ -6,7 +6,7 @@ package com.edulog.driverportal.login.presentation.presenter;
 
 public interface LoginPresenter {
         // TODO: ntmhanh What other events should we put into doLogin except Events.LOG_IN
-        void doLogin(String busID, String driverId, String password);
+        void doLogin(String busID, String driverId, String password, boolean isRememberChecked);
         // TODO: ntmhanh Remove it if it is not used
-        void setViewRememberDriverId();
+        void getRememberDriverId();
 }

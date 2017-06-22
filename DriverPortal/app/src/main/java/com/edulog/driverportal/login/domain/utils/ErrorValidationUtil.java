@@ -1,19 +1,17 @@
 package com.edulog.driverportal.login.domain.utils;
 
-import com.edulog.driverportal.login.models.ErrorValidation;
-
 /**
  * Created by ntmhanh on 6/20/2017.
  */
 
-public  class ErrorValidateUtils {
-    private ErrorValidation errorValidation;
+public  class ErrorValidationUtil {
+    private com.edulog.driverportal.login.models.ErrorValidation errorValidation;
 
-    public ErrorValidateUtils(ErrorValidation errorValidation) {
+    public ErrorValidationUtil(com.edulog.driverportal.login.models.ErrorValidation errorValidation) {
         this.errorValidation = errorValidation;
     }
 
-    public ErrorValidation validateLogin(String busId, String driverId, String password){
+    public com.edulog.driverportal.login.models.ErrorValidation validateLogin(String busId, String driverId, String password){
         if (busId.isEmpty()){
             errorValidation.setErrorMessage("Bus ID mustn't empty");
         } else if(driverId.isEmpty()){

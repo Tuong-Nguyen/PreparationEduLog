@@ -11,9 +11,5 @@ public interface LoginView {
     void rememberDriverIdCheckbox(boolean isChecked);
     void onLoginError(String message);
     void showErrorValidationMessage(ErrorValidation errorValidation);
-    void onErrorValidate(String message);
-    void showSentEventSuccess();
-    void showSentEventFailure(String message);
-    void onLogged();
     boolean isRememberChecked();
 }

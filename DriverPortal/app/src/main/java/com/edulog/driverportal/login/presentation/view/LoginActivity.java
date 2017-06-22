@@ -9,13 +9,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
-import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
-import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
+import com.edulog.driverportal.login.domain.interactors.LoginUseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateServiceImplement;
 import com.edulog.driverportal.login.domain.services.DriverPreferences;
 import com.edulog.driverportal.login.domain.services.EventServiceImplement;
-import com.edulog.driverportal.login.domain.utils.ErrorValidateUtils;
+import com.edulog.driverportal.login.domain.utils.ErrorValidationUtil;
 import com.edulog.driverportal.login.models.ErrorValidation;
 import com.edulog.driverportal.login.presentation.presenter.LoginPresenter;
 import com.edulog.driverportal.login.presentation.presenter.LoginPresenterImplement;
@@ -44,27 +42,21 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         etPassword = (EditText)findViewById(R.id.password);
         btnLogin = (Button)findViewById(R.id.login);
 
-        ErrorValidation errorValidation = new ErrorValidation();
+        com.edulog.driverportal.login.models.ErrorValidation errorValidation = new com.edulog.driverportal.login.models.ErrorValidation();
 
-        ErrorValidateUtils errorValidateUtils = new ErrorValidateUtils(errorValidation);
+        ErrorValidationUtil errorValidateUtils = new ErrorValidationUtil(errorValidation);
 
         AuthenticateServiceImplement authenticateServiceImplement = new AuthenticateServiceImplement(errorValidateUtils);
 
-        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(AndroidSchedulers.mainThread(),authenticateServiceImplement, errorValidateUtils);
-
-        LoginValidateUseCase loginValidateUseCase = new LoginValidateUseCase(AndroidSchedulers.mainThread(), authenticateServiceImplement);
-
         EventServiceImplement eventServiceImplement = new EventServiceImplement();
-
-        SendEventUseCase sendEventUseCase = new SendEventUseCase(AndroidSchedulers.mainThread(), eventServiceImplement);
 
         DriverPreferences driverPreferences = new DriverPreferences(this);
 
-        presenter = new LoginPresenterImplement(this, driverAuthenticateUseCase, driverPreferences, sendEventUseCase, loginValidateUseCase);
-
+        LoginUseCase loginUseCase = new LoginUseCase(AndroidSchedulers.mainThread(), authenticateServiceImplement,errorValidateUtils, eventServiceImplement, driverPreferences);
+        presenter = new LoginPresenterImplement(this, driverPreferences, loginUseCase);
         saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
 
-        presenter.setViewRememberDriverId();
+        presenter.getRememberDriverId();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 busId = etBusId.getText().toString();
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
-                presenter.doLogin(busId, driverId, password);
+                presenter.doLogin(busId, driverId, password,saveLoginCheckBox.isChecked());
             }
         });
 
@@ -81,11 +73,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public void setTextRememberDriverId(String driverId) {
         etDriverId.setText(driverId);
-    }
-
-    @Override
-    public void onLogged() {
-        Toast.makeText(this, "Login is successful", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -110,23 +97,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         }
     }
 
-    @Override
-    public void onErrorValidate(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
     private void showErrorValidate(String errorMessage){
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showSentEventSuccess() {
-        Toast.makeText(this, "Sending login event is success", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showSentEventFailure(String message) {
-        Toast.makeText(this, "Sending login event is failed", Toast.LENGTH_SHORT).show();
     }
 
 }

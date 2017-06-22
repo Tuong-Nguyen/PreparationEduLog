@@ -1,11 +1,9 @@
 package com.edulog.driverportal.login.presentation.presenter;
 
-import com.edulog.driverportal.login.domain.interactors.DriverAuthenticateUseCase;
-import com.edulog.driverportal.login.domain.interactors.LoginValidateUseCase;
-import com.edulog.driverportal.login.domain.interactors.SendEventUseCase;
+import com.edulog.driverportal.login.domain.interactors.LoginUseCase;
 import com.edulog.driverportal.login.domain.services.DriverPreferences;
+import com.edulog.driverportal.login.domain.utils.ThrowableErrorValidation;
 import com.edulog.driverportal.login.models.ErrorValidation;
-import com.edulog.driverportal.login.models.Events;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -16,115 +14,54 @@ import io.reactivex.observers.DisposableObserver;
 public class LoginPresenterImplement implements LoginPresenter {
 
     // Layer View reference
-    // TODO: ntmhanh Why do we use WeakReference?
     private LoginView loginView;
-    // TODO: ntmhanh Do not prefix with m
-    private DriverAuthenticateUseCase loginAuthenticateUseCase;
-    public DriverAuthenticateUseCase.Params params;
+    public LoginUseCase.Params params;
     private DriverPreferences driverPreferences;
-    private SendEventUseCase sendEventUseCase;
-    private LoginValidateUseCase loginValidateUseCase;
+    private LoginUseCase loginUseCase;
 
-    public LoginPresenterImplement(LoginView loginView, DriverAuthenticateUseCase loginAuthenticateUseCase, DriverPreferences driverPreferences, SendEventUseCase sendEventUseCase, LoginValidateUseCase loginValidateUseCase) {
+
+    public LoginPresenterImplement(LoginView loginView, DriverPreferences driverPreferences, LoginUseCase loginUseCase) {
         this.loginView = loginView;
-        this.loginAuthenticateUseCase = loginAuthenticateUseCase;
+        this.loginUseCase = loginUseCase;
         this.driverPreferences = driverPreferences;
-        this.sendEventUseCase = sendEventUseCase;
-        this.loginValidateUseCase = loginValidateUseCase;
     }
 
     @Override
-    public void doLogin(String busID, String driverId, String password) {
-        sendEventUseCase.execute(new EventObserver(), Events.LOG_IN);
-        params = new DriverAuthenticateUseCase.Params(busID, driverId, password);
-        loginAuthenticateUseCase.execute(new AuthenticateObserver(),params);
-        loginValidateUseCase.execute(new ValidateObserver(), params);
+    public void doLogin(String busID, String driverId, String password, boolean isRememberChecked) {
+        params = new LoginUseCase.Params(busID, driverId, password, isRememberChecked);
+        loginUseCase.execute(new LoginObserver(), params);
     }
 
     /**
-     * Setting remember driver id on view
+     * Setting rememberDriverId driver id on view
      */
     @Override
-    public void setViewRememberDriverId() {
+    public void getRememberDriverId() {
         if (!driverPreferences.getDriverId().isEmpty()){
             loginView.setTextRememberDriverId(driverPreferences.getDriverId());
             loginView.rememberDriverIdCheckbox(true);
         }
     }
 
-    /**
-     * Implement authenticateObserve after receiving login driver result
-     */
-    public final class AuthenticateObserver extends DisposableObserver<Boolean> {
+    public final class LoginObserver extends DisposableObserver<Boolean> {
         @Override
-        public void onNext(Boolean isLogin) {
-          onLogin(params);
+        public void onNext(Boolean aBoolean) {
+
         }
 
         @Override
         public void onError(Throwable e) {
-            loginView.onLoginError(e.getMessage());
+            ThrowableErrorValidation throwableErrorValidation = (ThrowableErrorValidation)e;
+            ErrorValidation errorValidation = throwableErrorValidation.getErrorValidationUtil();
+            if (errorValidation != null){
+                loginView.showErrorValidationMessage(errorValidation);
+            }else {
+                loginView.onLoginError(e.getMessage());
+            }
         }
 
         @Override
         public void onComplete() {
-
         }
     }
-    /**
-     * Implement authenticateObserve after receiving login driver result
-     */
-    public final class ValidateObserver extends DisposableObserver<ErrorValidation> {
-
-        @Override
-        public void onNext(ErrorValidation errorValidation) {
-            loginView.showErrorValidationMessage(errorValidation);
-        }
-
-        @Override
-        // TODO: ntmhanh If validation fails, it should be handled here
-        public void onError(Throwable e) {
-            loginView.onErrorValidate(e.getMessage());
-        }
-
-        @Override
-        public void onComplete() {
-
-        }
-    }
-
-
-    /**
-     * Implement EventObserver after receiving send event result
-     */
-    public final class EventObserver extends DisposableObserver<Boolean> {
-        @Override
-        public void onNext(Boolean isSent) {
-            loginView.showSentEventSuccess();
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            loginView.showSentEventFailure(e.getMessage());
-        }
-
-        @Override
-        public void onComplete() {
-
-        }
-    }
-
-    public void onLogin(DriverAuthenticateUseCase.Params params){
-        loginView.onLogged();
-        rememberDriverId(params.driverId);
-    }
-
-    public void rememberDriverId(String driverId){
-        if (loginView.isRememberChecked()) {
-            driverPreferences.setValuePreferences(driverId);
-        } else {
-            driverPreferences.removeValueItem();
-        }
-    }
-
 }
