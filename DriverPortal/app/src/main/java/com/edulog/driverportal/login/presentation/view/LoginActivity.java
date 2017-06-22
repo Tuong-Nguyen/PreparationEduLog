@@ -110,6 +110,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         }
     }
 
+    @Override
+    public void onErrorValidate(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
     private void showErrorValidate(String errorMessage){
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }

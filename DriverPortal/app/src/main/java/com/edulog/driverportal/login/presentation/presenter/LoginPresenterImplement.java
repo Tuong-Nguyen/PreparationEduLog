@@ -84,7 +84,7 @@ public class LoginPresenterImplement implements LoginPresenter {
         @Override
         // TODO: ntmhanh If validation fails, it should be handled here
         public void onError(Throwable e) {
-
+            loginView.onErrorValidate(e.getMessage());
         }
 
         @Override
