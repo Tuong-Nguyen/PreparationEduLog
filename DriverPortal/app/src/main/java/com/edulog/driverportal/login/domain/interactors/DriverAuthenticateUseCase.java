@@ -1,6 +1,6 @@
 package com.edulog.driverportal.login.domain.interactors;
 
-import com.edulog.driverportal.common.base.UseCase;
+import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateService;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
@@ -14,8 +14,7 @@ public class DriverAuthenticateUseCase extends UseCase<Boolean, DriverAuthentica
 
     private AuthenticateService authenticateService;
 
-    public DriverAuthenticateUseCase(Scheduler postExecutionScheduler, AuthenticateService authenticateService) {
-        super(postExecutionScheduler);
+    public DriverAuthenticateUseCase(AuthenticateService authenticateService) {
         this.authenticateService = authenticateService;
     }
 

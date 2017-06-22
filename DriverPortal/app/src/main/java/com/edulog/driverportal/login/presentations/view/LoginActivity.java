@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.R
 
         btnLogin = (Button)findViewById(R.id.login);
 
-        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(AndroidSchedulers.mainThread(), new AuthenticateServiceImplement());
+        DriverAuthenticateUseCase driverAuthenticateUseCase = new DriverAuthenticateUseCase(new AuthenticateServiceImplement());
 
         DriverPreferences driverPreferences = new DriverPreferences(this);
 
