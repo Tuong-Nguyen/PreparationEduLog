@@ -8,7 +8,7 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * DriverPreferences help to save values, which we want to keep for login the next time
  */
-// TODO: ntmhanh This class should be in services package instead of models package
+// TODO: Merge this code into SessionImpl and use SessionImpl instead of this class
 public class DriverPreferences {
     // TODO: ntmhanh Remove if it is not used
     private Context context;

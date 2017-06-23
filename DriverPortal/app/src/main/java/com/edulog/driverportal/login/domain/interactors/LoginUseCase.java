@@ -12,8 +12,6 @@ import com.edulog.driverportal.login.domain.utils.ErrorValidationUtil;
 import com.edulog.driverportal.login.models.Events;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
-
 
 /**
  * DriverAuthenticateUseCase, which receive observable from login result
@@ -48,6 +46,7 @@ public class LoginUseCase extends UseCase<Boolean, LoginUseCase.Params> {
         return Observable.just(errorValidation.isValid())
                 .doOnNext(isValid -> {
                     rememberDriverId(isRemember, params);
+                    // TODO: Use ValidationException instead of RuntimeException
                     if (!isValid) throw new RuntimeException("Validation was failed ");
                 }).concatWith(loginObservable(params))
                 .concatWith(sendEventsObservable(Events.LOG_IN));

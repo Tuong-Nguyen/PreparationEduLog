@@ -19,8 +19,6 @@ import com.edulog.driverportal.login.presentation.presenter.LoginPresenter;
 import com.edulog.driverportal.login.presentation.presenter.LoginPresenterImplement;
 import com.edulog.driverportal.login.presentation.presenter.LoginView;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-
 public class LoginActivity extends AppCompatActivity implements LoginView {
     private EditText etBusId;
     private EditText etDriverId;

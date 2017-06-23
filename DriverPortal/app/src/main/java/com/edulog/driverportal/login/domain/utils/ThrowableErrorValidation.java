@@ -6,6 +6,7 @@ import com.edulog.driverportal.login.models.ErrorValidation;
  * Created by ntmhanh on 6/22/2017.
  */
 
+// TODO: Use common.validation.exception.ValidationException in place of this class
 public class ThrowableErrorValidation extends RuntimeException {
     private ErrorValidation errorValidation;
 
