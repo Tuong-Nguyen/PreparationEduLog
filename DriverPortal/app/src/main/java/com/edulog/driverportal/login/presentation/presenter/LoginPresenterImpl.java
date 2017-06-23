@@ -44,9 +44,7 @@ public class LoginPresenterImpl implements LoginPresenter {
 
     public final class LoginObserver extends DisposableObserver<Boolean> {
         @Override
-        public void onNext(Boolean aBoolean) {
-
-        }
+        public void onNext(Boolean aBoolean) {}
 
         @Override
         public void onError(Throwable e) {
@@ -54,8 +52,6 @@ public class LoginPresenterImpl implements LoginPresenter {
         }
 
         @Override
-        public void onComplete() {
-
-        }
+        public void onComplete() {}
     }
 }

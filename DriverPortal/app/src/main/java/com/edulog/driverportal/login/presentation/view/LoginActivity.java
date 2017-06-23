@@ -15,7 +15,6 @@ import com.edulog.driverportal.login.domain.interactors.LoginUseCase;
 import com.edulog.driverportal.login.domain.interactors.LoginValidator;
 import com.edulog.driverportal.login.domain.services.AuthenticateServiceImpl;
 import com.edulog.driverportal.login.domain.services.EventServiceImpl;
-import com.edulog.driverportal.login.models.ErrorValidation;
 import com.edulog.driverportal.login.presentation.presenter.LoginPresenter;
 import com.edulog.driverportal.login.presentation.presenter.LoginPresenterImpl;
 import com.edulog.driverportal.login.presentation.presenter.LoginView;
@@ -76,26 +75,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void rememberDriverIdCheckbox(boolean isChecked) {
         saveLoginCheckBox.setChecked(isChecked);
     }
-
-    @Override
-    public boolean isRememberChecked() {
-        return saveLoginCheckBox.isChecked();
-    }
-
     @Override
     public void onLoginError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void showErrorValidationMessage(ErrorValidation errorValidation) {
-        if (!errorValidation.isValid()){
-         showErrorValidate(errorValidation.getErrorMessage());
-        }
-    }
-
-    private void showErrorValidate(String errorMessage){
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-    }
-
 }
