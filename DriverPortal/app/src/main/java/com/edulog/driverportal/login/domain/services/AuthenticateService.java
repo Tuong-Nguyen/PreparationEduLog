@@ -1,7 +1,5 @@
 package com.edulog.driverportal.login.domain.services;
 
-import com.edulog.driverportal.login.models.ErrorValidation;
-
 import io.reactivex.Observable;
 
 /**
@@ -10,7 +8,4 @@ import io.reactivex.Observable;
 
 public interface AuthenticateService {
     Observable<Boolean> login(String driverId, String password);
-
-    Observable<ErrorValidation> validate(String busId, String driverId, String password);
-
 }

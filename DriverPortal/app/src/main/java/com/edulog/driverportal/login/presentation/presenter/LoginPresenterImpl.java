@@ -1,10 +1,7 @@
 package com.edulog.driverportal.login.presentation.presenter;
 
-import com.edulog.driverportal.login.domain.interactors.DriverPreferenceUseCase;
+import com.edulog.driverportal.login.domain.interactors.DevicePreferenceUseCase;
 import com.edulog.driverportal.login.domain.interactors.LoginUseCase;
-import com.edulog.driverportal.login.domain.services.DriverPreferences;
-import com.edulog.driverportal.login.domain.utils.ThrowableErrorValidation;
-import com.edulog.driverportal.login.models.ErrorValidation;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -13,20 +10,19 @@ import io.reactivex.observers.DisposableObserver;
  */
 
 // TODO: Rename as LoginPresenterImpl
-public class LoginPresenterImplement implements LoginPresenter {
+public class LoginPresenterImpl implements LoginPresenter {
 
     // Layer View reference
     private LoginView loginView;
     public LoginUseCase.Params params;
-    private DriverPreferences driverPreferences;
     private LoginUseCase loginUseCase;
-    private DriverPreferenceUseCase driverPreferenceUseCase;
+    private DevicePreferenceUseCase devicePreferenceUseCase;
 
 
-    public LoginPresenterImplement(LoginView loginView, DriverPreferences driverPreferences, LoginUseCase loginUseCase) {
+    public LoginPresenterImpl(LoginView loginView, DevicePreferenceUseCase devicePreferenceUseCase, LoginUseCase loginUseCase) {
         this.loginView = loginView;
         this.loginUseCase = loginUseCase;
-        this.driverPreferences = driverPreferences;
+        this.devicePreferenceUseCase = devicePreferenceUseCase;
     }
 
     @Override
@@ -40,8 +36,8 @@ public class LoginPresenterImplement implements LoginPresenter {
      */
     @Override
     public void getRememberDriverId() {
-        if (driverPreferenceUseCase.getDriverId()){
-            loginView.setTextRememberDriverId(driverPreferences.getDriverId());
+        if (devicePreferenceUseCase.isDriverId()){
+            loginView.setTextRememberDriverId(devicePreferenceUseCase.driverId());
             loginView.rememberDriverIdCheckbox(true);
         }
     }
@@ -54,13 +50,7 @@ public class LoginPresenterImplement implements LoginPresenter {
 
         @Override
         public void onError(Throwable e) {
-            ThrowableErrorValidation throwableErrorValidation = (ThrowableErrorValidation)e;
-            ErrorValidation errorValidation = throwableErrorValidation.getErrorValidationUtil();
-            if (errorValidation != null){
-                loginView.showErrorValidationMessage(errorValidation);
-            }else {
                 loginView.onLoginError(e.getMessage());
-            }
         }
 
         @Override

@@ -5,13 +5,22 @@ package com.edulog.driverportal.login.domain.interactors;
  */
 
 import com.edulog.driverportal.common.domain.UseCase;
+import com.edulog.driverportal.common.preference.Session;
+import com.edulog.driverportal.common.validation.exception.ValidationException;
+import com.edulog.driverportal.common.validation.model.ValidationResult;
 import com.edulog.driverportal.login.domain.services.AuthenticateService;
-import com.edulog.driverportal.login.domain.services.DriverPreferences;
 import com.edulog.driverportal.login.domain.services.EventService;
-import com.edulog.driverportal.login.domain.utils.ErrorValidationUtil;
 import com.edulog.driverportal.login.models.Events;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.reactivex.Observable;
+
+import static com.edulog.driverportal.login.domain.interactors.LoginValidator.validateAll;
+import static com.edulog.driverportal.login.domain.interactors.LoginValidator.validateBusId;
+import static com.edulog.driverportal.login.domain.interactors.LoginValidator.validateDriverId;
+import static com.edulog.driverportal.login.domain.interactors.LoginValidator.validatePassword;
 
 /**
  * DriverAuthenticateUseCase, which receive observable from login result
@@ -21,14 +30,12 @@ public class LoginUseCase extends UseCase<Boolean, LoginUseCase.Params> {
 
     private AuthenticateService authenticateService;
     private EventService eventService;
-    private ErrorValidationUtil errorValidationUtil;
-    private DriverPreferences driverPreferences;
+    private Session session;
 
-    public LoginUseCase(AuthenticateService authenticateService, ErrorValidationUtil errorValidationUtil, EventService eventService, DriverPreferences driverPreferences) {
+    public LoginUseCase(AuthenticateService authenticateService, EventService eventService, Session session) {
         this.authenticateService = authenticateService;
-        this.errorValidationUtil = errorValidationUtil;
         this.eventService = eventService;
-        this.driverPreferences = driverPreferences;
+        this.session = session;
     }
 
     /**
@@ -36,22 +43,32 @@ public class LoginUseCase extends UseCase<Boolean, LoginUseCase.Params> {
      * @param params
      * @return
      */
+
     @Override
     public Observable<Boolean> buildUseCaseObservable(Params params) {
-        String busId = params.busId;
-        String driverId = params.driverId;
-        String password = params.password;
-        boolean isRemember = params.rememberDriverId;
-        com.edulog.driverportal.login.models.ErrorValidation errorValidation = this.errorValidationUtil.validateLogin(busId, driverId, password);
-        return Observable.just(errorValidation.isValid())
-                .doOnNext(isValid -> {
-                    rememberDriverId(isRemember, params);
-                    // TODO: Use ValidationException instead of RuntimeException
-                    if (!isValid) throw new RuntimeException("Validation was failed ");
-                }).concatWith(loginObservable(params))
-                .concatWith(sendEventsObservable(Events.LOG_IN));
+        return validate(params)
+                .zipWith(loginObservable(params),
+                        ((validationResults, isSuccess) -> isSuccess));
     }
 
+    /**
+     *
+     * @param params
+     * @return
+     */
+    public Observable<List<ValidationResult>> validate(Params params) {
+        ValidationResult busIdValidate = validateBusId(params.busId);
+        ValidationResult driverIdValidate = validateDriverId(params.driverId);
+        ValidationResult passwordValidate = validatePassword(params.password);
+        ValidationResult allResult = validateAll(busIdValidate, driverIdValidate, passwordValidate);
+
+        List<ValidationResult> validationResults = Arrays.asList(busIdValidate, driverIdValidate, passwordValidate);
+        return Observable.just(validationResults)
+                .doOnNext(results -> {
+                    if (!allResult.isValid())
+                        throw new ValidationException(results);
+                });
+    }
     /**
      * Build Login Observable
      * @param params
@@ -63,9 +80,10 @@ public class LoginUseCase extends UseCase<Boolean, LoginUseCase.Params> {
         boolean isRemember = params.rememberDriverId;
         return authenticateService.login(driverId, password)
                 .doOnNext(isSuccess -> {
-                   // rememberDriverId(isRemember, params);
+                    rememberDriverId(isRemember, params);
                     if (!isSuccess) throw new RuntimeException("Login failed.");
-                });
+                })
+                .concatWith(sendEventsObservable(Events.LOG_IN));
     }
 
     /**
@@ -80,9 +98,9 @@ public class LoginUseCase extends UseCase<Boolean, LoginUseCase.Params> {
 
     public void rememberDriverId(boolean isRememberChecked, Params params){
         if (isRememberChecked) {
-            driverPreferences.setValuePreferences(params.driverId);
+            session.putDriverId(params.driverId);
         } else {
-            driverPreferences.removeValueItem();
+            session.removeDriverId();
         }
     }
 

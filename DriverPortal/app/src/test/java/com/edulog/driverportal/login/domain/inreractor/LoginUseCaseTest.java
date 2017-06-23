@@ -1,12 +1,11 @@
 package com.edulog.driverportal.login.domain.inreractor;
 
 import com.edulog.driverportal.RxImmediateSchedulerRule;
+import com.edulog.driverportal.common.preference.SessionImpl;
 import com.edulog.driverportal.login.domain.interactors.LoginUseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateService;
 import com.edulog.driverportal.login.domain.services.DriverPreferences;
 import com.edulog.driverportal.login.domain.services.EventService;
-import com.edulog.driverportal.login.domain.utils.ErrorValidationUtil;
-import com.edulog.driverportal.login.models.ErrorValidation;
 import com.edulog.driverportal.login.models.Events;
 
 import org.junit.Before;
@@ -16,7 +15,6 @@ import org.mockito.Mockito;
 
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
-import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -27,34 +25,30 @@ public class LoginUseCaseTest {
     @ClassRule
     public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
-    String busId = "1";
-    String driverId = "2";
-    String password = "123456789";
     boolean isChecked;
     private AuthenticateService authenticateService;
-    private ErrorValidationUtil errorValidationUtil;
     private LoginUseCase loginUseCase;
-    private ErrorValidation errorValidation;
     private EventService eventService;
     private DriverPreferences driverPreferences;
+    private SessionImpl session;
 
     @Before
     public void init() {
         authenticateService = Mockito.mock(AuthenticateService.class);
-        errorValidationUtil = Mockito.mock(ErrorValidationUtil.class);
-        errorValidation = Mockito.mock(ErrorValidation.class);
         eventService = Mockito.mock(EventService.class);
         driverPreferences = Mockito.mock(DriverPreferences.class);
-        loginUseCase = new LoginUseCase(authenticateService, errorValidationUtil,eventService, driverPreferences);
+        session = Mockito.mock(SessionImpl.class);
+        loginUseCase = new LoginUseCase(authenticateService,eventService, session);
     }
 
     @Test
     public void execute_validateLoginInformation_returnAssertComplete() {
         // Arrange
+        String busId = "123";
+        String driverId = "123";
+        String password = "123456789";
         isChecked = true;
         LoginUseCase.Params params = new LoginUseCase.Params(busId, driverId, password,isChecked);
-        when(errorValidation.isValid()).thenReturn(true);
-        when(errorValidationUtil.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
         when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
         when(eventService.sendEvent(Events.LOG_IN)).thenReturn(Observable.just(true));
         TestObserver<Boolean> testObserver = new TestObserver<>();
@@ -66,10 +60,11 @@ public class LoginUseCaseTest {
     @Test
     public void execute_inValidateLoginInformation_returnAssertError() {
         // Arrange
+        String busId = "1";
+        String driverId = "123";
+        String password = "123456789";
         isChecked = true;
         LoginUseCase.Params params = new LoginUseCase.Params(busId, driverId, password,isChecked);
-        when(errorValidation.isValid()).thenReturn(false);
-        when(errorValidationUtil.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
         when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
         when(eventService.sendEvent(Events.LOG_IN)).thenReturn(Observable.just(true));
         TestObserver<Boolean> testObserver = new TestObserver<>();
@@ -81,10 +76,11 @@ public class LoginUseCaseTest {
     @Test
     public void execute_authenticateFailure_returnAssertError() {
         // Arrange
+        String busId = "123";
+        String driverId = "123";
+        String password = "123456789";
         isChecked = true;
         LoginUseCase.Params params = new LoginUseCase.Params(busId, driverId, password,isChecked);
-        when(errorValidation.isValid()).thenReturn(true);
-        when(errorValidationUtil.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
         when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(false));
         when(eventService.sendEvent(Events.LOG_IN)).thenReturn(Observable.just(true));
         TestObserver<Boolean> testObserver = new TestObserver<>();
@@ -97,10 +93,11 @@ public class LoginUseCaseTest {
     @Test
     public void execute_sendEventFailure_returnAssertComplete() {
         // Arrange
+        String busId = "123";
+        String driverId = "123";
+        String password = "123456789";
         isChecked = true;
         LoginUseCase.Params params = new LoginUseCase.Params(busId, driverId, password,isChecked);
-        when(errorValidation.isValid()).thenReturn(true);
-        when(errorValidationUtil.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
         when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
         when(eventService.sendEvent(Events.LOG_IN)).thenReturn(Observable.just(false));
         TestObserver<Boolean> testObserver = new TestObserver<>();
@@ -113,33 +110,35 @@ public class LoginUseCaseTest {
     @Test
     public void execute_rememberDriverIdChecked_returnAssertCompleteAndSetValuePreferencesWasCalled() {
         // Arrange
+        String busId = "123";
+        String driverId = "123";
+        String password = "123456789";
         isChecked = true;
         LoginUseCase.Params params = new LoginUseCase.Params(busId, driverId, password,isChecked);
-        when(errorValidation.isValid()).thenReturn(true);
-        when(errorValidationUtil.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
         when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
         when(eventService.sendEvent(Events.LOG_IN)).thenReturn(Observable.just(true));
         TestObserver<Boolean> testObserver = new TestObserver<>();
         // Action
         loginUseCase.execute(testObserver, params);
         // Assert
-        verify(driverPreferences).setValuePreferences(driverId);
+        verify(session).putDriverId(driverId);
         testObserver.assertComplete();
     }
     @Test
     public void execute_rememberDriverIdNotChecked_returnAssertCompleteAndRemoveValueItemWasCalled() {
         // Arrange
+        String busId = "123";
+        String driverId = "123";
+        String password = "123456789";
         isChecked = false;
         LoginUseCase.Params params = new LoginUseCase.Params(busId, driverId, password,isChecked);
-        when(errorValidation.isValid()).thenReturn(true);
-        when(errorValidationUtil.validateLogin(anyString(), anyString(), anyString())).thenReturn(errorValidation);
         when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
         when(eventService.sendEvent(Events.LOG_IN)).thenReturn(Observable.just(true));
         TestObserver<Boolean> testObserver = new TestObserver<>();
         // Action
         loginUseCase.execute(testObserver, params);
         // Assert
-        verify(driverPreferences).removeValueItem();
+        verify(session).removeDriverId();
         testObserver.assertComplete();
     }
 

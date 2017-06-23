@@ -9,14 +9,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
+import com.edulog.driverportal.common.preference.SessionImpl;
+import com.edulog.driverportal.login.domain.interactors.DevicePreferenceUseCase;
 import com.edulog.driverportal.login.domain.interactors.LoginUseCase;
-import com.edulog.driverportal.login.domain.services.AuthenticateServiceImplement;
-import com.edulog.driverportal.login.domain.services.DriverPreferences;
-import com.edulog.driverportal.login.domain.services.EventServiceImplement;
-import com.edulog.driverportal.login.domain.utils.ErrorValidationUtil;
+import com.edulog.driverportal.login.domain.interactors.LoginValidator;
+import com.edulog.driverportal.login.domain.services.AuthenticateServiceImpl;
+import com.edulog.driverportal.login.domain.services.EventServiceImpl;
 import com.edulog.driverportal.login.models.ErrorValidation;
 import com.edulog.driverportal.login.presentation.presenter.LoginPresenter;
-import com.edulog.driverportal.login.presentation.presenter.LoginPresenterImplement;
+import com.edulog.driverportal.login.presentation.presenter.LoginPresenterImpl;
 import com.edulog.driverportal.login.presentation.presenter.LoginView;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
@@ -40,18 +41,16 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         etPassword = (EditText)findViewById(R.id.password);
         btnLogin = (Button)findViewById(R.id.login);
 
-        com.edulog.driverportal.login.models.ErrorValidation errorValidation = new com.edulog.driverportal.login.models.ErrorValidation();
+        AuthenticateServiceImpl authenticateServiceImpl = new AuthenticateServiceImpl(new LoginValidator());
 
-        ErrorValidationUtil errorValidateUtils = new ErrorValidationUtil(errorValidation);
+        EventServiceImpl eventServiceImpl = new EventServiceImpl();
 
-        AuthenticateServiceImplement authenticateServiceImplement = new AuthenticateServiceImplement(errorValidateUtils);
+        LoginUseCase loginUseCase = new LoginUseCase(authenticateServiceImpl, eventServiceImpl, new SessionImpl(this));
 
-        EventServiceImplement eventServiceImplement = new EventServiceImplement();
+        DevicePreferenceUseCase devicePreferenceUseCase = new DevicePreferenceUseCase(new SessionImpl(this));
 
-        DriverPreferences driverPreferences = new DriverPreferences(this);
+        presenter = new LoginPresenterImpl(this, devicePreferenceUseCase, loginUseCase);
 
-        LoginUseCase loginUseCase = new LoginUseCase(authenticateServiceImplement,errorValidateUtils, eventServiceImplement, driverPreferences);
-        presenter = new LoginPresenterImplement(this, driverPreferences, loginUseCase);
         saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
 
         presenter.getRememberDriverId();

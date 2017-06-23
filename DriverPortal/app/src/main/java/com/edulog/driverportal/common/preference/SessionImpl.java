@@ -34,6 +34,11 @@ public class SessionImpl implements Session {
         return getString(KEY_DRIVER_ID);
     }
 
+    @Override
+    public void removeDriverId() {
+        removeString(KEY_DRIVER_ID);
+    }
+
     private void putString(String key, String value) {
         sharedPreferences.edit()
                 .putString(key, value)
@@ -42,5 +47,11 @@ public class SessionImpl implements Session {
 
     private String getString(String key) {
         return sharedPreferences.getString(key, "");
+    }
+
+    public void removeString(String key){
+        sharedPreferences.edit()
+                .remove(key)
+                .apply();
     }
 }
