@@ -7,10 +7,11 @@ import com.edulog.driverportal.routeselection.model.RouteModel;
 import java.util.List;
 
 public interface SearchRoutesContract {
-    abstract class SearchRoutesPresenter extends BasePresenter<SearchRoutesView> {
-        public abstract void searchRoutes(String query);
-    }
     interface SearchRoutesView extends BaseView {
         void showSearchRouteResults(List<RouteModel> routeModels);
+    }
+
+    abstract class SearchRoutesPresenter extends BasePresenter<SearchRoutesView> {
+        public abstract void searchRoutes(String query);
     }
 }

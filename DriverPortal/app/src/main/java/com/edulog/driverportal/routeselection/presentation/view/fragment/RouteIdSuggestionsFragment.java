@@ -55,7 +55,7 @@ public class RouteIdSuggestionsFragment extends BaseFragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        ((BaseActivity)getActivity()).setTitle("Search routes");
+        ((BaseActivity) getActivity()).setTitle("Search routes");
 
         return root;
     }

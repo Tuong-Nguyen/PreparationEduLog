@@ -43,7 +43,7 @@ public class RouteHistoryFragment extends BaseFragment implements RouteHistoryCo
         routeModels = new ArrayList<>();
 
         RouteRepository routeRepository = new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity()));
-        Session session = ((DriverPortalApplication)getActivity().getApplication()).getSession();
+        Session session = ((DriverPortalApplication) getActivity().getApplication()).getSession();
         ShowRouteHistoryUseCase showRouteHistoryUseCase = new ShowRouteHistoryUseCase(routeRepository, session);
         routeHistoryPresenter = new RouteHistoryPresenterImpl(showRouteHistoryUseCase);
     }
@@ -57,7 +57,7 @@ public class RouteHistoryFragment extends BaseFragment implements RouteHistoryCo
         routeHistoryAdapter = new RouteHistoryAdapter(routeModels);
         routeHistoryAdapter.getItemClickObservable().subscribe(this::openPreviewRouteDialog);
 
-        RecyclerView routeHistoryList = (RecyclerView)root.findViewById(R.id.rvRouteHistory);
+        RecyclerView routeHistoryList = (RecyclerView) root.findViewById(R.id.rvRouteHistory);
         routeHistoryList.setLayoutManager(new LinearLayoutManager(getActivity()));
         routeHistoryList.setAdapter(routeHistoryAdapter);
 

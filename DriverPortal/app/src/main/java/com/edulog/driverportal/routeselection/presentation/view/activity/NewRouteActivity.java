@@ -25,16 +25,13 @@ import com.edulog.driverportal.routeselection.domain.interactor.RouteIdSuggestio
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
 import com.edulog.driverportal.routeselection.presentation.presenter.NewRouteContract;
 import com.edulog.driverportal.routeselection.presentation.presenter.NewRoutePresenterImpl;
-import com.edulog.driverportal.routeselection.presentation.view.fragment.RouteIdSuggestionsFragment;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.NewRouteFragment;
+import com.edulog.driverportal.routeselection.presentation.view.fragment.RouteIdSuggestionsFragment;
 import com.edulog.driverportal.routeselection.presentation.view.fragment.SearchRoutesFragment;
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class NewRouteActivity extends BaseActivity implements NewRouteContract.NewRouteView {
     private NewRouteContract.NewRoutePresenter newRoutePresenter;

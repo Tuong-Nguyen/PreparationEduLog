@@ -6,11 +6,11 @@ import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 
 public interface RouteDetailsContract {
-    abstract class RouteDetailsPresenter extends BasePresenter<RouteDetailsView> {
-        public abstract void setActiveRoute(String routeId, LoadMode loadMode);
-    }
-
     interface RouteDetailsView extends BaseView {
         void showRouteDetails(RouteModel routeModel);
+    }
+
+    abstract class RouteDetailsPresenter extends BasePresenter<RouteDetailsView> {
+        public abstract void setActiveRoute(String routeId, LoadMode loadMode);
     }
 }

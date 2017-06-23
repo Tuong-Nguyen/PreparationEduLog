@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.edulog.driverportal.routeselection.data.entity.DriverEntity;
-import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 import com.edulog.driverportal.routeselection.domain.repository.DriverRepository;
 
 public class DriverRepositoryImpl implements DriverRepository {
@@ -28,7 +27,7 @@ public class DriverRepositoryImpl implements DriverRepository {
 
             if (isExists(driverEntity.getId())) {
                 String whereClause = DriverPortalContract.DriverEntry.COLUMN_NAME_ID + " = ?";
-                String[] whereArgs = { driverEntity.getId() };
+                String[] whereArgs = {driverEntity.getId()};
                 db.update(TABLE, values, whereClause, whereArgs);
             } else {
                 db.insert(TABLE, null, values);
@@ -65,7 +64,7 @@ public class DriverRepositoryImpl implements DriverRepository {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String query = "SELECT COUNT(*) FROM " + TABLE + " WHERE " + DriverPortalContract.DriverEntry.COLUMN_NAME_ID + " = ?";
-        String[] selectionArgs = { driverId };
+        String[] selectionArgs = {driverId};
         Cursor cursor = db.rawQuery(query, selectionArgs);
 
         int count;

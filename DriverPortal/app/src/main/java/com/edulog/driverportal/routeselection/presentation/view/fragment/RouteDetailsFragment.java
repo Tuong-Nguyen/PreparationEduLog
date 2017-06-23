@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.edulog.driverportal.DriverPortalApplication;
 import com.edulog.driverportal.R;
+import com.edulog.driverportal.common.preference.Session;
 import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
@@ -18,7 +19,6 @@ import com.edulog.driverportal.routeselection.data.net.DriverPortalRouteService;
 import com.edulog.driverportal.routeselection.data.repository.DriverPortalDbHelper;
 import com.edulog.driverportal.routeselection.data.repository.RouteRepositoryImpl;
 import com.edulog.driverportal.routeselection.data.service.RouteServiceImpl;
-import com.edulog.driverportal.common.preference.Session;
 import com.edulog.driverportal.routeselection.domain.interactor.SetActiveRouteUseCase;
 import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.domain.service.RouteService;
@@ -26,7 +26,6 @@ import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsContract;
 import com.edulog.driverportal.routeselection.presentation.presenter.RouteDetailsPresenterImpl;
-import com.edulog.driverportal.routeselection.presentation.view.activity.NewRouteActivity;
 
 public class RouteDetailsFragment extends BaseFragment implements RouteDetailsContract.RouteDetailsView {
     private static final String KEY_ROUTE_ID = "com.edulog.driverportal.KEY_ROUTE_ID";
@@ -58,7 +57,7 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsCo
         Bundle args = getArguments();
         if (!args.isEmpty()) {
             routeId = args.getString(KEY_ROUTE_ID);
-            loadMode = (LoadMode)args.getSerializable(KEY_LOAD_MORE);
+            loadMode = (LoadMode) args.getSerializable(KEY_LOAD_MORE);
         }
 
         DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);

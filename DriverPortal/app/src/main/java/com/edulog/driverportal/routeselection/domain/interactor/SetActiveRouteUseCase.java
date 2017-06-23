@@ -8,9 +8,6 @@ import com.edulog.driverportal.routeselection.model.LoadMode;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 import com.edulog.driverportal.routeselection.model.RouteModelDataMapper;
 
-import java.io.IOException;
-import java.sql.ParameterMetaData;
-
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -23,6 +20,15 @@ public class SetActiveRouteUseCase extends UseCase<RouteModel, SetActiveRouteUse
         this.routeService = routeService;
         this.routeRepository = routeRepository;
         this.session = session;
+    }
+
+    public static Params buildParams(String routeId, LoadMode loadMode) {
+        Params params = new Params();
+
+        params.routeId = routeId;
+        params.loadMode = loadMode;
+
+        return params;
     }
 
     @Override
@@ -40,7 +46,6 @@ public class SetActiveRouteUseCase extends UseCase<RouteModel, SetActiveRouteUse
                             }
                         })
                         .map(routeEntity -> {
-                            routeEntity.setDriverId(session.getDriverId());
                             routeRepository.upsert(routeEntity);
                             session.putRouteId(routeEntity.getId());
                             return RouteModelDataMapper.transform(routeEntity);
@@ -65,15 +70,6 @@ public class SetActiveRouteUseCase extends UseCase<RouteModel, SetActiveRouteUse
         }
 
         return observable;
-    }
-
-    public static Params buildParams(String routeId, LoadMode loadMode) {
-        Params params = new Params();
-
-        params.routeId = routeId;
-        params.loadMode = loadMode;
-
-        return params;
     }
 
     public static class Params {

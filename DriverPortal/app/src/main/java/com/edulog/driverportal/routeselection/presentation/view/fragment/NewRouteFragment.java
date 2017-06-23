@@ -25,7 +25,7 @@ public class NewRouteFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_new_route, container, false);
 
-        ((BaseActivity)getActivity()).setTitle("Choose a new route from server");
+        ((BaseActivity) getActivity()).setTitle("Choose a new route from server");
 
         return root;
     }

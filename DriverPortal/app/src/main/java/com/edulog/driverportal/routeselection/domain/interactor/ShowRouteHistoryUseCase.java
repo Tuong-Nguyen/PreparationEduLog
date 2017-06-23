@@ -6,7 +6,7 @@ import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 import com.edulog.driverportal.routeselection.model.RouteModel;
 import com.edulog.driverportal.routeselection.model.RouteModelDataMapper;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -25,8 +25,9 @@ public class ShowRouteHistoryUseCase extends UseCase<List<RouteModel>, Void> {
     public Observable<List<RouteModel>> buildUseCaseObservable(Void aVoid) {
         String driverId = session.getDriverId();
         if (driverId != null) {
-            return Observable.just(routeRepository.findByDriverId(driverId))
+            return Observable.just(routeRepository.findAll())
                     .subscribeOn(Schedulers.io())
+                    .doOnNext(Collections::reverse)
                     .map(RouteModelDataMapper::transform);
         }
         return Observable.error(new RuntimeException("Driver not logged in"));

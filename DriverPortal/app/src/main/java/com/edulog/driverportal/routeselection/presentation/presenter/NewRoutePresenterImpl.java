@@ -1,6 +1,5 @@
 package com.edulog.driverportal.routeselection.presentation.presenter;
 
-import com.edulog.driverportal.common.presentation.CompositeDisposableObserver;
 import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routeselection.domain.interactor.RouteIdSuggestionsUseCase;
 

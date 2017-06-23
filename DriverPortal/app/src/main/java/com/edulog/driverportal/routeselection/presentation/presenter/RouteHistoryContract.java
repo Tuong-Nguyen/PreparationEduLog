@@ -7,12 +7,12 @@ import com.edulog.driverportal.routeselection.model.RouteModel;
 import java.util.List;
 
 public interface RouteHistoryContract {
-    abstract class RouteHistoryPresenter extends BasePresenter<RouteHistoryView> {
-        public abstract void getRouteHistory();
-    }
-
     interface RouteHistoryView extends BaseView {
         public void showRouteHistory(List<RouteModel> routeModels);
+    }
+
+    abstract class RouteHistoryPresenter extends BasePresenter<RouteHistoryView> {
+        public abstract void getRouteHistory();
     }
 
 }

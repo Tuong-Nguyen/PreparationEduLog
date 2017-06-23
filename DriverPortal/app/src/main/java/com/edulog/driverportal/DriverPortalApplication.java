@@ -26,8 +26,6 @@ public class DriverPortalApplication extends Application {
 
         DriverEntity driverEntity = new DriverEntity();
         driverEntity.setId("driver01");
-        DriverRepository driverRepository = new DriverRepositoryImpl(new DriverPortalDbHelper(this));
-        driverRepository.upsert(driverEntity);
         session.putDriverId(driverEntity.getId());
     }
 

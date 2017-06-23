@@ -3,13 +3,18 @@ package com.edulog.driverportal.routeselection.data.repository;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.edulog.driverportal.routeselection.data.entity.RouteEntity;
 import com.edulog.driverportal.routeselection.domain.repository.RouteRepository;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class RouteRepositoryImpl implements RouteRepository {
     private String table = DriverPortalContract.RouteEntry.TABLE_NAME;
@@ -48,13 +53,13 @@ public class RouteRepositoryImpl implements RouteRepository {
         if (routeEntity != null) {
             ContentValues values = new ContentValues();
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_ID, routeEntity.getId());
-            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID, routeEntity.getDriverId());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME, routeEntity.getName());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT, routeEntity.getStopCount());
+            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_UPDATED_AT, new Date().toString());
 
             if (isExists(routeEntity)) {
-                String whereClause = DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ? AND " + DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID + " = ?";
-                String[] whereArgs = { routeEntity.getId(), routeEntity.getDriverId() };
+                String whereClause = DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ?";
+                String[] whereArgs = {routeEntity.getId()};
                 db.update(table, values, whereClause, whereArgs);
             } else {
                 db.insert(table, null, values);
@@ -68,13 +73,11 @@ public class RouteRepositoryImpl implements RouteRepository {
     }
 
     @Override
-    public List<RouteEntity> findByDriverId(String driverId) {
+    public List<RouteEntity> findAll() {
         List<RouteEntity> routeEntities = new ArrayList<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selection = DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID + " = ?";
-        String[] selectionArgs = { driverId };
-        try (Cursor cursor = db.query(table, null, selection, selectionArgs, null, null, null)) {
+        try (Cursor cursor = db.query(table, null, null, null, null, null, null)) {
             while (cursor.moveToNext()) {
                 RouteEntity routeEntity = createRouteEntityFromCursor(cursor);
                 routeEntities.add(routeEntity);
@@ -90,14 +93,20 @@ public class RouteRepositoryImpl implements RouteRepository {
         String id = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_ID));
         routeEntity.setId(id);
 
-        String driverId = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID));
-        routeEntity.setDriverId(driverId);
-
         String name = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME));
         routeEntity.setName(name);
 
         int stopCount = cursor.getInt(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT));
         routeEntity.setStopCount(stopCount);
+
+        String dateStr = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_UPDATED_AT));
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.US);
+            routeEntity.setUpdatedAt(dateFormat.parse(dateStr));
+        } catch (NullPointerException | ParseException ex) {
+            Log.d("dateformat", ex.getMessage());
+            routeEntity.setUpdatedAt(new Date());
+        }
 
         return routeEntity;
     }
@@ -106,9 +115,8 @@ public class RouteRepositoryImpl implements RouteRepository {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String query = "SELECT COUNT(*) FROM " + table +
-                " WHERE " + DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ? AND " +
-                DriverPortalContract.RouteEntry.COLUMN_NAME_DRIVER_ID + " = ?";
-        String[] selectionArgs = { routeEntity.getId(), routeEntity.getDriverId() };
+                " WHERE " + DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " = ?";
+        String[] selectionArgs = {routeEntity.getId()};
         Cursor cursor = db.rawQuery(query, selectionArgs);
 
         int count;

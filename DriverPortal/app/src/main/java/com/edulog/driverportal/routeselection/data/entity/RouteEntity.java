@@ -1,10 +1,14 @@
 package com.edulog.driverportal.routeselection.data.entity;
 
-public class RouteEntity {
+import android.support.annotation.NonNull;
+
+import java.util.Date;
+
+public class RouteEntity implements Comparable<RouteEntity> {
     private String id;
-    private String driverId;
     private String name;
     private int stopCount;
+    private Date updatedAt;
 
     public String getId() {
         return id;
@@ -12,14 +16,6 @@ public class RouteEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(String driverId) {
-        this.driverId = driverId;
     }
 
     public String getName() {
@@ -36,5 +32,18 @@ public class RouteEntity {
 
     public void setStopCount(int stopCount) {
         this.stopCount = stopCount;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public int compareTo(@NonNull RouteEntity o) {
+        return updatedAt.compareTo(o.getUpdatedAt());
     }
 }

@@ -22,20 +22,6 @@ public class RouteHistoryAdapter extends RecyclerView.Adapter<RouteHistoryAdapte
         this.routeModels = routeModels;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView routeId;
-        public TextView routeName;
-        public TextView stopCount;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            routeId = (TextView)itemView.findViewById(R.id.tvRouteId);
-            routeName = (TextView)itemView.findViewById(R.id.tvRouteName);
-            stopCount = (TextView)itemView.findViewById(R.id.tvStopCount);
-        }
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -60,5 +46,19 @@ public class RouteHistoryAdapter extends RecyclerView.Adapter<RouteHistoryAdapte
 
     public Observable<RouteModel> getItemClickObservable() {
         return onClickSubject;
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView routeId;
+        public TextView routeName;
+        public TextView stopCount;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            routeId = (TextView) itemView.findViewById(R.id.tvRouteId);
+            routeName = (TextView) itemView.findViewById(R.id.tvRouteName);
+            stopCount = (TextView) itemView.findViewById(R.id.tvStopCount);
+        }
     }
 }

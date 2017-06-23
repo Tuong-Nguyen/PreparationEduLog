@@ -14,13 +14,13 @@ public class RouteSelectionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_selection);
 
-        Button newRouteButton = (Button)findViewById(R.id.btnNewRoute);
+        Button newRouteButton = (Button) findViewById(R.id.btnNewRoute);
         newRouteButton.setOnClickListener(v -> {
             Intent intent = new Intent(RouteSelectionActivity.this, NewRouteActivity.class);
             startActivity(intent);
         });
 
-        Button usePreviousRouteButton = (Button)findViewById(R.id.btnUsePreviousRoute);
+        Button usePreviousRouteButton = (Button) findViewById(R.id.btnUsePreviousRoute);
         usePreviousRouteButton.setOnClickListener(v -> {
             Intent intent = new Intent(RouteSelectionActivity.this, PreviousRouteActivity.class);
             startActivity(intent);

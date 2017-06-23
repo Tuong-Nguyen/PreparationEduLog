@@ -19,6 +19,15 @@ public class GetRouteUseCase extends UseCase<RouteModel, GetRouteUseCase.Params>
         this.routeRepository = routeRepository;
     }
 
+    public static Params buildParams(String routeId, LoadMode loadMode) {
+        Params params = new Params();
+
+        params.routeId = routeId;
+        params.loadMode = loadMode;
+
+        return params;
+    }
+
     @Override
     public Observable<RouteModel> buildUseCaseObservable(Params params) {
         String routeId = params.routeId;
@@ -41,15 +50,6 @@ public class GetRouteUseCase extends UseCase<RouteModel, GetRouteUseCase.Params>
         }
 
         return observable;
-    }
-
-    public static Params buildParams(String routeId, LoadMode loadMode) {
-        Params params = new Params();
-
-        params.routeId = routeId;
-        params.loadMode = loadMode;
-
-        return params;
     }
 
     public static class Params {
