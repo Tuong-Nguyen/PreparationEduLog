@@ -1,11 +1,11 @@
 package com.edulog.driverportal.login.presentation.presenter;
 
+import com.edulog.driverportal.common.presentation.BaseView;
+
 /**
  * LoginPresenter access to View(LoginActivity)
  */
 
-public interface LoginView {
-    void setTextRememberDriverId(String driverId);
-    void rememberDriverIdCheckbox(boolean isChecked);
-    void onLoginError(String message);
+public interface LoginView extends BaseView{
+    void rememberDriverId(String driverId, boolean isChecked);
 }

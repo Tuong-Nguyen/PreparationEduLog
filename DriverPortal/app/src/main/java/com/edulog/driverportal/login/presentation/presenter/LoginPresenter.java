@@ -5,6 +5,6 @@ package com.edulog.driverportal.login.presentation.presenter;
  */
 
 public interface LoginPresenter {
-        void doLogin(String busID, String driverId, String password, boolean isRememberChecked);
-        void getRememberDriverId();
+        void onLogin(String busID, String driverId, String password, boolean isRememberChecked);
+        void onInitPreferences();
 }

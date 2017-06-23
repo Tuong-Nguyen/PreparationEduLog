@@ -35,7 +35,7 @@ public class LoginPresenterImplTest {
     public void doLogin_getInformationFromLoginPage_returnExecuteWasCalled() {
         //Action
         isRememberDriverChecked = true;
-        loginPresenterImpl.doLogin(busId, driverId, password, true);
+        loginPresenterImpl.onLogin(busId, driverId, password, true);
         //Assert
         verify(loginUseCase).execute(any(DisposableObserver.class), any(LoginUseCase.Params.class));
     }

@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
 
-        presenter.getRememberDriverId();
+        presenter.onInitPreferences();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,23 +59,30 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 busId = etBusId.getText().toString();
                 driverId = etDriverId.getText().toString();
                 password = etPassword.getText().toString();
-                presenter.doLogin(busId, driverId, password,saveLoginCheckBox.isChecked());
+                presenter.onLogin(busId, driverId, password,saveLoginCheckBox.isChecked());
             }
         });
 
     }
 
     @Override
-    public void setTextRememberDriverId(String driverId) {
-        etDriverId.setText(driverId);
+    public void showProgress() {
+
     }
 
     @Override
-    public void rememberDriverIdCheckbox(boolean isChecked) {
-        saveLoginCheckBox.setChecked(isChecked);
+    public void hideProgress() {
+
     }
+
     @Override
-    public void onLoginError(String message) {
+    public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void rememberDriverId(String driverId, boolean isChecked) {
+        etDriverId.setText(driverId);
+        saveLoginCheckBox.setChecked(isChecked);
     }
 }

@@ -26,7 +26,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     }
 
     @Override
-    public void doLogin(String busID, String driverId, String password, boolean isRememberChecked) {
+    public void onLogin(String busID, String driverId, String password, boolean isRememberChecked) {
         params = new LoginUseCase.Params(busID, driverId, password, isRememberChecked);
         loginUseCase.execute(new LoginObserver(), params);
     }
@@ -35,10 +35,9 @@ public class LoginPresenterImpl implements LoginPresenter {
      * Setting rememberDriverId driver id on view
      */
     @Override
-    public void getRememberDriverId() {
+    public void onInitPreferences() {
         if (devicePreferenceUseCase.isDriverId()){
-            loginView.setTextRememberDriverId(devicePreferenceUseCase.driverId());
-            loginView.rememberDriverIdCheckbox(true);
+           loginView.rememberDriverId(devicePreferenceUseCase.driverId(), true);
         }
     }
 
@@ -48,7 +47,7 @@ public class LoginPresenterImpl implements LoginPresenter {
 
         @Override
         public void onError(Throwable e) {
-                loginView.onLoginError(e.getMessage());
+                loginView.showError(e.getMessage());
         }
 
         @Override
