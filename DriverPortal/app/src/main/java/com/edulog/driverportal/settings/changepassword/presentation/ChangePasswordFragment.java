@@ -12,20 +12,22 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.base.BaseFragment;
-import com.edulog.driverportal.common.base.BasePresenter;
-import com.edulog.driverportal.common.base.BaseView;
+import com.edulog.driverportal.common.presentation.BaseFragment;
+import com.edulog.driverportal.common.presentation.BasePresenter;
+import com.edulog.driverportal.common.presentation.BaseView;
 import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceImpl;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
-import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
+import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class ChangePasswordFragment extends BaseFragment implements ChangePasswordView {
+public class ChangePasswordFragment extends BaseFragment implements ChangePasswordContract.ChangePasswordView {
     private TextInputLayout driverIdWrapper;
     private TextInputLayout oldPasswordWrapper;
     private TextInputLayout newPasswordWrapper;
@@ -37,7 +39,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     private Button changePasswordButton;
     private ProgressBar progressBar;
 
-    private ChangePasswordPresenter changePasswordPresenter;
+    private ChangePasswordContract.ChangePasswordPresenter changePasswordPresenter;
 
     public static ChangePasswordFragment newInstance() {
         return new ChangePasswordFragment();
@@ -48,8 +50,8 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         super.onCreate(savedInstanceState);
 
         AuthService authService = new AuthServiceImpl();
-        ChangePasswordUseCase changePasswordUseCase = new ChangePasswordUseCase(AndroidSchedulers.mainThread(), authService);
-        ValidationUseCase validationUseCase = new ValidationUseCase(AndroidSchedulers.mainThread());
+        ValidationUseCase validationUseCase = new ValidationUseCase();
+        ChangePasswordUseCase changePasswordUseCase = new ChangePasswordUseCase(authService, validationUseCase);
         changePasswordPresenter = new ChangePasswordPresenterImpl(changePasswordUseCase, validationUseCase);
     }
 
@@ -106,21 +108,19 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         return changePasswordPresenter;
     }
 
-    @Override
-    protected BaseView getViewLayer() {
-        return this;
-    }
 
     public void showSuccess(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showValidationResult(ValidationResult validationResult) {
-        if (validationResult.isValid()) {
-            onValidationResultValid(validationResult);
-        } else {
-            onValidationResultInvalid(validationResult);
+    public void showValidationResult(List<ValidationResult> validationResults) {
+        for (ValidationResult validationResult : validationResults) {
+            if (validationResult.isValid()) {
+                onValidationResultValid(validationResult);
+            } else {
+                onValidationResultInvalid(validationResult);
+            }
         }
     }
 
@@ -176,7 +176,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
             case NEW_PASSWORD:
                 hideInvalidNewPassword();
                 break;
-            case ALL:
+            case CONFIRM_NEW_PASSWORD:
                 hidePasswordDoesNotMatch();
                 break;
         }
@@ -194,7 +194,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
             case NEW_PASSWORD:
                 showInvalidNewPassword(validationResult.getErrorMessage());
                 break;
-            case ALL:
+            case CONFIRM_NEW_PASSWORD:
                 showPasswordDoesNotMatch();
                 break;
         }

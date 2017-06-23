@@ -1,6 +1,6 @@
 package com.edulog.driverportal.login.domain.interactors;
 
-import com.edulog.driverportal.common.base.UseCase;
+import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateService;
 import com.edulog.driverportal.login.domain.services.EventService;
 import com.edulog.driverportal.login.domain.utils.ErrorValidationUtil;
@@ -20,8 +20,7 @@ public class DriverAuthenticateUseCase extends UseCase<Boolean, DriverAuthentica
     private EventService eventService;
     private ErrorValidationUtil errorValidationUtil;
 
-    public DriverAuthenticateUseCase(Scheduler postExecutionScheduler, AuthenticateService authenticateService, ErrorValidationUtil errorValidationUtil, EventService eventService) {
-        super(postExecutionScheduler);
+    public DriverAuthenticateUseCase(AuthenticateService authenticateService) {
         this.authenticateService = authenticateService;
         this.errorValidationUtil = errorValidationUtil;
         this.eventService = eventService;

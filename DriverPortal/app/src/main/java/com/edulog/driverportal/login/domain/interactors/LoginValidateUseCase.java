@@ -1,6 +1,6 @@
 package com.edulog.driverportal.login.domain.interactors;
 
-import com.edulog.driverportal.common.base.UseCase;
+import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateService;
 import com.edulog.driverportal.login.models.ErrorValidation;
 
@@ -15,13 +15,12 @@ public class LoginValidateUseCase extends UseCase<ErrorValidation, DriverAuthent
 
     private AuthenticateService authenticateService;
 
-    public LoginValidateUseCase(Scheduler postExecutionScheduler, AuthenticateService authenticateService) {
-        super(postExecutionScheduler);
+    public LoginValidateUseCase(AuthenticateService authenticateService) {
         this.authenticateService = authenticateService;
     }
 
     @Override
-    protected Observable<ErrorValidation> buildUseCaseObservable(DriverAuthenticateUseCase.Params params) {
+    public Observable<ErrorValidation> buildUseCaseObservable(DriverAuthenticateUseCase.Params params) {
         String busId = params.busId;
         String driverId = params.driverId;
         String password = params.password;

@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         DriverPreferences driverPreferences = new DriverPreferences(this);
 
-        LoginUseCase loginUseCase = new LoginUseCase(AndroidSchedulers.mainThread(), authenticateServiceImplement,errorValidateUtils, eventServiceImplement, driverPreferences);
+        LoginUseCase loginUseCase = new LoginUseCase(authenticateServiceImplement,errorValidateUtils, eventServiceImplement, driverPreferences);
         presenter = new LoginPresenterImplement(this, driverPreferences, loginUseCase);
         saveLoginCheckBox = (CheckBox)findViewById(R.id.rememberMe);
 

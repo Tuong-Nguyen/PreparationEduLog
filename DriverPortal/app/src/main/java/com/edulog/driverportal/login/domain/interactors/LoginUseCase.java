@@ -4,7 +4,7 @@ package com.edulog.driverportal.login.domain.interactors;
  * Created by ntmhanh on 6/22/2017.
  */
 
-import com.edulog.driverportal.common.base.UseCase;
+import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateService;
 import com.edulog.driverportal.login.domain.services.DriverPreferences;
 import com.edulog.driverportal.login.domain.services.EventService;
@@ -26,8 +26,7 @@ public class LoginUseCase extends UseCase<Boolean, LoginUseCase.Params> {
     private ErrorValidationUtil errorValidationUtil;
     private DriverPreferences driverPreferences;
 
-    public LoginUseCase(Scheduler postExecutionScheduler, AuthenticateService authenticateService, ErrorValidationUtil errorValidationUtil, EventService eventService, DriverPreferences driverPreferences) {
-        super(postExecutionScheduler);
+    public LoginUseCase(AuthenticateService authenticateService, ErrorValidationUtil errorValidationUtil, EventService eventService, DriverPreferences driverPreferences) {
         this.authenticateService = authenticateService;
         this.errorValidationUtil = errorValidationUtil;
         this.eventService = eventService;

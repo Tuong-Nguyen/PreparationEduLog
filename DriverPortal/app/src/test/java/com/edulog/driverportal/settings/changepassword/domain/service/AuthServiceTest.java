@@ -1,6 +1,6 @@
 package com.edulog.driverportal.settings.changepassword.domain.service;
 
-import com.edulog.driverportal.common.net.RetrofitServiceGenerator;
+import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceImpl;
 
 import org.junit.Assert;
