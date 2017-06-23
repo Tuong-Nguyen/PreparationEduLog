@@ -12,7 +12,6 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.preference.SessionImpl;
 import com.edulog.driverportal.login.domain.interactors.DevicePreferenceUseCase;
 import com.edulog.driverportal.login.domain.interactors.LoginUseCase;
-import com.edulog.driverportal.login.domain.interactors.LoginValidator;
 import com.edulog.driverportal.login.domain.services.AuthenticateServiceImpl;
 import com.edulog.driverportal.login.domain.services.EventServiceImpl;
 import com.edulog.driverportal.login.presentation.presenter.LoginPresenter;
@@ -40,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         etPassword = (EditText)findViewById(R.id.password);
         btnLogin = (Button)findViewById(R.id.login);
 
-        AuthenticateServiceImpl authenticateServiceImpl = new AuthenticateServiceImpl(new LoginValidator());
+        AuthenticateServiceImpl authenticateServiceImpl = new AuthenticateServiceImpl();
 
         EventServiceImpl eventServiceImpl = new EventServiceImpl();
 
