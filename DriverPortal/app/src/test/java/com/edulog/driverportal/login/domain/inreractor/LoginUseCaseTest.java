@@ -4,7 +4,6 @@ import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.common.preference.SessionImpl;
 import com.edulog.driverportal.login.domain.interactors.LoginUseCase;
 import com.edulog.driverportal.login.domain.services.AuthenticateService;
-import com.edulog.driverportal.login.domain.services.DriverPreferences;
 import com.edulog.driverportal.login.domain.services.EventService;
 import com.edulog.driverportal.login.models.Events;
 
@@ -29,14 +28,12 @@ public class LoginUseCaseTest {
     private AuthenticateService authenticateService;
     private LoginUseCase loginUseCase;
     private EventService eventService;
-    private DriverPreferences driverPreferences;
     private SessionImpl session;
 
     @Before
     public void init() {
         authenticateService = Mockito.mock(AuthenticateService.class);
         eventService = Mockito.mock(EventService.class);
-        driverPreferences = Mockito.mock(DriverPreferences.class);
         session = Mockito.mock(SessionImpl.class);
         loginUseCase = new LoginUseCase(authenticateService,eventService, session);
     }
