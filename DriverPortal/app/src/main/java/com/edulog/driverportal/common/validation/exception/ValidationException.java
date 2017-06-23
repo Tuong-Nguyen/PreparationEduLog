@@ -1,6 +1,6 @@
-package com.edulog.driverportal.settings.changepassword.domain.exception;
+package com.edulog.driverportal.common.validation.exception;
 
-import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
+import com.edulog.driverportal.common.validation.model.ValidationResult;
 
 import java.util.List;
 

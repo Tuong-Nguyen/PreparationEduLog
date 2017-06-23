@@ -1,17 +1,17 @@
-package com.edulog.driverportal.settings.changepassword.presentation.model;
+package com.edulog.driverportal.common.validation.model;
 
 public class ValidationResult {
     private boolean isValid;
-    private InputField field;
-    private String errorMessage;
+    private String field;
+    private java.lang.String errorMessage;
 
-    public ValidationResult(InputField field) {
+    public ValidationResult(String field) {
         this.field = field;
         isValid = true;
         errorMessage = null;
     }
 
-    public InputField getField() {
+    public String getField() {
         return field;
     }
 
@@ -19,11 +19,11 @@ public class ValidationResult {
         return isValid;
     }
 
-    public String getErrorMessage() {
+    public java.lang.String getErrorMessage() {
         return errorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
+    public void setErrorMessage(java.lang.String errorMessage) {
         this.errorMessage = errorMessage;
         isValid = false;
     }
