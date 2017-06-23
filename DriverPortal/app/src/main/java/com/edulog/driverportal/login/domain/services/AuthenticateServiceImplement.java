@@ -8,7 +8,9 @@ import io.reactivex.Observable;
  *Handle AuthenticateService, which observe login result
  */
 
+// TODO: rename to AuthenticateServiceImpl
 public class AuthenticateServiceImplement implements AuthenticateService {
+    // TODO: do not prefix with 'm'
     private ErrorValidationUtil mErrorValidationUtil;
 
     public AuthenticateServiceImplement(ErrorValidationUtil errorValidationUtil) {
@@ -25,7 +27,4 @@ public class AuthenticateServiceImplement implements AuthenticateService {
        com.edulog.driverportal.login.models.ErrorValidation errorValidation = mErrorValidationUtil.validateLogin( busId, driverId, password);
         return Observable.just(errorValidation);
     }
-
-
-
 }

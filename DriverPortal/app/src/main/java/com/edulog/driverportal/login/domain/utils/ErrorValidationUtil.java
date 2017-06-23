@@ -4,6 +4,7 @@ package com.edulog.driverportal.login.domain.utils;
  * Created by ntmhanh on 6/20/2017.
  */
 
+// TODO: Rename as LoginValidator and move it into interactors package
 public  class ErrorValidationUtil {
     private com.edulog.driverportal.login.models.ErrorValidation errorValidation;
 

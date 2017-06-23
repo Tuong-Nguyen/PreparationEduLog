@@ -1,5 +1,6 @@
 package com.edulog.driverportal.login.models;
 
+// TODO: Use common.validation.model.ValidationResult as a replacement of this class
 public class ErrorValidation {
     private boolean isValid;
     private String errorMessage;

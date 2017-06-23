@@ -7,7 +7,7 @@ import io.reactivex.Observable;
 /**
  * Handle ServiceEvent, which observe Event request result
  */
-
+// TODO: Rename to EventServiceImpl
 public class EventServiceImplement implements EventService {
     @Override
     public Observable<Boolean> sendEvent(Events events) {
