@@ -9,7 +9,6 @@ import io.reactivex.observers.DisposableObserver;
  * Handle methods, which communicate between LoginActivity <-> LoginPresenter and LoginPresenter -> Models
  */
 
-// TODO: Rename as LoginPresenterImpl
 public class LoginPresenterImpl implements LoginPresenter {
 
     // Layer View reference
