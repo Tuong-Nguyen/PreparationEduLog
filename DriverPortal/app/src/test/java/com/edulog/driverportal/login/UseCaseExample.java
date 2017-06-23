@@ -9,8 +9,9 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by ntmhanh on 6/22/2017.
  */
-
+// TODO: Rename to ReactiveXTest
 public class UseCaseExample {
+    // TODO: 3 methods isLogin - isValidate - isSent are very similar except the Error message. Refactor to use a single method
     public Observable<Boolean> isLogin(boolean b){
 
         return Observable.just(b).doOnNext(isSuccess -> {
@@ -37,17 +38,22 @@ public class UseCaseExample {
                 .subscribeWith(testObserver);
     }
 
+    // TODO: rename to 'concat3observables_allsucceeds_returnComplete'
     @Test
     public void execute_onComplete(){
         TestObserver testObserver = new TestObserver();
         execute(testObserver, true, true, true);
         testObserver.assertComplete();
     }
+    // TODO: rename to 'concat3observables_the2ndgiveserror_returnError'
     @Test
     public void execute_onError(){
         TestObserver testObserver = new TestObserver();
         execute(testObserver, true, false, true);
+        // TODO: Assert the error message to ensure that the correct error is received
         testObserver.assertError(Throwable.class);
     }
+
+    // TODO: Add tests when the first observable fail and the third observable fail
 
 }
