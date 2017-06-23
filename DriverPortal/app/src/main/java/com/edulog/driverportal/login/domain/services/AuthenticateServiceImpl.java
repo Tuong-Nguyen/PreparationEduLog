@@ -8,9 +8,7 @@ import io.reactivex.Observable;
  *Handle AuthenticateService, which observe login result
  */
 
-// TODO: rename to AuthenticateServiceImpl
 public class AuthenticateServiceImpl implements AuthenticateService {
-    // TODO: do not prefix with 'm'
     private LoginValidator loginValidator;
 
     public AuthenticateServiceImpl(LoginValidator loginValidator) {

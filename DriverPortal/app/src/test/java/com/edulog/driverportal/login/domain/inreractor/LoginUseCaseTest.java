@@ -29,6 +29,7 @@ public class LoginUseCaseTest {
     private AuthenticateService authenticateService;
     private LoginUseCase loginUseCase;
     private EventService eventService;
+    // TODO: Remove if it is not used
     private DriverPreferences driverPreferences;
     private SessionImpl session;
 
