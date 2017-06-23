@@ -142,6 +142,21 @@ public class LoginUseCaseTest {
         testObserver.assertComplete();
     }
 
-
-    // TODO: Please add test to ensure that rememberDriver is not called when authenticate fail
+    @Test
+    public void execute_rememberDriverIdNotChecked_returnAssertErrorAndPutDriverIdWasNotCalled() {
+        // Arrange
+        String busId = "1";
+        String driverId = "123";
+        String password = "123456789";
+        isChecked = true;
+        LoginUseCase.Params params = new LoginUseCase.Params(busId, driverId, password,isChecked);
+        when(authenticateService.login(anyString(), anyString())).thenReturn(Observable.just(true));
+        when(eventService.sendEvent(Events.LOG_IN)).thenReturn(Observable.just(true));
+        TestObserver<Boolean> testObserver = new TestObserver<>();
+        // Action
+        loginUseCase.execute(testObserver, params);
+        // Assert
+        verify(session,Mockito.times(0)).putDriverId(driverId);
+        testObserver.assertError(Throwable.class);
+    }
 }
