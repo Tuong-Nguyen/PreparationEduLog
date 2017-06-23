@@ -143,4 +143,6 @@ public class LoginUseCaseTest {
         testObserver.assertComplete();
     }
 
+
+    // TODO: Please add test to ensure that rememberDriver is not called when authenticate fail
 }
