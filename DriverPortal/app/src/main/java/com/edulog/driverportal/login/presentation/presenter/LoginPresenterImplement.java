@@ -1,5 +1,6 @@
 package com.edulog.driverportal.login.presentation.presenter;
 
+import com.edulog.driverportal.login.domain.interactors.DriverPreferenceUseCase;
 import com.edulog.driverportal.login.domain.interactors.LoginUseCase;
 import com.edulog.driverportal.login.domain.services.DriverPreferences;
 import com.edulog.driverportal.login.domain.utils.ThrowableErrorValidation;
@@ -18,6 +19,7 @@ public class LoginPresenterImplement implements LoginPresenter {
     public LoginUseCase.Params params;
     private DriverPreferences driverPreferences;
     private LoginUseCase loginUseCase;
+    private DriverPreferenceUseCase driverPreferenceUseCase;
 
 
     public LoginPresenterImplement(LoginView loginView, DriverPreferences driverPreferences, LoginUseCase loginUseCase) {
@@ -37,7 +39,7 @@ public class LoginPresenterImplement implements LoginPresenter {
      */
     @Override
     public void getRememberDriverId() {
-        if (!driverPreferences.getDriverId().isEmpty()){
+        if (driverPreferenceUseCase.getDriverId()){
             loginView.setTextRememberDriverId(driverPreferences.getDriverId());
             loginView.rememberDriverIdCheckbox(true);
         }
