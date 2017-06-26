@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.edulog.driverportal.routeselection.data.entity.DriverEntity;
 import com.edulog.driverportal.routeselection.domain.repository.DriverRepository;
 
+// TODO: This class is not used - Please remove it
 public class DriverRepositoryImpl implements DriverRepository {
     private static final String TABLE = DriverPortalContract.DriverEntry.TABLE_NAME;
     private DriverPortalDbHelper dbHelper;

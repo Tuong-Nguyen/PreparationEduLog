@@ -41,6 +41,7 @@ public class NewRoutePresenterImpl extends NewRouteContract.NewRoutePresenter {
     private DisposableObserver<List<String>> createRouteIdSuggestionsObserver() {
         return new DefaultObserver<List<String>>() {
             @Override
+            // TODO: Hide progress
             public void onNext(List<String> ids) {
                 newRouteView.showRouteIdSuggestions(ids);
             }

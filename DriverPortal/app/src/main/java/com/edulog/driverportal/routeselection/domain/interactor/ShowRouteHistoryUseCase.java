@@ -25,6 +25,7 @@ public class ShowRouteHistoryUseCase extends UseCase<List<RouteModel>, Void> {
     public Observable<List<RouteModel>> buildUseCaseObservable(Void aVoid) {
         String driverId = session.getDriverId();
         if (driverId != null) {
+            // TODO: findAll does not sorted by UpdatedAt field
             return Observable.just(routeRepository.findAll())
                     .subscribeOn(Schedulers.io())
                     .doOnNext(Collections::reverse)

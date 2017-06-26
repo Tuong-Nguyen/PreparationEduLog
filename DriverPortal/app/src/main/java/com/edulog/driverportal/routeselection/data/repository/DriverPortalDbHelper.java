@@ -8,6 +8,7 @@ public class DriverPortalDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "DriverPortal.db";
     private static final int DATABASE_VERSION = 1;
 
+    // TODO: Remove code for creating DRIVER table if it is not used
     private static final String SQL_CREATE_DRIVER_ENTRY = "CREATE TABLE " + DriverPortalContract.DriverEntry.TABLE_NAME +
             " (" + DriverPortalContract.DriverEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             DriverPortalContract.DriverEntry.COLUMN_NAME_ID + " TEXT NOT NULL UNIQUE)";

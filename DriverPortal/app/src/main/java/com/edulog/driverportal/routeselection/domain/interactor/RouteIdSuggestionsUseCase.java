@@ -29,6 +29,7 @@ RouteIdSuggestionsUseCase extends UseCase<List<String>, String> {
 
         if (routeEntities != null && !routeEntities.isEmpty()) {
             ids = new ArrayList<>();
+            // TODO: RouteEntity should not be used in domain package - Use RouteModel
             for (RouteEntity routeEntity : routeEntities) {
                 ids.add(routeEntity.getId());
             }

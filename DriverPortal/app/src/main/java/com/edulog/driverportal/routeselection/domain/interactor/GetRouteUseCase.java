@@ -28,6 +28,7 @@ public class GetRouteUseCase extends UseCase<RouteModel, GetRouteUseCase.Params>
         return params;
     }
 
+    // TODO: Route information is always got from server first (ie: remote) then local in case of connection down
     @Override
     public Observable<RouteModel> buildUseCaseObservable(Params params) {
         String routeId = params.routeId;

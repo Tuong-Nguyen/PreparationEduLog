@@ -55,6 +55,7 @@ public class RouteRepositoryImpl implements RouteRepository {
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_ID, routeEntity.getId());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME, routeEntity.getName());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT, routeEntity.getStopCount());
+            // TODO: Please add a class for parsing String to Date and Date to String: Date().toString() depends on the locale of the system
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_UPDATED_AT, new Date().toString());
 
             if (isExists(routeEntity)) {
@@ -101,6 +102,7 @@ public class RouteRepositoryImpl implements RouteRepository {
 
         String dateStr = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_UPDATED_AT));
         try {
+            // TODO: Please add a class for parsing String to Date and Date to String
             DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.US);
             routeEntity.setUpdatedAt(dateFormat.parse(dateStr));
         } catch (NullPointerException | ParseException ex) {

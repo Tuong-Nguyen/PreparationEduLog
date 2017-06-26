@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+// TODO: Rename to RouteApi
 public interface DriverPortalRouteService {
     @GET("/api/routes/{route_id}")
     Observable<RouteEntity> getRoute(@Path("route_id") String routeId);

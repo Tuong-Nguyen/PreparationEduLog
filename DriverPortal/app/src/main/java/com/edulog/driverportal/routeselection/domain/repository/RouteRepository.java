@@ -8,6 +8,6 @@ public interface RouteRepository {
     int upsert(RouteEntity routeEntity);
 
     RouteEntity findOne(String routeId);
-
+    // TODO: Please use RouteModel instead of RouteEntity
     List<RouteEntity> findAll();
 }

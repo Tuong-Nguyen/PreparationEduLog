@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+// TODO: remove this file
 public class FileManager {
     public void writeToFile(File file, byte[] data) {
         FileOutputStream outputStream = null;

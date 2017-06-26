@@ -20,6 +20,7 @@ public class DriverPortalApplication extends Application {
         RetrofitServiceGenerator.baseUrl = "https://obscure-mesa-13550.herokuapp.com/";
         session = new SessionImpl(this);
 
+        // TODO: remove test code
         // for testing purpose
 
         // session.clear();

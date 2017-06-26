@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO: This class should be in repository package
 public final class RouteModelDataMapper {
     public static RouteModel transform(RouteEntity routeEntity) {
         if (routeEntity == null) {
