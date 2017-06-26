@@ -6,7 +6,6 @@ import com.edulog.driverportal.common.validation.model.ValidationResult;
  * Created by ntmhanh on 6/20/2017.
  */
 
-// TODO: Rename as LoginValidator and move it into interactors package
 public final class LoginValidator {
     public static ValidationResult validateBusId(java.lang.String busId) {
         boolean driverIdValid = busId.length() >= 2;

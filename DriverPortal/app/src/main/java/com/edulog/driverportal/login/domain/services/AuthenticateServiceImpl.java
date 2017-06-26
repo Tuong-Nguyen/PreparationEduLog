@@ -5,8 +5,6 @@ import io.reactivex.Observable;
 /**
  *Handle AuthenticateService, which observe login result
  */
-
-// TODO: rename to AuthenticateServiceImpl
 public class AuthenticateServiceImpl implements AuthenticateService {
 
     @Override
