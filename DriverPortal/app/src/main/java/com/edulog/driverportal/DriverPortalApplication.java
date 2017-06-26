@@ -17,7 +17,6 @@ public class DriverPortalApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        RetrofitServiceGenerator.baseUrl = "https://obscure-mesa-13550.herokuapp.com/";
         session = new SessionImpl(this);
 
         // for testing purpose

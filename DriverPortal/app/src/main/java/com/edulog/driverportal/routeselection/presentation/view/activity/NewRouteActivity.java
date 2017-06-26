@@ -65,7 +65,7 @@ public class NewRouteActivity extends BaseActivity implements NewRouteContract.N
         Fragment fragment = NewRouteFragment.newInstance();
         openAsRoot(fragment);
 
-        DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
+        DriverPortalRouteService service = new RetrofitServiceGenerator().generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
         RouteIdSuggestionsUseCase routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(routeService);
         newRoutePresenter = new NewRoutePresenterImpl(routeIdSuggestionsUseCase);

@@ -51,7 +51,7 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesCo
 
         routeModels = new ArrayList<>();
 
-        DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
+        DriverPortalRouteService service = new RetrofitServiceGenerator().generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
         SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(routeService);
         searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase);

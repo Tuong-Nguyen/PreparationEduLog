@@ -12,7 +12,7 @@ import retrofit2.Response;
 public class AuthServiceImpl implements AuthService {
     @Override
     public Observable<Boolean> changePassword(String driverId, String oldPassword, String newPassword) {
-        ChangePasswordService service = RetrofitServiceGenerator.generate(ChangePasswordService.class);
+        ChangePasswordService service = new RetrofitServiceGenerator().generate(ChangePasswordService.class);
         Observable<Response<ResponseBody>> observable = service.changePassword(driverId, oldPassword, newPassword);
         return observable
                 .subscribeOn(Schedulers.io())

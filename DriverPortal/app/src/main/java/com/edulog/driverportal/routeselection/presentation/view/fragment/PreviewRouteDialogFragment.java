@@ -56,7 +56,7 @@ public class PreviewRouteDialogFragment extends DialogFragment implements Previe
             loadMode = (LoadMode) getArguments().getSerializable(KEY_LOAD_MODE);
         }
 
-        DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
+        DriverPortalRouteService service = new RetrofitServiceGenerator().generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
         RouteRepository routeRepository = new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity()));
         GetRouteUseCase getRouteUseCase = new GetRouteUseCase(routeService, routeRepository);

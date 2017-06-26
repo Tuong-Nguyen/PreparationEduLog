@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Driver Portal</string>
+    <string name="google_maps_api_key">AIzaSyChGu6otpqv7Df1ustS2Y1XAehQB9UJmBg</string>
 
     <string name="change_password">Change Password</string>
     <string name="drawer_open">Open</string>

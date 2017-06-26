@@ -60,7 +60,7 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsCo
             loadMode = (LoadMode) args.getSerializable(KEY_LOAD_MORE);
         }
 
-        DriverPortalRouteService service = RetrofitServiceGenerator.generate(DriverPortalRouteService.class);
+        DriverPortalRouteService service = new RetrofitServiceGenerator().generate(DriverPortalRouteService.class);
         RouteService routeService = new RouteServiceImpl(service);
         Session session = ((DriverPortalApplication) getActivity().getApplication()).getSession();
         RouteRepository routeRepository = new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity()));
