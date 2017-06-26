@@ -2,17 +2,8 @@ package com.edulog.driverportal.settings.changepassword.domain.interactor;
 
 import com.edulog.driverportal.common.domain.UseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
-import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
-
-import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.BiFunction;
-
-import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateAll;
-import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateDriverId;
-import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateNewPassword;
-import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateOldPassword;
 
 public class ChangePasswordUseCase extends UseCase<Boolean, ChangePasswordUseCase.Params> {
     private AuthService authService;

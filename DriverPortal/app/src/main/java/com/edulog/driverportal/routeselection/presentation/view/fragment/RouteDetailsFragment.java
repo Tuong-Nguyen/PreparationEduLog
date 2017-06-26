@@ -98,11 +98,6 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsCo
     }
 
     @Override
-    protected BaseView getViewLayer() {
-        return this;
-    }
-
-    @Override
     public void showRouteDetails(RouteModel routeModel) {
         routeIdTextView.setText(routeModel.getId());
         routeNameTextView.setText(routeModel.getName());

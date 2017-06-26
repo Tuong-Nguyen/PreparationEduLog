@@ -77,11 +77,6 @@ public class RouteHistoryFragment extends BaseFragment implements RouteHistoryCo
     }
 
     @Override
-    protected BaseView getViewLayer() {
-        return this;
-    }
-
-    @Override
     public void showRouteHistory(List<RouteModel> routeModels) {
         this.routeModels.clear();
         if (routeModels != null && !routeModels.isEmpty()) {

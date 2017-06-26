@@ -10,6 +10,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public abstract class UseCase<T, Params> {
+
     private Scheduler postExecutionScheduler;
 
     public UseCase() {

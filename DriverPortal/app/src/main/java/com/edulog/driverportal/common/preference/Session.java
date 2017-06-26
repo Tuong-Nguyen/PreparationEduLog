@@ -10,4 +10,5 @@ public interface Session {
     String getDriverId();
 
     void clear();
+    void removeDriverId();
 }

@@ -20,9 +20,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected void onStart() {
         super.onStart();
 
-        if (getPresenter() != null && getView() != null) {
+        if (getPresenter() != null) {
             // noinspection unchecked
-            getPresenter().attach(getView());
+            getPresenter().attach(this);
         }
     }
 
@@ -70,10 +70,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     protected BasePresenter getPresenter() {
-        return null;
-    }
-
-    protected BaseView getView() {
         return null;
     }
 

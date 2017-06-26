@@ -14,18 +14,16 @@ import android.widget.Toast;
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.common.presentation.BasePresenter;
-import com.edulog.driverportal.common.presentation.BaseView;
 import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceImpl;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
-import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
+import com.edulog.driverportal.common.validation.model.ValidationResult;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ChangePasswordFragment extends BaseFragment implements ChangePasswordContract.ChangePasswordView {
     private TextInputLayout driverIdWrapper;
@@ -108,10 +106,6 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         return changePasswordPresenter;
     }
 
-    @Override
-    protected BaseView getViewLayer() {
-        return this;
-    }
 
     public void showSuccess(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
@@ -171,16 +165,16 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     private void onValidationResultValid(ValidationResult validationResult) {
         enableRequestChangePassword();
         switch (validationResult.getField()) {
-            case DRIVER_ID:
+            case "DRIVER_ID":
                 hideInvalidDriverId();
                 break;
-            case OLD_PASSWORD:
+            case "OLD_PASSWORD":
                 hideInvalidOldPassword();
                 break;
-            case NEW_PASSWORD:
+            case "NEW_PASSWORD":
                 hideInvalidNewPassword();
                 break;
-            case CONFIRM_NEW_PASSWORD:
+            case "CONFIRM_NEW_PASSWORD":
                 hidePasswordDoesNotMatch();
                 break;
         }
@@ -189,16 +183,16 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     private void onValidationResultInvalid(ValidationResult validationResult) {
         disableRequestChangePassword();
         switch (validationResult.getField()) {
-            case DRIVER_ID:
+            case "DRIVER_ID":
                 showInvalidDriverId(validationResult.getErrorMessage());
                 break;
-            case OLD_PASSWORD:
+            case "OLD_PASSWORD":
                 showInvalidOldPassword(validationResult.getErrorMessage());
                 break;
-            case NEW_PASSWORD:
+            case "NEW_PASSWORD":
                 showInvalidNewPassword(validationResult.getErrorMessage());
                 break;
-            case CONFIRM_NEW_PASSWORD:
+            case "CONFIRM_NEW_PASSWORD":
                 showPasswordDoesNotMatch();
                 break;
         }

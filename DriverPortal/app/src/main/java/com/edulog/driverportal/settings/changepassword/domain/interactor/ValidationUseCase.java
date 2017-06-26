@@ -1,14 +1,13 @@
 package com.edulog.driverportal.settings.changepassword.domain.interactor;
 
 import com.edulog.driverportal.common.domain.UseCase;
-import com.edulog.driverportal.settings.changepassword.domain.exception.ValidationException;
-import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
+import com.edulog.driverportal.common.validation.exception.ValidationException;
+import com.edulog.driverportal.common.validation.model.ValidationResult;
 
 import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
 import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateAll;
 import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateDriverId;

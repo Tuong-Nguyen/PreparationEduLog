@@ -7,9 +7,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public void onStart() {
         super.onStart();
 
-        if (getPresenter() != null && getViewLayer() != null) {
+        if (getPresenter() != null) {
             // noinspection unchecked
-            getPresenter().attach(getViewLayer());
+            getPresenter().attach(this);
         }
     }
 
@@ -38,10 +38,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     protected BasePresenter getPresenter() {
-        return null;
-    }
-
-    protected BaseView getViewLayer() {
         return null;
     }
 }
