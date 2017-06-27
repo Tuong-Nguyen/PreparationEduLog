@@ -2,13 +2,9 @@ package com.edulog.driverportal;
 
 import android.app.Application;
 
-import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
-import com.edulog.driverportal.common.preference.Session;
-import com.edulog.driverportal.common.preference.SessionImpl;
-import com.edulog.driverportal.routeselection.data.entity.DriverEntity;
-import com.edulog.driverportal.routeselection.data.repository.DriverPortalDbHelper;
-import com.edulog.driverportal.routeselection.data.repository.DriverRepositoryImpl;
-import com.edulog.driverportal.routeselection.domain.repository.DriverRepository;
+import com.edulog.driverportal.common.device.Session;
+import com.edulog.driverportal.common.device.SessionImpl;
+import com.edulog.driverportal.routes.data.entity.DriverEntity;
 
 public class DriverPortalApplication extends Application {
     private Session session;
@@ -26,6 +22,7 @@ public class DriverPortalApplication extends Application {
         DriverEntity driverEntity = new DriverEntity();
         driverEntity.setId("driver01");
         session.putDriverId(driverEntity.getId());
+        session.putRouteId("route01");
     }
 
     public Session getSession() {

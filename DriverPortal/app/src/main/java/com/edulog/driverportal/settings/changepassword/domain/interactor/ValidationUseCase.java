@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
 import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateAll;
 import static com.edulog.driverportal.settings.changepassword.domain.util.ChangePasswordValidator.validateDriverId;

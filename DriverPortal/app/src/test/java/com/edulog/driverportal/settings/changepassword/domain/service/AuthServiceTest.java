@@ -1,6 +1,6 @@
 package com.edulog.driverportal.settings.changepassword.domain.service;
 
-import com.edulog.driverportal.common.util.RetrofitServiceGenerator;
+import com.edulog.driverportal.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceImpl;
 
 import org.junit.Assert;
@@ -15,7 +15,6 @@ public class AuthServiceTest {
     @Before
     public void setup() {
         service = new AuthServiceImpl();
-        RetrofitServiceGenerator.baseUrl = "https://obscure-mesa-13550.herokuapp.com/";
     }
 
     @Test

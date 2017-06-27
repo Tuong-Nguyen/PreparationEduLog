@@ -25,7 +25,6 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ChangePasswordFragment extends BaseFragment implements ChangePasswordContract.ChangePasswordView {
     private TextInputLayout driverIdWrapper;
