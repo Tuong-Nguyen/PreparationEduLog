@@ -3,7 +3,12 @@ package com.edulog.driverportal.routedetails;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -11,38 +16,49 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-public class SettingHandleSingleOnSubscribe extends RxLocationSingleOnSubscribe<Boolean> {
+public class SettingHandlerSingleOnSubscribe implements SingleOnSubscribe<Boolean> {
     private static SingleEmitter<Boolean> emitter;
     private Context context;
     private LocationRequest locationRequest;
+    private GoogleApiClient googleApiClient;
 
-    public SettingHandleSingleOnSubscribe(Context context, LocationRequest locationRequest) {
-        super(context);
+    public SettingHandlerSingleOnSubscribe(Context context, LocationRequest locationRequest) {
         this.context = context;
         this.locationRequest = locationRequest;
+    }
+
+    @Override
+    public void subscribe(SingleEmitter<Boolean> emitter) throws Exception {
+        SettingHandlerSingleOnSubscribe.emitter = emitter;
+        ApiClientConnectionCallbacks connectionCallbacks = new ApiClientConnectionCallbacks();
+        googleApiClient = new GoogleApiClient.Builder(context)
+                .addConnectionCallbacks(connectionCallbacks)
+                .addOnConnectionFailedListener(connectionCallbacks)
+                .addApi(LocationServices.API)
+                .build();
+
+        googleApiClient.connect();
     }
 
     public static void onResolutionResult(int resultCode) {
         emitter.onSuccess(resultCode == Activity.RESULT_OK);
     }
 
-    @Override
     protected void onGoogleApiAvailable() {
-        emitter = getEmitter();
-
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(locationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
 
-        LocationServices.SettingsApi.checkLocationSettings(getGoogleApiClient(), locationSettingsRequest)
+        LocationServices.SettingsApi.checkLocationSettings(googleApiClient, locationSettingsRequest)
                 .setResultCallback(locationSettingsResult -> {
                     final Status status = locationSettingsResult.getStatus();
                     switch (status.getStatusCode()) {
                         case LocationSettingsStatusCodes.SUCCESS:
-                            getEmitter().onSuccess(true);
+                            emitter.onSuccess(true);
                             break;
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                             Intent intent = new Intent(context, LocationSettingsActivity.class);
@@ -51,9 +67,28 @@ public class SettingHandleSingleOnSubscribe extends RxLocationSingleOnSubscribe<
                             context.startActivity(intent);
                             break;
                         case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                            getEmitter().onSuccess(false);
+                            emitter.onSuccess(false);
                             break;
                     }
                 });
+    }
+
+    protected class ApiClientConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks,
+            GoogleApiClient.OnConnectionFailedListener {
+
+        @Override
+        public void onConnected(@Nullable Bundle bundle) {
+            onGoogleApiAvailable();
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+            emitter.onError(new RuntimeException("Google api connection suspended"));
+        }
+
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            emitter.onError(new RuntimeException(connectionResult.getErrorMessage()));
+        }
     }
 }

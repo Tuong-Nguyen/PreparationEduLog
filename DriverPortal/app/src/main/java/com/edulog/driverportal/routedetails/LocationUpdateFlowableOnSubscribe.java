@@ -1,28 +1,33 @@
 package com.edulog.driverportal.routedetails;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 
-public abstract class RxLocationSingleOnSubscribe<T> implements SingleOnSubscribe<T> {
-    private GoogleApiClient googleApiClient;
-    private SingleEmitter<T> emitter;
+public class LocationUpdateFlowableOnSubscribe implements FlowableOnSubscribe<Location> {
     private Context context;
+    private LocationRequest locationRequest;
+    private GoogleApiClient googleApiClient;
+    private FlowableEmitter<Location> emitter;
 
-    public RxLocationSingleOnSubscribe(Context context) {
+
+    public LocationUpdateFlowableOnSubscribe(Context context, LocationRequest locationRequest) {
         this.context = context;
+        this.locationRequest = locationRequest;
     }
 
     @Override
-    public void subscribe(SingleEmitter<T> emitter) throws Exception {
+    public void subscribe(FlowableEmitter<Location> emitter) throws Exception {
         this.emitter = emitter;
 
         ApiClientConnectionCallbacks connectionCallbacks = new ApiClientConnectionCallbacks();
@@ -35,15 +40,11 @@ public abstract class RxLocationSingleOnSubscribe<T> implements SingleOnSubscrib
         googleApiClient.connect();
     }
 
-
-    protected abstract void onGoogleApiAvailable();
-
-    public GoogleApiClient getGoogleApiClient() {
-        return googleApiClient;
-    }
-
-    public SingleEmitter<T> getEmitter() {
-        return emitter;
+    @SuppressWarnings("MissingPermission")
+    protected void onGoogleApiAvailable() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, location -> {
+            emitter.onNext(location);
+        });
     }
 
     protected class ApiClientConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks,

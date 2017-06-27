@@ -5,6 +5,8 @@ import android.location.Location;
 
 import com.google.android.gms.location.LocationRequest;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public class RxLocation {
@@ -15,10 +17,10 @@ public class RxLocation {
     }
 
     public Single<Boolean> checkAndHandleResolution(LocationRequest locationRequest) {
-        return Single.create(new SettingHandleSingleOnSubscribe(context, locationRequest));
+        return Single.create(new SettingHandlerSingleOnSubscribe(context, locationRequest));
     }
 
-    public Single<Location> update(LocationRequest locationRequest) {
-        return Single.create(new LocationUpdateSingleOnSubscribe(context, locationRequest));
+    public Flowable<Location> update(LocationRequest locationRequest) {
+        return Flowable.create(new LocationUpdateFlowableOnSubscribe(context, locationRequest), BackpressureStrategy.LATEST);
     }
 }

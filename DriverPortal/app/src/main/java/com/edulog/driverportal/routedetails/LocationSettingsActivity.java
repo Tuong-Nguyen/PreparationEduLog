@@ -42,7 +42,7 @@ public class LocationSettingsActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            SettingHandleSingleOnSubscribe.onResolutionResult(resultCode);
+            SettingHandlerSingleOnSubscribe.onResolutionResult(resultCode);
             finish();
         }
     }
