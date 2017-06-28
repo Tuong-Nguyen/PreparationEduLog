@@ -20,7 +20,6 @@ public class LocationUpdateFlowableOnSubscribe implements FlowableOnSubscribe<Lo
     private GoogleApiClient googleApiClient;
     private FlowableEmitter<Location> emitter;
 
-
     public LocationUpdateFlowableOnSubscribe(Context context, LocationRequest locationRequest) {
         this.context = context;
         this.locationRequest = locationRequest;

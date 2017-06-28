@@ -1,6 +1,6 @@
 package com.edulog.driverportal.util;
 
-import com.edulog.driverportal.routedetails.PolylineEntity;
+import com.edulog.driverportal.routedetails.EncodedPolylineEntity;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,19 +41,27 @@ public class RetrofitServiceGenerator {
     private Gson createGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        builder.registerTypeHierarchyAdapter(PolylineEntity.class, new JsonDeserializer<PolylineEntity>() {
+        builder.registerTypeHierarchyAdapter(EncodedPolylineEntity.class, new JsonDeserializer<EncodedPolylineEntity>() {
             @Override
-            public PolylineEntity deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            public EncodedPolylineEntity deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonObject polylineJsonObj = json.getAsJsonObject();
                 JsonArray routesJsonArray = polylineJsonObj.getAsJsonArray("routes");
                 JsonObject firstRoute = routesJsonArray.get(0).getAsJsonObject();
                 JsonObject overview = firstRoute.getAsJsonObject("overview_polyline");
-                String points = overview.get("points").getAsString();
+                //String points = overview.get("points").getAsString();
 
-                PolylineEntity polylineEntity = new PolylineEntity();
-                polylineEntity.setPoints(points);
+                EncodedPolylineEntity encodedPolylineEntity = new EncodedPolylineEntity();
 
-                return polylineEntity;
+                JsonObject firstLeg = firstRoute.getAsJsonArray("legs").get(0).getAsJsonObject();
+                JsonArray steps = firstLeg.getAsJsonArray("steps");
+                for (int i = 0; i < steps.size(); i++) {
+                    JsonObject step = steps.get(i).getAsJsonObject();
+                    JsonObject polyline = step.getAsJsonObject("polyline");
+                    String points = polyline.get("points").getAsString();
+                    encodedPolylineEntity.addPolyline(points);
+                }
+
+                return encodedPolylineEntity;
             }
         });
         return builder.create();

@@ -157,6 +157,6 @@ public class MotionActivity extends BaseActivity implements OnMapReadyCallback,
         if (prevMarker != null) prevMarker.remove();
         prevMarker = googleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 500, null);
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(10), 500, null);
     }
 }
