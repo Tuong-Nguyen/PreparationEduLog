@@ -8,11 +8,6 @@ public class DriverPortalDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "DriverPortal.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String SQL_CREATE_DRIVER_ENTRY = "CREATE TABLE " + DriverPortalContract.DriverEntry.TABLE_NAME +
-            " (" + DriverPortalContract.DriverEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            DriverPortalContract.DriverEntry.COLUMN_NAME_ID + " TEXT NOT NULL UNIQUE)";
-    private static final String SQL_DELETE_DRIVER_ENTRY = "DROP TABLE IF EXISTS " + DriverPortalContract.DriverEntry.TABLE_NAME;
-
     private static final String SQL_CREATE_ROUTE_ENTRY = "CREATE TABLE " + DriverPortalContract.RouteEntry.TABLE_NAME +
             " (" + DriverPortalContract.RouteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             DriverPortalContract.RouteEntry.COLUMN_NAME_ID + " TEXT NOT NULL UNIQUE, " +
@@ -29,16 +24,13 @@ public class DriverPortalDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_DRIVER_ENTRY);
         db.execSQL(SQL_CREATE_ROUTE_ENTRY);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_DRIVER_ENTRY);
         db.execSQL(SQL_DELETE_ROUTE_ENTRY);
 
-        db.execSQL(SQL_CREATE_DRIVER_ENTRY);
         db.execSQL(SQL_CREATE_ROUTE_ENTRY);
     }
 

@@ -41,28 +41,22 @@ public class RetrofitServiceGenerator {
     private Gson createGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        builder.registerTypeHierarchyAdapter(PolylineEntity.class, new JsonDeserializer<PolylineEntity>() {
-            @Override
-            public PolylineEntity deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                JsonObject polylineJsonObj = json.getAsJsonObject();
-                JsonArray routesJsonArray = polylineJsonObj.getAsJsonArray("routes");
-                JsonObject firstRoute = routesJsonArray.get(0).getAsJsonObject();
-                JsonObject overview = firstRoute.getAsJsonObject("overview_polyline");
-                //String points = overview.get("points").getAsString();
+        builder.registerTypeHierarchyAdapter(PolylineEntity.class, (JsonDeserializer<PolylineEntity>) (json, typeOfT, context) -> {
+            PolylineEntity polylineEntity = new PolylineEntity();
 
-                PolylineEntity polylineEntity = new PolylineEntity();
-
-                JsonObject firstLeg = firstRoute.getAsJsonArray("legs").get(0).getAsJsonObject();
-                JsonArray steps = firstLeg.getAsJsonArray("steps");
-                for (int i = 0; i < steps.size(); i++) {
-                    JsonObject step = steps.get(i).getAsJsonObject();
-                    JsonObject polyline = step.getAsJsonObject("polyline");
-                    String points = polyline.get("points").getAsString();
-                    polylineEntity.addPolyline(points);
-                }
-
-                return polylineEntity;
+            JsonObject polylineJsonObj = json.getAsJsonObject();
+            JsonArray routes = polylineJsonObj.getAsJsonArray("routes");
+            JsonObject firstRoute = routes.get(0).getAsJsonObject();
+            JsonObject firstLeg = firstRoute.getAsJsonArray("legs").get(0).getAsJsonObject();
+            JsonArray steps = firstLeg.getAsJsonArray("steps");
+            for (int i = 0; i < steps.size(); i++) {
+                JsonObject step = steps.get(i).getAsJsonObject();
+                JsonObject polyline = step.getAsJsonObject("polyline");
+                String points = polyline.get("points").getAsString();
+                polylineEntity.addPolyline(points);
             }
+
+            return polylineEntity;
         });
         return builder.create();
     }

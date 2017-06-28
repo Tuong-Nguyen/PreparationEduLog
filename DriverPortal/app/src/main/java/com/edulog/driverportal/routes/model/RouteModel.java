@@ -3,19 +3,9 @@ package com.edulog.driverportal.routes.model;
 import android.os.Parcel;
 
 public class RouteModel {
-
     private String id;
     private String name;
     private int stopCount;
-
-    public RouteModel() {
-    }
-
-    public RouteModel(Parcel source) {
-        id = source.readString();
-        name = source.readString();
-        stopCount = source.readInt();
-    }
 
     public String getId() {
         return id;

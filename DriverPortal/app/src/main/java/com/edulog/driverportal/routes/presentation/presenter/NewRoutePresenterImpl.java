@@ -42,6 +42,7 @@ public class NewRoutePresenterImpl extends NewRouteContract.NewRoutePresenter {
         return new DefaultObserver<List<String>>() {
             @Override
             public void onNext(List<String> ids) {
+                newRouteView.hideProgress();
                 newRouteView.showRouteIdSuggestions(ids);
             }
 

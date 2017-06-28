@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.edulog.driverportal.routes.data.entity.RouteEntity;
 import com.edulog.driverportal.routes.domain.repository.RouteRepository;
+import com.edulog.driverportal.util.DateConverter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -55,7 +56,7 @@ public class RouteRepositoryImpl implements RouteRepository {
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_ID, routeEntity.getId());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_NAME, routeEntity.getName());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_STOP_COUNT, routeEntity.getStopCount());
-            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_UPDATED_AT, new Date().toString());
+            values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_UPDATED_AT, new DateConverter().toString(new Date()));
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_ORIGIN, routeEntity.getOrigin());
             values.put(DriverPortalContract.RouteEntry.COLUMN_NAME_DESTINATION, routeEntity.getDestination());
 
@@ -102,13 +103,8 @@ public class RouteRepositoryImpl implements RouteRepository {
         routeEntity.setStopCount(stopCount);
 
         String dateStr = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_UPDATED_AT));
-        try {
-            DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.US);
-            routeEntity.setUpdatedAt(dateFormat.parse(dateStr));
-        } catch (NullPointerException | ParseException ex) {
-            Log.d("dateformat", ex.getMessage());
-            routeEntity.setUpdatedAt(new Date());
-        }
+        DateConverter dateConverter = new DateConverter();
+        routeEntity.setUpdatedAt(dateConverter.toDate(dateStr));
 
         String origin = cursor.getString(cursor.getColumnIndexOrThrow(DriverPortalContract.RouteEntry.COLUMN_NAME_ORIGIN));
         routeEntity.setOrigin(origin);
