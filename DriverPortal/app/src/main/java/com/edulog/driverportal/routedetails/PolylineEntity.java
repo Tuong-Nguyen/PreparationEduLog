@@ -6,7 +6,7 @@ import com.google.maps.android.PolyUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EncodedPolylineEntity {
+public class PolylineEntity {
     private List<String> polylines = new ArrayList<>();
 
     public void addPolyline(String polyline) {

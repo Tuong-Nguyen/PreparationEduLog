@@ -1,6 +1,6 @@
 package com.edulog.driverportal.util;
 
-import com.edulog.driverportal.routedetails.EncodedPolylineEntity;
+import com.edulog.driverportal.routedetails.PolylineEntity;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,16 +41,16 @@ public class RetrofitServiceGenerator {
     private Gson createGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        builder.registerTypeHierarchyAdapter(EncodedPolylineEntity.class, new JsonDeserializer<EncodedPolylineEntity>() {
+        builder.registerTypeHierarchyAdapter(PolylineEntity.class, new JsonDeserializer<PolylineEntity>() {
             @Override
-            public EncodedPolylineEntity deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            public PolylineEntity deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonObject polylineJsonObj = json.getAsJsonObject();
                 JsonArray routesJsonArray = polylineJsonObj.getAsJsonArray("routes");
                 JsonObject firstRoute = routesJsonArray.get(0).getAsJsonObject();
                 JsonObject overview = firstRoute.getAsJsonObject("overview_polyline");
                 //String points = overview.get("points").getAsString();
 
-                EncodedPolylineEntity encodedPolylineEntity = new EncodedPolylineEntity();
+                PolylineEntity polylineEntity = new PolylineEntity();
 
                 JsonObject firstLeg = firstRoute.getAsJsonArray("legs").get(0).getAsJsonObject();
                 JsonArray steps = firstLeg.getAsJsonArray("steps");
@@ -58,10 +58,10 @@ public class RetrofitServiceGenerator {
                     JsonObject step = steps.get(i).getAsJsonObject();
                     JsonObject polyline = step.getAsJsonObject("polyline");
                     String points = polyline.get("points").getAsString();
-                    encodedPolylineEntity.addPolyline(points);
+                    polylineEntity.addPolyline(points);
                 }
 
-                return encodedPolylineEntity;
+                return polylineEntity;
             }
         });
         return builder.create();

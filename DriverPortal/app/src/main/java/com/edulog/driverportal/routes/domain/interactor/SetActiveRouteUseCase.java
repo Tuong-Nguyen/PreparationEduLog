@@ -9,7 +9,6 @@ import com.edulog.driverportal.routes.model.RouteModel;
 import com.edulog.driverportal.routes.model.RouteModelDataMapper;
 
 import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 
 public class SetActiveRouteUseCase extends UseCase<RouteModel, SetActiveRouteUseCase.Params> {
     private RouteService routeService;
@@ -49,8 +48,7 @@ public class SetActiveRouteUseCase extends UseCase<RouteModel, SetActiveRouteUse
                             routeRepository.upsert(routeEntity);
                             session.putRouteId(routeEntity.getId());
                             return RouteModelDataMapper.transform(routeEntity);
-                        })
-                        .subscribeOn(Schedulers.io());
+                        });
                 break;
             case LOCAL:
                 observable = Observable.just(routeRepository.findOne(routeId))
@@ -62,8 +60,7 @@ public class SetActiveRouteUseCase extends UseCase<RouteModel, SetActiveRouteUse
                         .map(routeEntity -> {
                             session.putRouteId(routeEntity.getId());
                             return RouteModelDataMapper.transform(routeEntity);
-                        })
-                        .subscribeOn(Schedulers.io());
+                        });
                 break;
             default:
                 observable = Observable.error(new IllegalArgumentException("Load mode not specified."));

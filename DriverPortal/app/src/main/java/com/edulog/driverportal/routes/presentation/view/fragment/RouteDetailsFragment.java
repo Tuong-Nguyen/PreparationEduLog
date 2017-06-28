@@ -15,13 +15,11 @@ import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
 import com.edulog.driverportal.util.RetrofitServiceGenerator;
-import com.edulog.driverportal.routes.data.net.DriverPortalRouteService;
+import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.data.repository.DriverPortalDbHelper;
 import com.edulog.driverportal.routes.data.repository.RouteRepositoryImpl;
-import com.edulog.driverportal.routes.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routes.domain.interactor.SetActiveRouteUseCase;
 import com.edulog.driverportal.routes.domain.repository.RouteRepository;
-import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.model.LoadMode;
 import com.edulog.driverportal.routes.model.RouteModel;
 import com.edulog.driverportal.routes.presentation.presenter.RouteDetailsContract;
@@ -60,8 +58,7 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsCo
             loadMode = (LoadMode) args.getSerializable(KEY_LOAD_MORE);
         }
 
-        DriverPortalRouteService service = new RetrofitServiceGenerator().generate(DriverPortalRouteService.class);
-        RouteService routeService = new RouteServiceImpl(service);
+        RouteService routeService = new RetrofitServiceGenerator().generate(RouteService.class);
         Session session = ((DriverPortalApplication) getActivity().getApplication()).getSession();
         RouteRepository routeRepository = new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity()));
         SetActiveRouteUseCase setActiveRouteUseCase = new SetActiveRouteUseCase(routeService, routeRepository, session);

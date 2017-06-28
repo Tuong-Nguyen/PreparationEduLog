@@ -15,7 +15,7 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
-import com.edulog.driverportal.settings.changepassword.data.service.AuthServiceImpl;
+import com.edulog.driverportal.settings.changepassword.data.AuthServiceImpl;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;

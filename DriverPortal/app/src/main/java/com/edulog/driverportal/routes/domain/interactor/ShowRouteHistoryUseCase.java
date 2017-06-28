@@ -26,7 +26,6 @@ public class ShowRouteHistoryUseCase extends UseCase<List<RouteModel>, Void> {
         String driverId = session.getDriverId();
         if (driverId != null) {
             return Observable.just(routeRepository.findAll())
-                    .subscribeOn(Schedulers.io())
                     .doOnNext(Collections::reverse)
                     .map(RouteModelDataMapper::transform);
         }

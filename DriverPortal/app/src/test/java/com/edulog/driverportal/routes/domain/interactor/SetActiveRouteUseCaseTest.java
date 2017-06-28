@@ -4,7 +4,6 @@ import com.edulog.driverportal.RxImmediateSchedulerRule;
 import com.edulog.driverportal.routes.data.entity.RouteEntity;
 import com.edulog.driverportal.common.device.Session;
 import com.edulog.driverportal.routes.domain.repository.RouteRepository;
-import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.model.LoadMode;
 
 import org.junit.Before;

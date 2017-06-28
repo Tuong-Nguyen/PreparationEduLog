@@ -14,12 +14,10 @@ import com.edulog.driverportal.common.presentation.BaseActivity;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
 import com.edulog.driverportal.common.presentation.DefaultObserver;
-import com.edulog.driverportal.routes.data.net.DriverPortalRouteService;
+import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.routes.data.repository.DriverPortalDbHelper;
 import com.edulog.driverportal.routes.data.repository.RouteRepositoryImpl;
-import com.edulog.driverportal.routes.data.service.RouteServiceImpl;
 import com.edulog.driverportal.routes.domain.repository.RouteRepository;
-import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.edulog.driverportal.util.RetrofitServiceGenerator;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -59,8 +57,7 @@ public class MotionActivity extends BaseActivity implements OnMapReadyCallback,
             mapFragment.getMapAsync(this);
         }
 
-        DriverPortalRouteService driverPortalRouteService = new RetrofitServiceGenerator().generate(DriverPortalRouteService.class);
-        RouteService routeService = new RouteServiceImpl(driverPortalRouteService);
+        RouteService routeService = new RetrofitServiceGenerator().generate(RouteService.class);
         MapService mapService = new RetrofitServiceGenerator()
                 .baseUrl("https://maps.googleapis.com/")
                 .generate(MapService.class);

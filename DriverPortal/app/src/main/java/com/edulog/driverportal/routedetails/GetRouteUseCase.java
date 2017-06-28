@@ -5,13 +5,10 @@ import com.edulog.driverportal.routes.data.entity.RouteEntity;
 import com.edulog.driverportal.routes.domain.repository.RouteRepository;
 import com.edulog.driverportal.routes.domain.service.RouteService;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.PolyUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 
 public class GetRouteUseCase extends UseCase<List<LatLng>, String> {
     private RouteService routeService;
@@ -38,12 +35,11 @@ public class GetRouteUseCase extends UseCase<List<LatLng>, String> {
                         throw new RuntimeException("Can not get route entity from both sever and local.");
                     }
                 })
-                .flatMap(this::getRouteDirectionObservable)
-                .subscribeOn(Schedulers.io());
+                .flatMap(this::getRouteDirectionObservable);
     }
 
     private Observable<List<LatLng>> getRouteDirectionObservable(RouteEntity routeEntity) {
         return mapService.getDirection(routeEntity.getOrigin(), routeEntity.getDestination(), apiKey)
-                .map(EncodedPolylineEntity::decode);
+                .map(PolylineEntity::decode);
     }
 }
