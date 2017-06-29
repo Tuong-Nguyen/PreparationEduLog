@@ -134,7 +134,6 @@ public class MotionActivity extends BaseActivity implements OnMapReadyCallback,
         }
     }
 
-    @SuppressWarnings("MissingPermission")
     private Observable<Location> getInternalUpdateLocationObservable(boolean success) {
         if (success) {
             return rxLocation
