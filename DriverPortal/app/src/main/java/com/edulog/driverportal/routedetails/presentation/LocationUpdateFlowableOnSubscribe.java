@@ -40,7 +40,7 @@ public class LocationUpdateFlowableOnSubscribe implements FlowableOnSubscribe<Lo
     }
 
     @SuppressWarnings("MissingPermission")
-    protected void onGoogleApiAvailable() {
+    private void onGoogleApiAvailable() {
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, location -> {
             emitter.onNext(location);
         });

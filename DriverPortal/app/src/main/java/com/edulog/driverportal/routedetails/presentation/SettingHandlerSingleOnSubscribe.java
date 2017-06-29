@@ -61,10 +61,11 @@ public class SettingHandlerSingleOnSubscribe implements SingleOnSubscribe<Boolea
                             emitter.onSuccess(true);
                             break;
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                            Intent intent = new Intent(context, LocationSettingsActivity.class);
-                            intent.putExtra(LocationSettingsActivity.ARG_STATUS, status);
-                            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
+//                            Intent intent = new Intent(context, LocationSettingsActivity.class);
+//                            intent.putExtra(LocationSettingsActivity.ARG_STATUS, status);
+//                            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+//                            context.startActivity(intent);
+                            emitter.onSuccess(true);
                             break;
                         case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                             emitter.onSuccess(false);

@@ -88,9 +88,9 @@ public class MotionActivity extends BaseActivity implements OnMapReadyCallback,
 
     @Override
     public void drawRoute(List<LatLng> latLngs) {
-        googleMap.addMarker(new MarkerOptions().position(latLngs.get(0)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngs.get(0)));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 500, null);
+//        prevMarker = googleMap.addMarker(new MarkerOptions().position(latLngs.get(0)));
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngs.get(0)));
+//        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 500, null);
         PolylineOptions options = new PolylineOptions()
                 .addAll(latLngs)
                 .color(Color.parseColor("#05b1fb"))
@@ -113,8 +113,10 @@ public class MotionActivity extends BaseActivity implements OnMapReadyCallback,
                 .subscribe(new DefaultObserver<Location>() {
                     @Override
                     public void onNext(Location location) {
-                        Log.d(TAG, "onNext: " + location.getLatitude() + ", " + location.getLongitude());
                         move(location);
+                        double speed = location.getSpeed();
+                        Log.d(TAG, "speed: " + speed);
+                        motionPresenter.synchronize(location, speed);
                     }
 
                     @Override
@@ -155,6 +157,6 @@ public class MotionActivity extends BaseActivity implements OnMapReadyCallback,
         if (prevMarker != null) prevMarker.remove();
         prevMarker = googleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(10), 500, null);
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 500, null);
     }
 }

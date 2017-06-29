@@ -1,5 +1,8 @@
 package com.edulog.driverportal.routedetails.presentation;
 
+import android.location.Location;
+import android.support.annotation.NonNull;
+
 import com.edulog.driverportal.common.device.Session;
 import com.edulog.driverportal.common.presentation.DefaultObserver;
 import com.edulog.driverportal.routedetails.domain.GetRouteUseCase;
@@ -40,6 +43,11 @@ public class MotionPresenterImpl extends MotionContract.MotionPresenter {
         motionView.showProgress();
 
         getRouteUseCase.execute(routeDirectionObserver, routeId);
+    }
+
+    @Override
+    public void synchronize(Location location, double speed) {
+
     }
 
     private DisposableObserver<List<LatLng>> getRouteDirectionObserver() {

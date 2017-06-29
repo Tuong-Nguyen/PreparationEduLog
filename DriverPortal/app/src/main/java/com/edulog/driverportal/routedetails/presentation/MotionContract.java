@@ -1,5 +1,6 @@
 package com.edulog.driverportal.routedetails.presentation;
 
+import android.location.Location;
 
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
@@ -14,5 +15,6 @@ public interface MotionContract {
 
     abstract class MotionPresenter extends BasePresenter<MotionView> {
         public abstract void getActiveRoute();
+        public abstract void synchronize(Location location, double speed);
     }
 }
