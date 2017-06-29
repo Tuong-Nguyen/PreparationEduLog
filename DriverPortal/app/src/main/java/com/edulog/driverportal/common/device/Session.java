@@ -9,5 +9,9 @@ public interface Session {
 
     String getDriverId();
 
+    void putSpeedThreshold();
+
+    double getSpeedThreshold();
+
     void clear();
 }

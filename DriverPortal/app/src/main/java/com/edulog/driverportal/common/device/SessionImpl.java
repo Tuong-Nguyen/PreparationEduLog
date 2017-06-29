@@ -35,6 +35,16 @@ public class SessionImpl implements Session {
     }
 
     @Override
+    public void putSpeedThreshold() {
+
+    }
+
+    @Override
+    public double getSpeedThreshold() {
+        return 0;
+    }
+
+    @Override
     public void clear() {
         sharedPreferences.edit().clear().apply();
     }
