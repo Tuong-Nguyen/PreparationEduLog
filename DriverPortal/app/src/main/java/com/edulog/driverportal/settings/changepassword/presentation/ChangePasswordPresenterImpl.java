@@ -1,10 +1,10 @@
 package com.edulog.driverportal.settings.changepassword.presentation;
 
 import com.edulog.driverportal.common.presentation.DefaultObserver;
-import com.edulog.driverportal.settings.changepassword.domain.exception.ValidationException;
-import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
-import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
-import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
+import com.edulog.driverportal.settings.changepassword.domain.ValidationException;
+import com.edulog.driverportal.settings.changepassword.domain.ChangePasswordUseCase;
+import com.edulog.driverportal.settings.changepassword.domain.ValidationUseCase;
+import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
 
 import java.util.List;
 

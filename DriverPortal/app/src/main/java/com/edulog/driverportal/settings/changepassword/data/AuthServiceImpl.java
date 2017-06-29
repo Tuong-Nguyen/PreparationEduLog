@@ -1,8 +1,8 @@
 package com.edulog.driverportal.settings.changepassword.data;
 
 import com.edulog.driverportal.util.RetrofitServiceGenerator;
-import com.edulog.driverportal.settings.changepassword.domain.service.ChangePasswordService;
-import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
+import com.edulog.driverportal.settings.changepassword.domain.ChangePasswordService;
+import com.edulog.driverportal.settings.changepassword.domain.AuthService;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

@@ -1,7 +1,7 @@
 package com.edulog.driverportal.settings.changepassword.presentation;
 
-import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
-import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
+import com.edulog.driverportal.settings.changepassword.domain.ChangePasswordUseCase;
+import com.edulog.driverportal.settings.changepassword.domain.ValidationUseCase;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,6 @@ import io.reactivex.observers.DisposableObserver;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChangePasswordPresenterTest {

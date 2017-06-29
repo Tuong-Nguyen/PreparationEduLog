@@ -16,9 +16,9 @@
         <activity android:name=".settings.presentation.SettingsActivity">
 
         </activity>
-        <activity android:name=".routes.presentation.view.activity.RouteSelectionActivity">
+        <activity android:name=".routes.presentation.activity.RouteSelectionActivity">
         </activity>
-        <activity android:name=".routes.presentation.view.activity.NewRouteActivity"
+        <activity android:name=".routes.presentation.activity.NewRouteActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -27,15 +27,15 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
-        <activity android:name=".routes.presentation.view.activity.PreviousRouteActivity">
+        <activity android:name=".routes.presentation.activity.PreviousRouteActivity">
         </activity>
-        <activity android:name=".routedetails.MotionActivity">
+        <activity android:name=".routedetails.presentation.MotionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".routedetails.LocationSettingsActivity"
+        <activity android:name=".routedetails.presentation.LocationSettingsActivity"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <meta-data android:name="com.google.android.gms.version"

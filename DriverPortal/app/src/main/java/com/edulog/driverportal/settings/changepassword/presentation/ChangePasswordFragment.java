@@ -16,10 +16,10 @@ import com.edulog.driverportal.common.presentation.BaseFragment;
 import com.edulog.driverportal.common.presentation.BasePresenter;
 import com.edulog.driverportal.common.presentation.BaseView;
 import com.edulog.driverportal.settings.changepassword.data.AuthServiceImpl;
-import com.edulog.driverportal.settings.changepassword.domain.interactor.ChangePasswordUseCase;
-import com.edulog.driverportal.settings.changepassword.domain.interactor.ValidationUseCase;
-import com.edulog.driverportal.settings.changepassword.domain.service.AuthService;
-import com.edulog.driverportal.settings.changepassword.presentation.model.ValidationResult;
+import com.edulog.driverportal.settings.changepassword.domain.ChangePasswordUseCase;
+import com.edulog.driverportal.settings.changepassword.domain.ValidationUseCase;
+import com.edulog.driverportal.settings.changepassword.domain.AuthService;
+import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.List;
