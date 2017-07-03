@@ -1,4 +1,4 @@
-package com.edulog.driverportal.util;
+package com.edulog.driverportal.api;
 
 import com.edulog.driverportal.routedetails.model.Polyline;
 import com.google.gson.FieldNamingPolicy;
@@ -8,19 +8,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 
-import java.io.IOException;
-
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.HTTP;
 
-public class RetrofitServiceGenerator {
+public class Api {
     // Query name for google api request
     private static final String QUERY_GOOGLE_API_KEY = "key";
 
@@ -48,12 +43,12 @@ public class RetrofitServiceGenerator {
         return retrofit.create(serviceClass);
     }
 
-    public RetrofitServiceGenerator baseUrl(String baseUrl) {
+    public Api baseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
         return this;
     }
 
-    public RetrofitServiceGenerator googleApiKey(String googleApiKey) {
+    public Api googleApiKey(String googleApiKey) {
         this.googleApiKey = googleApiKey;
         return this;
     }

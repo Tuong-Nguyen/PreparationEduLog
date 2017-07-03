@@ -15,7 +15,7 @@ import com.edulog.driverportal.base.BaseFragment;
 import com.edulog.driverportal.base.BasePresenter;
 import com.edulog.driverportal.base.BaseView;
 import com.edulog.driverportal.routes.model.Route;
-import com.edulog.driverportal.util.RetrofitServiceGenerator;
+import com.edulog.driverportal.api.Api;
 import com.edulog.driverportal.routes.domain.RouteService;
 import com.edulog.driverportal.routes.data.DriverPortalDbHelper;
 import com.edulog.driverportal.routes.data.RouteRepositoryImpl;
@@ -58,7 +58,7 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsCo
             loadMode = (LoadMode) args.getSerializable(KEY_LOAD_MORE);
         }
 
-        RouteService routeService = new RetrofitServiceGenerator()
+        RouteService routeService = new Api()
                 .baseUrl(Config.EDULOG_URL)
                 .generate(RouteService.class);
         Session session = ((DriverPortalApplication) getActivity().getApplication()).getSession();

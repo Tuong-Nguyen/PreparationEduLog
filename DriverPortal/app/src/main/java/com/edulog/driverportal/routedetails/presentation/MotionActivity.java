@@ -22,7 +22,7 @@ import com.edulog.driverportal.routes.domain.RouteService;
 import com.edulog.driverportal.routes.data.DriverPortalDbHelper;
 import com.edulog.driverportal.routes.data.RouteRepositoryImpl;
 import com.edulog.driverportal.routes.data.RouteRepository;
-import com.edulog.driverportal.util.RetrofitServiceGenerator;
+import com.edulog.driverportal.api.Api;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -61,10 +61,10 @@ public class MotionActivity extends BaseActivity implements OnMapReadyCallback,
             mapFragment.getMapAsync(this);
         }
 
-        RouteService routeService = new RetrofitServiceGenerator()
+        RouteService routeService = new Api()
                 .baseUrl(Config.EDULOG_URL)
                 .generate(RouteService.class);
-        MapService mapService = new RetrofitServiceGenerator()
+        MapService mapService = new Api()
                 .baseUrl(Config.GOOGLE_API_URL)
                 .googleApiKey(Config.GOOGLE_API_KEY)
                 .generate(MapService.class);
