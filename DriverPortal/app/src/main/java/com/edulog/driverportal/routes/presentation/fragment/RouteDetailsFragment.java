@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.edulog.driverportal.base.Config;
 import com.edulog.driverportal.base.DriverPortalApplication;
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.session.Session;
@@ -57,7 +58,9 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsCo
             loadMode = (LoadMode) args.getSerializable(KEY_LOAD_MORE);
         }
 
-        RouteService routeService = new RetrofitServiceGenerator().generate(RouteService.class);
+        RouteService routeService = new RetrofitServiceGenerator()
+                .baseUrl(Config.EDULOG_URL)
+                .generate(RouteService.class);
         Session session = ((DriverPortalApplication) getActivity().getApplication()).getSession();
         RouteRepository routeRepository = new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity()));
         SetActiveRouteUseCase setActiveRouteUseCase = new SetActiveRouteUseCase(routeService, routeRepository, session);

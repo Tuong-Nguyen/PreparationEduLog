@@ -15,13 +15,11 @@ public class GetRouteUseCase extends UseCase<List<LatLng>, String> {
     private RouteService routeService;
     private RouteRepository routeRepository;
     private MapService mapService;
-    private String apiKey;
 
-    public GetRouteUseCase(RouteService routeService, RouteRepository routeRepository, MapService mapService, String apiKey) {
+    public GetRouteUseCase(RouteService routeService, RouteRepository routeRepository, MapService mapService) {
         this.routeService = routeService;
         this.routeRepository = routeRepository;
         this.mapService = mapService;
-        this.apiKey = apiKey;
     }
 
     @Override
@@ -40,7 +38,7 @@ public class GetRouteUseCase extends UseCase<List<LatLng>, String> {
     }
 
     private Observable<List<LatLng>> getRouteDirectionObservable(Route route) {
-        return mapService.getDirection(route.getOrigin(), route.getDestination(), apiKey)
+        return mapService.getDirection(route.getOrigin(), route.getDestination())
                 .map(Polyline::decode);
     }
 }

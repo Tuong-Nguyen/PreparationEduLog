@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.base.BaseActivity;
+import com.edulog.driverportal.base.Config;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.routes.domain.RouteService;
@@ -53,7 +54,9 @@ public class PreviewRouteDialogFragment extends DialogFragment implements Previe
             loadMode = (LoadMode) getArguments().getSerializable(KEY_LOAD_MODE);
         }
 
-        RouteService routeService = new RetrofitServiceGenerator().generate(RouteService.class);
+        RouteService routeService = new RetrofitServiceGenerator()
+                .baseUrl(Config.EDULOG_URL)
+                .generate(RouteService.class);
         RouteRepository routeRepository = new RouteRepositoryImpl(new DriverPortalDbHelper(getActivity()));
         GetRouteUseCase getRouteUseCase = new GetRouteUseCase(routeService, routeRepository);
         previewRoutePresenter = new PreviewRoutePresenterImpl(getRouteUseCase);

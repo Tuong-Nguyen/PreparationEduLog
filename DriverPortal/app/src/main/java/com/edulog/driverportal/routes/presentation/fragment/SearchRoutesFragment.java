@@ -12,6 +12,7 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.base.BaseFragment;
 import com.edulog.driverportal.base.BasePresenter;
 import com.edulog.driverportal.base.BaseView;
+import com.edulog.driverportal.base.Config;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.routes.domain.RouteService;
@@ -48,7 +49,9 @@ public class SearchRoutesFragment extends BaseFragment implements SearchRoutesCo
 
         routes = new ArrayList<>();
 
-        RouteService routeService = new RetrofitServiceGenerator().generate(RouteService.class);
+        RouteService routeService = new RetrofitServiceGenerator()
+                .baseUrl(Config.EDULOG_URL)
+                .generate(RouteService.class);
         SearchRoutesUseCase searchRoutesUseCase = new SearchRoutesUseCase(routeService);
         searchRoutesPresenter = new SearchRoutesPresenterImpl(searchRoutesUseCase);
     }

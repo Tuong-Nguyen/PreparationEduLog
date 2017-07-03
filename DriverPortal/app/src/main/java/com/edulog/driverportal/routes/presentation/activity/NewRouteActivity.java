@@ -18,6 +18,7 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.base.BaseActivity;
 import com.edulog.driverportal.base.BasePresenter;
 import com.edulog.driverportal.base.BaseView;
+import com.edulog.driverportal.base.Config;
 import com.edulog.driverportal.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.routes.domain.RouteService;
 import com.edulog.driverportal.routes.domain.RouteIdSuggestionsUseCase;
@@ -63,7 +64,9 @@ public class NewRouteActivity extends BaseActivity implements NewRouteContract.V
         Fragment fragment = NewRouteFragment.newInstance();
         openAsRoot(fragment);
 
-        RouteService routeService = new RetrofitServiceGenerator().generate(RouteService.class);
+        RouteService routeService = new RetrofitServiceGenerator()
+                .baseUrl(Config.EDULOG_URL)
+                .generate(RouteService.class);
         RouteIdSuggestionsUseCase routeIdSuggestionsUseCase = new RouteIdSuggestionsUseCase(routeService);
         newRoutePresenter = new NewRoutePresenterImpl(routeIdSuggestionsUseCase);
     }
