@@ -1,7 +1,7 @@
 package com.edulog.driverportal.settings.changepassword.data;
 
 import com.edulog.driverportal.api.HttpStatusCodes;
-import com.edulog.driverportal.base.Config;
+import com.edulog.driverportal.api.Config;
 import com.edulog.driverportal.api.Api;
 import com.edulog.driverportal.settings.changepassword.domain.ChangePasswordService;
 import com.edulog.driverportal.settings.changepassword.domain.AuthService;

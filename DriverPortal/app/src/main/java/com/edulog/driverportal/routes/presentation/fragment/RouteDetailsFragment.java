@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.edulog.driverportal.base.Config;
+import com.edulog.driverportal.api.Config;
 import com.edulog.driverportal.base.DriverPortalApplication;
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.session.Session;

@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.edulog.driverportal.base.Config;
+import com.edulog.driverportal.api.Config;
 import com.edulog.driverportal.base.DriverPortalApplication;
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.location.RxLocation;

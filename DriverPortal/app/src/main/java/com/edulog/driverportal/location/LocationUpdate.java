@@ -14,13 +14,13 @@ import com.google.android.gms.location.LocationServices;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 
-public class LocationUpdateFlowableOnSubscribe implements FlowableOnSubscribe<Location> {
+public class LocationUpdate implements FlowableOnSubscribe<Location> {
     private Context context;
     private LocationRequest locationRequest;
     private GoogleApiClient googleApiClient;
     private FlowableEmitter<Location> emitter;
 
-    public LocationUpdateFlowableOnSubscribe(Context context, LocationRequest locationRequest) {
+    public LocationUpdate(Context context, LocationRequest locationRequest) {
         this.context = context;
         this.locationRequest = locationRequest;
     }

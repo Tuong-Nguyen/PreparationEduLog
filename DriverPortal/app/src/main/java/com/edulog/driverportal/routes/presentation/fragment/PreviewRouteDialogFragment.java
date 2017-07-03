@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.edulog.driverportal.R;
 import com.edulog.driverportal.base.BaseActivity;
-import com.edulog.driverportal.base.Config;
+import com.edulog.driverportal.api.Config;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.api.Api;
 import com.edulog.driverportal.routes.domain.RouteService;

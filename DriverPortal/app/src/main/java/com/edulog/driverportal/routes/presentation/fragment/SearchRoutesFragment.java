@@ -12,7 +12,7 @@ import com.edulog.driverportal.R;
 import com.edulog.driverportal.base.BaseFragment;
 import com.edulog.driverportal.base.BasePresenter;
 import com.edulog.driverportal.base.BaseView;
-import com.edulog.driverportal.base.Config;
+import com.edulog.driverportal.api.Config;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.api.Api;
 import com.edulog.driverportal.routes.domain.RouteService;
