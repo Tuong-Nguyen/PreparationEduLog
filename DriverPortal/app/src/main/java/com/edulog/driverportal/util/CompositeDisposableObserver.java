@@ -1,4 +1,4 @@
-package com.edulog.driverportal.common.presentation;
+package com.edulog.driverportal.util;
 
 import java.util.ArrayList;
 import java.util.List;

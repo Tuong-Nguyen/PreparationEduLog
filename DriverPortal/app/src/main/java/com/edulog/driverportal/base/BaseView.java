@@ -1,4 +1,4 @@
-package com.edulog.driverportal.common.presentation;
+package com.edulog.driverportal.base;
 
 public interface BaseView {
     void showProgress();

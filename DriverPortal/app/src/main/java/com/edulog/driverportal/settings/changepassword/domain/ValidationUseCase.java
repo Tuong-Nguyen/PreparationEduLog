@@ -1,6 +1,6 @@
 package com.edulog.driverportal.settings.changepassword.domain;
 
-import com.edulog.driverportal.common.domain.UseCase;
+import com.edulog.driverportal.base.UseCase;
 import com.edulog.driverportal.settings.changepassword.model.ValidationResult;
 
 import java.util.Arrays;

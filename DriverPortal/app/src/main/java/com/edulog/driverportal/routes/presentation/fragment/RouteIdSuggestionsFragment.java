@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.presentation.BaseActivity;
-import com.edulog.driverportal.common.presentation.BaseFragment;
+import com.edulog.driverportal.base.BaseActivity;
+import com.edulog.driverportal.base.BaseFragment;
 import com.edulog.driverportal.routes.model.LoadMode;
 import com.edulog.driverportal.routes.presentation.adapter.RouteIdSuggestionsAdapter;
 

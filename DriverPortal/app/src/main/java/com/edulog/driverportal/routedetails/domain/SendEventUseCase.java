@@ -1,7 +1,7 @@
 package com.edulog.driverportal.routedetails.domain;
 
-import com.edulog.driverportal.common.device.Session;
-import com.edulog.driverportal.common.domain.UseCase;
+import com.edulog.driverportal.session.Session;
+import com.edulog.driverportal.base.UseCase;
 import com.edulog.driverportal.routedetails.model.MotionEvent;
 
 import io.reactivex.Observable;

@@ -2,8 +2,6 @@ package com.edulog.driverportal.routes.presentation;
 
 import com.edulog.driverportal.routes.domain.SetActiveRouteUseCase;
 import com.edulog.driverportal.routes.model.LoadMode;
-import com.edulog.driverportal.routes.presentation.RouteDetailsContract;
-import com.edulog.driverportal.routes.presentation.RouteDetailsPresenterImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +16,11 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RouteDetailsPresenterTest {
-    private RouteDetailsContract.RouteDetailsPresenter routeDetailsPresenter;
+    private RouteDetailsContract.Presenter routeDetailsPresenter;
     @Mock
     private SetActiveRouteUseCase mockSetActiveRouteUseCase;
     @Mock
-    private RouteDetailsContract.RouteDetailsView mockRouteDetailsView;
+    private RouteDetailsContract.View mockRouteDetailsView;
 
     @Before
     public void setUp() throws Exception {

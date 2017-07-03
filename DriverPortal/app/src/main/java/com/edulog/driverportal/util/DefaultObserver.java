@@ -1,4 +1,4 @@
-package com.edulog.driverportal.common.presentation;
+package com.edulog.driverportal.util;
 
 import io.reactivex.observers.DisposableObserver;
 

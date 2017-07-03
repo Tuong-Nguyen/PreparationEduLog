@@ -1,14 +1,14 @@
 package com.edulog.driverportal.routes.presentation;
 
-import com.edulog.driverportal.common.presentation.DefaultObserver;
+import com.edulog.driverportal.util.DefaultObserver;
 import com.edulog.driverportal.routes.domain.RouteIdSuggestionsUseCase;
 
 import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class NewRoutePresenterImpl extends NewRouteContract.NewRoutePresenter {
-    private NewRouteContract.NewRouteView newRouteView;
+public class NewRoutePresenterImpl extends NewRouteContract.Presenter {
+    private NewRouteContract.View newRouteView;
     private RouteIdSuggestionsUseCase routeIdSuggestionsUseCase;
     private DisposableObserver<List<String>> routeIdSuggestionsObserver;
 
@@ -17,7 +17,7 @@ public class NewRoutePresenterImpl extends NewRouteContract.NewRoutePresenter {
     }
 
     @Override
-    public void attach(NewRouteContract.NewRouteView newRouteView) {
+    public void attach(NewRouteContract.View newRouteView) {
         this.newRouteView = newRouteView;
     }
 

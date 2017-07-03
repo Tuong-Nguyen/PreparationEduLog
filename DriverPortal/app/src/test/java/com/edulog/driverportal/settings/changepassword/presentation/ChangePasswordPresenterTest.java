@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChangePasswordPresenterTest {
-    private ChangePasswordContract.ChangePasswordPresenter changePasswordPresenter;
+    private ChangePasswordContract.Presenter changePasswordPresenter;
 
     @Mock
     private ChangePasswordUseCase mockChangePasswordUseCase;
@@ -25,7 +25,7 @@ public class ChangePasswordPresenterTest {
     private ValidationUseCase mockValidationUseCase;
 
     @Mock
-    private ChangePasswordContract.ChangePasswordView mockChangePasswordView;
+    private ChangePasswordContract.View mockChangePasswordView;
 
     @Before
     public void setUp() {

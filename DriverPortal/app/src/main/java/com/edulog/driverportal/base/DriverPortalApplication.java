@@ -1,9 +1,9 @@
-package com.edulog.driverportal;
+package com.edulog.driverportal.base;
 
 import android.app.Application;
 
-import com.edulog.driverportal.common.device.Session;
-import com.edulog.driverportal.common.device.SessionImpl;
+import com.edulog.driverportal.session.Session;
+import com.edulog.driverportal.session.SessionImpl;
 
 public class DriverPortalApplication extends Application {
     private Session session;

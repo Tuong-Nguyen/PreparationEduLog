@@ -1,6 +1,6 @@
 package com.edulog.driverportal.routedetails.domain;
 
-import com.edulog.driverportal.common.domain.UseCase;
+import com.edulog.driverportal.base.UseCase;
 import com.edulog.driverportal.routedetails.model.Polyline;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.routes.data.RouteRepository;

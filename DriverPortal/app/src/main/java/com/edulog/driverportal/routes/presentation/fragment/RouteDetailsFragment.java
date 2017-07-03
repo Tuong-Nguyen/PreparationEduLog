@@ -4,16 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.edulog.driverportal.DriverPortalApplication;
+import com.edulog.driverportal.base.DriverPortalApplication;
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.device.Session;
-import com.edulog.driverportal.common.presentation.BaseFragment;
-import com.edulog.driverportal.common.presentation.BasePresenter;
-import com.edulog.driverportal.common.presentation.BaseView;
+import com.edulog.driverportal.session.Session;
+import com.edulog.driverportal.base.BaseFragment;
+import com.edulog.driverportal.base.BasePresenter;
+import com.edulog.driverportal.base.BaseView;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.routes.domain.RouteService;
@@ -25,13 +24,13 @@ import com.edulog.driverportal.routes.model.LoadMode;
 import com.edulog.driverportal.routes.presentation.RouteDetailsContract;
 import com.edulog.driverportal.routes.presentation.RouteDetailsPresenterImpl;
 
-public class RouteDetailsFragment extends BaseFragment implements RouteDetailsContract.RouteDetailsView {
+public class RouteDetailsFragment extends BaseFragment implements RouteDetailsContract.View {
     private static final String KEY_ROUTE_ID = "com.edulog.driverportal.KEY_ROUTE_ID";
     private static final String KEY_LOAD_MORE = "com.edulog.driverportal.KEY_LOAD_MORE";
 
     private String routeId;
     private LoadMode loadMode;
-    private RouteDetailsContract.RouteDetailsPresenter routeDetailsPresenter;
+    private RouteDetailsContract.Presenter routeDetailsPresenter;
 
     private TextView routeIdTextView;
     private TextView routeNameTextView;
@@ -67,8 +66,8 @@ public class RouteDetailsFragment extends BaseFragment implements RouteDetailsCo
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_route_details, container, false);
+    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        android.view.View root = inflater.inflate(R.layout.fragment_route_details, container, false);
 
         routeIdTextView = (TextView) root.findViewById(R.id.tvRouteId);
         routeNameTextView = (TextView) root.findViewById(R.id.tvRouteName);

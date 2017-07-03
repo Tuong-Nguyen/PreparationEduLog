@@ -2,8 +2,6 @@ package com.edulog.driverportal.routes.presentation;
 
 import com.edulog.driverportal.routes.domain.GetRouteUseCase;
 import com.edulog.driverportal.routes.model.LoadMode;
-import com.edulog.driverportal.routes.presentation.PreviewRouteContract;
-import com.edulog.driverportal.routes.presentation.PreviewRoutePresenterImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +16,12 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PreviewRoutePresenterTest {
-    private PreviewRouteContract.PreviewRoutePresenter previewRoutePresenter;
+    private PreviewRouteContract.Presenter previewRoutePresenter;
 
     @Mock
     private GetRouteUseCase mockGetRouteUseCase;
     @Mock
-    private PreviewRouteContract.PreviewRouteView mockPreviewRouteView;
+    private PreviewRouteContract.View mockPreviewRouteView;
 
     @Before
     public void setUp() throws Exception {

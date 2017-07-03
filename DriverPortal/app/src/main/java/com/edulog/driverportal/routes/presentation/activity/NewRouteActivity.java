@@ -15,9 +15,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.presentation.BaseActivity;
-import com.edulog.driverportal.common.presentation.BasePresenter;
-import com.edulog.driverportal.common.presentation.BaseView;
+import com.edulog.driverportal.base.BaseActivity;
+import com.edulog.driverportal.base.BasePresenter;
+import com.edulog.driverportal.base.BaseView;
 import com.edulog.driverportal.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.routes.domain.RouteService;
 import com.edulog.driverportal.routes.domain.RouteIdSuggestionsUseCase;
@@ -31,8 +31,8 @@ import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class NewRouteActivity extends BaseActivity implements NewRouteContract.NewRouteView {
-    private NewRouteContract.NewRoutePresenter newRoutePresenter;
+public class NewRouteActivity extends BaseActivity implements NewRouteContract.View {
+    private NewRouteContract.Presenter newRoutePresenter;
     private RouteIdSuggestionsFragment routeIdSuggestionsFragment;
     private SearchRoutesFragment searchRoutesFragment;
 

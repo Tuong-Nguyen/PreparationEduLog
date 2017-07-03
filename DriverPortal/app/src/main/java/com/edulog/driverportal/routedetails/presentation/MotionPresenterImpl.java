@@ -1,10 +1,9 @@
 package com.edulog.driverportal.routedetails.presentation;
 
 import android.location.Location;
-import android.support.annotation.NonNull;
 
-import com.edulog.driverportal.common.device.Session;
-import com.edulog.driverportal.common.presentation.DefaultObserver;
+import com.edulog.driverportal.session.Session;
+import com.edulog.driverportal.util.DefaultObserver;
 import com.edulog.driverportal.routedetails.domain.GetRouteUseCase;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -12,8 +11,8 @@ import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class MotionPresenterImpl extends MotionContract.MotionPresenter {
-    private MotionContract.MotionView motionView;
+public class MotionPresenterImpl extends MotionContract.Presenter {
+    private MotionContract.View motionView;
     private GetRouteUseCase getRouteUseCase;
     private Session session;
     private DisposableObserver<List<LatLng>> routeDirectionObserver;
@@ -24,7 +23,7 @@ public class MotionPresenterImpl extends MotionContract.MotionPresenter {
     }
 
     @Override
-    public void attach(MotionContract.MotionView motionView) {
+    public void attach(MotionContract.View motionView) {
         this.motionView = motionView;
     }
 

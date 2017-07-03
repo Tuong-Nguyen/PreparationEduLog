@@ -1,8 +1,7 @@
-package com.edulog.driverportal.routedetails.presentation;
+package com.edulog.driverportal.location;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,8 +16,6 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class SettingHandlerSingleOnSubscribe implements SingleOnSubscribe<Boolean> {
     private static SingleEmitter<Boolean> emitter;

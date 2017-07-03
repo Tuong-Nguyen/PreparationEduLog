@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.widget.Button;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.presentation.BaseActivity;
+import com.edulog.driverportal.base.BaseActivity;
 
 public class RouteSelectionActivity extends BaseActivity {
     @Override

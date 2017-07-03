@@ -1,8 +1,6 @@
 package com.edulog.driverportal.routes.presentation;
 
 import com.edulog.driverportal.routes.domain.RouteIdSuggestionsUseCase;
-import com.edulog.driverportal.routes.presentation.NewRouteContract;
-import com.edulog.driverportal.routes.presentation.NewRoutePresenterImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,13 +16,13 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NewRoutePresenterTest {
-    private NewRouteContract.NewRoutePresenter newRoutePresenter;
+    private NewRouteContract.Presenter newRoutePresenter;
 
     @Mock
     private RouteIdSuggestionsUseCase mockRouteIdSuggestionsUseCase;
 
     @Mock
-    private NewRouteContract.NewRouteView mockNewRouteView;
+    private NewRouteContract.View mockNewRouteView;
 
     @Before
     public void setUp() throws Exception {

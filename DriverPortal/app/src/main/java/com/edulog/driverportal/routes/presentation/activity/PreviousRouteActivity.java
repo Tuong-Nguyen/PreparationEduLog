@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.presentation.BaseActivity;
+import com.edulog.driverportal.base.BaseActivity;
 import com.edulog.driverportal.routes.presentation.fragment.RouteHistoryFragment;
 
 public class PreviousRouteActivity extends BaseActivity {

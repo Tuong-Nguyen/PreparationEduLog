@@ -1,14 +1,14 @@
 package com.edulog.driverportal.routes.presentation;
 
-import com.edulog.driverportal.common.presentation.DefaultObserver;
+import com.edulog.driverportal.util.DefaultObserver;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.routes.domain.SetActiveRouteUseCase;
 import com.edulog.driverportal.routes.model.LoadMode;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class RouteDetailsPresenterImpl extends RouteDetailsContract.RouteDetailsPresenter {
-    private RouteDetailsContract.RouteDetailsView routeDetailsView;
+public class RouteDetailsPresenterImpl extends RouteDetailsContract.Presenter {
+    private RouteDetailsContract.View routeDetailsView;
     private SetActiveRouteUseCase setActiveRouteUseCase;
     private DisposableObserver<Route> activeRouteObserver;
 
@@ -17,7 +17,7 @@ public class RouteDetailsPresenterImpl extends RouteDetailsContract.RouteDetails
     }
 
     @Override
-    public void attach(RouteDetailsContract.RouteDetailsView routeDetailsView) {
+    public void attach(RouteDetailsContract.View routeDetailsView) {
         this.routeDetailsView = routeDetailsView;
     }
 

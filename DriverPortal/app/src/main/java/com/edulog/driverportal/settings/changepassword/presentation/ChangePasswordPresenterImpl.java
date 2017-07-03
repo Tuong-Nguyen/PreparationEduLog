@@ -1,6 +1,6 @@
 package com.edulog.driverportal.settings.changepassword.presentation;
 
-import com.edulog.driverportal.common.presentation.DefaultObserver;
+import com.edulog.driverportal.util.DefaultObserver;
 import com.edulog.driverportal.settings.changepassword.domain.ValidationException;
 import com.edulog.driverportal.settings.changepassword.domain.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.ValidationUseCase;
@@ -10,8 +10,8 @@ import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class ChangePasswordPresenterImpl extends ChangePasswordContract.ChangePasswordPresenter {
-    private ChangePasswordContract.ChangePasswordView changePasswordView;
+public class ChangePasswordPresenterImpl extends ChangePasswordContract.Presenter {
+    private ChangePasswordContract.View changePasswordView;
     private ChangePasswordUseCase changePasswordUseCase;
     private ValidationUseCase validationUseCase;
     private DisposableObserver<List<ValidationResult>> validationObserver;
@@ -46,7 +46,7 @@ public class ChangePasswordPresenterImpl extends ChangePasswordContract.ChangePa
     }
 
     @Override
-    public void attach(ChangePasswordContract.ChangePasswordView changePasswordView) {
+    public void attach(ChangePasswordContract.View changePasswordView) {
         this.changePasswordView = changePasswordView;
     }
 

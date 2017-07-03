@@ -5,15 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.edulog.driverportal.DriverPortalApplication;
+import com.edulog.driverportal.base.DriverPortalApplication;
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.device.Session;
-import com.edulog.driverportal.common.presentation.BaseFragment;
-import com.edulog.driverportal.common.presentation.BasePresenter;
-import com.edulog.driverportal.common.presentation.BaseView;
+import com.edulog.driverportal.session.Session;
+import com.edulog.driverportal.base.BaseFragment;
+import com.edulog.driverportal.base.BasePresenter;
+import com.edulog.driverportal.base.BaseView;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.routes.data.DriverPortalDbHelper;
 import com.edulog.driverportal.routes.data.RouteRepositoryImpl;
@@ -27,10 +26,10 @@ import com.edulog.driverportal.routes.presentation.adapter.RouteHistoryAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteHistoryFragment extends BaseFragment implements RouteHistoryContract.RouteHistoryView {
+public class RouteHistoryFragment extends BaseFragment implements RouteHistoryContract.View {
     private RouteHistoryAdapter routeHistoryAdapter;
     private List<Route> routes;
-    private RouteHistoryContract.RouteHistoryPresenter routeHistoryPresenter;
+    private RouteHistoryContract.Presenter routeHistoryPresenter;
 
     public static RouteHistoryFragment newInstance() {
         return new RouteHistoryFragment();
@@ -50,9 +49,9 @@ public class RouteHistoryFragment extends BaseFragment implements RouteHistoryCo
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.fragment_route_history, container, false);
+        android.view.View root = inflater.inflate(R.layout.fragment_route_history, container, false);
 
         routeHistoryAdapter = new RouteHistoryAdapter(routes);
         routeHistoryAdapter.getItemClickObservable().subscribe(this::openPreviewRouteDialog);

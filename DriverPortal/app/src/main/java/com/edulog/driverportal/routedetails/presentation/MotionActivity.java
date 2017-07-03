@@ -7,13 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.edulog.driverportal.DriverPortalApplication;
+import com.edulog.driverportal.base.DriverPortalApplication;
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.device.Session;
-import com.edulog.driverportal.common.presentation.BaseActivity;
-import com.edulog.driverportal.common.presentation.BasePresenter;
-import com.edulog.driverportal.common.presentation.BaseView;
-import com.edulog.driverportal.common.presentation.DefaultObserver;
+import com.edulog.driverportal.location.RxLocation;
+import com.edulog.driverportal.session.Session;
+import com.edulog.driverportal.base.BaseActivity;
+import com.edulog.driverportal.base.BasePresenter;
+import com.edulog.driverportal.base.BaseView;
+import com.edulog.driverportal.util.DefaultObserver;
 import com.edulog.driverportal.routedetails.domain.GetRouteUseCase;
 import com.edulog.driverportal.routedetails.domain.MapService;
 import com.edulog.driverportal.routes.domain.RouteService;
@@ -39,10 +40,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class MotionActivity extends BaseActivity implements OnMapReadyCallback,
-        MotionContract.MotionView {
+        MotionContract.View {
     private static final String TAG = MotionActivity.class.getSimpleName();
 
-    private MotionContract.MotionPresenter motionPresenter;
+    private MotionContract.Presenter motionPresenter;
     private Marker prevMarker;
     private GoogleMap googleMap;
 

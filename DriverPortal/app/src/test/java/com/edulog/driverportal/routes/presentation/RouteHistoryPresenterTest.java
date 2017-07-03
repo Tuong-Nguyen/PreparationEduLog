@@ -1,8 +1,6 @@
 package com.edulog.driverportal.routes.presentation;
 
 import com.edulog.driverportal.routes.domain.ShowRouteHistoryUseCase;
-import com.edulog.driverportal.routes.presentation.RouteHistoryContract;
-import com.edulog.driverportal.routes.presentation.RouteHistoryPresenterImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +15,11 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RouteHistoryPresenterTest {
-    private RouteHistoryContract.RouteHistoryPresenter routeHistoryPresenter;
+    private RouteHistoryContract.Presenter routeHistoryPresenter;
     @Mock
     private ShowRouteHistoryUseCase mockShowRouteHistoryUseCase;
     @Mock
-    private RouteHistoryContract.RouteHistoryView mockRouteHistoryView;
+    private RouteHistoryContract.View mockRouteHistoryView;
 
     @Before
     public void setUp() throws Exception {

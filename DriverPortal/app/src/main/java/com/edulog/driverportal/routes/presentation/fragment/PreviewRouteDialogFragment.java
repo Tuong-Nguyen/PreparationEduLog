@@ -7,11 +7,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.view.View;
 import android.widget.TextView;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.presentation.BaseActivity;
+import com.edulog.driverportal.base.BaseActivity;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.util.RetrofitServiceGenerator;
 import com.edulog.driverportal.routes.domain.RouteService;
@@ -23,13 +22,13 @@ import com.edulog.driverportal.routes.model.LoadMode;
 import com.edulog.driverportal.routes.presentation.PreviewRouteContract;
 import com.edulog.driverportal.routes.presentation.PreviewRoutePresenterImpl;
 
-public class PreviewRouteDialogFragment extends DialogFragment implements PreviewRouteContract.PreviewRouteView {
+public class PreviewRouteDialogFragment extends DialogFragment implements PreviewRouteContract.View {
     private static final String KEY_ROUTE_ID = "com.edulog.driverportal.KEY_ROUTE_ID";
     private static final String KEY_LOAD_MODE = "com.edulog.driverportal.KEY_LOAD_MODE";
 
     private String routeId;
     private LoadMode loadMode;
-    private PreviewRouteContract.PreviewRoutePresenter previewRoutePresenter;
+    private PreviewRouteContract.Presenter previewRoutePresenter;
 
     private TextView routeNameTextView;
     private TextView stopCountTextView;
@@ -65,7 +64,7 @@ public class PreviewRouteDialogFragment extends DialogFragment implements Previe
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
-        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_route_preview, null, false);
+        android.view.View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_route_preview, null, false);
         routeNameTextView = (TextView) dialogView.findViewById(R.id.tvRouteName);
         stopCountTextView = (TextView) dialogView.findViewById(R.id.tvStopCount);
 

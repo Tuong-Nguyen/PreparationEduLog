@@ -1,16 +1,16 @@
 package com.edulog.driverportal.routes.presentation;
 
-import com.edulog.driverportal.common.presentation.BasePresenter;
-import com.edulog.driverportal.common.presentation.BaseView;
+import com.edulog.driverportal.base.BasePresenter;
+import com.edulog.driverportal.base.BaseView;
 
 import java.util.List;
 
 public interface NewRouteContract {
-    interface NewRouteView extends BaseView {
+    interface View extends BaseView {
         void showRouteIdSuggestions(List<String> routeIds);
     }
 
-    abstract class NewRoutePresenter extends BasePresenter<NewRouteView> {
+    abstract class Presenter extends BasePresenter<View> {
         public abstract void suggestRouteIds(String query);
     }
 }

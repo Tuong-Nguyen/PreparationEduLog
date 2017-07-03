@@ -1,6 +1,6 @@
 package com.edulog.driverportal.routedetails.presentation;
 
-import com.edulog.driverportal.common.device.Session;
+import com.edulog.driverportal.session.Session;
 import com.edulog.driverportal.routedetails.domain.GetRouteUseCase;
 
 import org.junit.Before;
@@ -11,7 +11,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import io.reactivex.Observer;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -19,14 +18,14 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MotionPresenterTest {
-    private MotionContract.MotionPresenter motionPresenter;
+    private MotionContract.Presenter motionPresenter;
 
     @Mock
     private GetRouteUseCase mockGetRouteUseCase;
     @Mock
     private Session mockSession;
     @Mock
-    private MotionContract.MotionView mockMotionView;
+    private MotionContract.View mockMotionView;
 
     @Before
     public void setUp() {

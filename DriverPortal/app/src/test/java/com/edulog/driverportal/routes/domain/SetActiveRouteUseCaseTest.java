@@ -1,9 +1,8 @@
 package com.edulog.driverportal.routes.domain;
 
 import com.edulog.driverportal.RxImmediateSchedulerRule;
-import com.edulog.driverportal.routes.domain.SetActiveRouteUseCase;
 import com.edulog.driverportal.routes.model.Route;
-import com.edulog.driverportal.common.device.Session;
+import com.edulog.driverportal.session.Session;
 import com.edulog.driverportal.routes.data.RouteRepository;
 import com.edulog.driverportal.routes.model.LoadMode;
 

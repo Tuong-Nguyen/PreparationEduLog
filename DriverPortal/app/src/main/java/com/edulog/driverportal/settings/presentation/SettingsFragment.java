@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.presentation.BaseFragment;
+import com.edulog.driverportal.base.BaseFragment;
 
 public class SettingsFragment extends BaseFragment {
     public static SettingsFragment newInstance() {

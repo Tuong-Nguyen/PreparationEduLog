@@ -1,8 +1,6 @@
 package com.edulog.driverportal.routes.presentation;
 
 import com.edulog.driverportal.routes.domain.SearchRoutesUseCase;
-import com.edulog.driverportal.routes.presentation.SearchRoutesContract;
-import com.edulog.driverportal.routes.presentation.SearchRoutesPresenterImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +16,11 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SearchRoutesPresenterTest {
-    private SearchRoutesContract.SearchRoutesPresenter searchRoutesPresenter;
+    private SearchRoutesContract.Presenter searchRoutesPresenter;
     @Mock
     private SearchRoutesUseCase mockSearchRoutesUseCase;
     @Mock
-    private SearchRoutesContract.SearchRoutesView mockSearchRoutesView;
+    private SearchRoutesContract.View mockSearchRoutesView;
 
     @Before
     public void setUp() throws Exception {

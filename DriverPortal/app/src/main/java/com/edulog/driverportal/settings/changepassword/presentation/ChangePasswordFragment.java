@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,9 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edulog.driverportal.R;
-import com.edulog.driverportal.common.presentation.BaseFragment;
-import com.edulog.driverportal.common.presentation.BasePresenter;
-import com.edulog.driverportal.common.presentation.BaseView;
+import com.edulog.driverportal.base.BaseFragment;
+import com.edulog.driverportal.base.BasePresenter;
+import com.edulog.driverportal.base.BaseView;
 import com.edulog.driverportal.settings.changepassword.data.AuthServiceImpl;
 import com.edulog.driverportal.settings.changepassword.domain.ChangePasswordUseCase;
 import com.edulog.driverportal.settings.changepassword.domain.ValidationUseCase;
@@ -26,7 +25,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public class ChangePasswordFragment extends BaseFragment implements ChangePasswordContract.ChangePasswordView {
+public class ChangePasswordFragment extends BaseFragment implements ChangePasswordContract.View {
     private TextInputLayout driverIdWrapper;
     private TextInputLayout oldPasswordWrapper;
     private TextInputLayout newPasswordWrapper;
@@ -38,7 +37,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     private Button changePasswordButton;
     private ProgressBar progressBar;
 
-    private ChangePasswordContract.ChangePasswordPresenter changePasswordPresenter;
+    private ChangePasswordContract.Presenter changePasswordPresenter;
 
     public static ChangePasswordFragment newInstance() {
         return new ChangePasswordFragment();
@@ -56,8 +55,8 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_change_password, container, false);
+    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        android.view.View root = inflater.inflate(R.layout.fragment_change_password, container, false);
 
         driverIdWrapper = (TextInputLayout) root.findViewById(R.id.driverIdWrapper);
         oldPasswordWrapper = (TextInputLayout) root.findViewById(R.id.oldPasswordWrapper);
@@ -87,13 +86,13 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(android.view.View.VISIBLE);
         disableRequestChangePassword();
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(android.view.View.INVISIBLE);
         enableRequestChangePassword();
     }
 

@@ -1,4 +1,4 @@
-package com.edulog.driverportal.routedetails.presentation;
+package com.edulog.driverportal.location;
 
 import android.app.Activity;
 import android.content.Intent;

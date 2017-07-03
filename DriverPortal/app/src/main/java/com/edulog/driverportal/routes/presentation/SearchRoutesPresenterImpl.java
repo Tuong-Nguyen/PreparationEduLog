@@ -1,6 +1,6 @@
 package com.edulog.driverportal.routes.presentation;
 
-import com.edulog.driverportal.common.presentation.DefaultObserver;
+import com.edulog.driverportal.util.DefaultObserver;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.routes.domain.SearchRoutesUseCase;
 
@@ -8,8 +8,8 @@ import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class SearchRoutesPresenterImpl extends SearchRoutesContract.SearchRoutesPresenter {
-    private SearchRoutesContract.SearchRoutesView searchRoutesView;
+public class SearchRoutesPresenterImpl extends SearchRoutesContract.Presenter {
+    private SearchRoutesContract.View searchRoutesView;
     private SearchRoutesUseCase searchRoutesUseCase;
     private DisposableObserver<List<Route>> searchRoutesObserver;
 
@@ -18,7 +18,7 @@ public class SearchRoutesPresenterImpl extends SearchRoutesContract.SearchRoutes
     }
 
     @Override
-    public void attach(SearchRoutesContract.SearchRoutesView searchRoutesView) {
+    public void attach(SearchRoutesContract.View searchRoutesView) {
         this.searchRoutesView = searchRoutesView;
     }
 

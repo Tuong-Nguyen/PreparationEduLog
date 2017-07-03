@@ -1,8 +1,7 @@
 package com.edulog.driverportal.routes.domain;
 
-import com.edulog.driverportal.common.domain.UseCase;
+import com.edulog.driverportal.base.UseCase;
 import com.edulog.driverportal.routes.model.Route;
-import com.edulog.driverportal.routes.domain.RouteService;
 
 import java.util.List;
 

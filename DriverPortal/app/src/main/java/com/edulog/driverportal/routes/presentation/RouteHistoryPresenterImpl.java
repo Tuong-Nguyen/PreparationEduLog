@@ -1,6 +1,6 @@
 package com.edulog.driverportal.routes.presentation;
 
-import com.edulog.driverportal.common.presentation.DefaultObserver;
+import com.edulog.driverportal.util.DefaultObserver;
 import com.edulog.driverportal.routes.model.Route;
 import com.edulog.driverportal.routes.domain.ShowRouteHistoryUseCase;
 
@@ -8,8 +8,8 @@ import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class RouteHistoryPresenterImpl extends RouteHistoryContract.RouteHistoryPresenter {
-    private RouteHistoryContract.RouteHistoryView routeHistoryView;
+public class RouteHistoryPresenterImpl extends RouteHistoryContract.Presenter {
+    private RouteHistoryContract.View routeHistoryView;
     private ShowRouteHistoryUseCase showRouteHistoryUseCase;
     private DisposableObserver<List<Route>> routeHistoryObserver;
 
@@ -18,7 +18,7 @@ public class RouteHistoryPresenterImpl extends RouteHistoryContract.RouteHistory
     }
 
     @Override
-    public void attach(RouteHistoryContract.RouteHistoryView routeHistoryView) {
+    public void attach(RouteHistoryContract.View routeHistoryView) {
         this.routeHistoryView = routeHistoryView;
     }
 
